@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import Avatar from './Avatar';
+import { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import Avatar from "./Avatar";
 
 const Account = ({ session }) => {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
-  const [website, setWebsite] = useState(null);
-  const [avatar_url, setAvatarUrl] = useState(null);
+  const [password, setpassword] = useState(null);
+  const [profilePicURL, setAvatarUrl] = useState(null);
 
   useEffect(() => {
     getProfile();
@@ -18,9 +18,9 @@ const Account = ({ session }) => {
       const user = supabase.auth.user();
 
       let { data, error, status } = await supabase
-        .from('User')
-        .select(`username, website, avatar_url`)
-        .eq('id', user.id)
+        .from("User")
+        .select(`username, password, profilePicURL`)
+        .eq("id", user.id)
         .single();
 
       if (error && status !== 406) {
@@ -29,8 +29,8 @@ const Account = ({ session }) => {
 
       if (data) {
         setUsername(data.username);
-        setWebsite(data.website);
-        setAvatarUrl(data.avatar_url);
+        setpassword(data.password);
+        setAvatarUrl(data.profilePicURL);
       }
     } catch (error) {
       alert(error.message);
@@ -49,13 +49,13 @@ const Account = ({ session }) => {
       const updates = {
         id: user.id,
         username,
-        website,
-        avatar_url,
+        password,
+        profilePicURL,
         updated_at: new Date(),
       };
 
-      let { error } = await supabase.from('profiles').upsert(updates, {
-        returning: 'minimal', // Don't return the value after inserting
+      let { error } = await supabase.from("User").upsert(updates, {
+        returning: "minimal", // Don't return the value after inserting
       });
 
       if (error) {
@@ -71,21 +71,18 @@ const Account = ({ session }) => {
   return (
     <div aria-live="polite">
       {loading ? (
-        'Saving ...'
+        "Saving ..."
       ) : (
         <form onSubmit={updateProfile} className="form-widget">
-  
           <div className="form-widget">
-         
             <Avatar
-              url={avatar_url}
+              url={profilePicURL}
               size={150}
               onUpload={(url) => {
                 setAvatarUrl(url);
-                updateProfile({ username, website, avatar_url: url });
+                updateProfile({ username, password, profilePicURL: url });
               }}
             />
-         
           </div>
           )<div>Email: {session.user.email}</div>
           <div>
@@ -93,17 +90,17 @@ const Account = ({ session }) => {
             <input
               id="username"
               type="text"
-              value={username || ''}
+              value={username || ""}
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
           <div>
-            <label htmlFor="website">Website</label>
+            <label htmlFor="password">password</label>
             <input
-              id="website"
-              type="url"
-              value={website || ''}
-              onChange={(e) => setWebsite(e.target.value)}
+              id="password"
+              type="text"
+              value={password || ""}
+              onChange={(e) => setpassword(e.target.value)}
             />
           </div>
           <div>
