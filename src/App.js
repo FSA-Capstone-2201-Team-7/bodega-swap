@@ -1,9 +1,9 @@
-import './App.css';
-import { useState, useEffect } from 'react';
-import { supabase } from './supabaseClient';
-import Auth from './components/Auth';
-import Account from './components/Account';
-
+import "./App.css";
+import { useState, useEffect } from "react";
+import { supabase } from "./supabaseClient";
+import Auth from "./components/Auth";
+import Account from "./components/Account";
+import "./index.css";
 
 const App = () => {
   const [session, setSession] = useState(null);
@@ -17,7 +17,7 @@ const App = () => {
   }, []);
 
   return (
-    <div className="container" style={{ padding: '50px 0 100px 0' }}>
+    <div className="container" style={{ padding: "50px 0 100px 0" }}>
       {!session ? (
         <Auth />
       ) : (
