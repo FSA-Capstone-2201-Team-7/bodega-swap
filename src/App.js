@@ -1,9 +1,11 @@
-import "./App.css";
-import { useState, useEffect } from "react";
-import { supabase } from "./supabaseClient";
-import Auth from "./components/Auth";
-import Account from "./components/Account";
-import "./index.css";
+import './App.css';
+import { useState, useEffect } from 'react';
+import { supabase } from './supabaseClient';
+import Auth from './components/Auth';
+import Account from './components/Account';
+import './index.css';
+import Routing from './components/Routing';
+import NavBar from './components/NavBar';
 
 const App = () => {
   const [session, setSession] = useState(null);
@@ -17,12 +19,14 @@ const App = () => {
   }, []);
 
   return (
-    <div className="container" style={{ padding: "50px 0 100px 0" }}>
+    <div className="container" style={{ padding: '50px 0 100px 0' }}>
+      <NavBar />
       {!session ? (
         <Auth />
       ) : (
         <Account key={session.user.id} session={session} />
       )}
+      <Routing />
     </div>
   );
 };
