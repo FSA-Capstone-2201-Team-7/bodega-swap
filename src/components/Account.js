@@ -16,6 +16,7 @@ const Account = ({ session }) => {
     try {
       setLoading(true);
       const user = supabase.auth.user();
+      
 
       let { data, error, status } = await supabase
         .from("User")
@@ -84,7 +85,7 @@ const Account = ({ session }) => {
               }}
             />
           </div>
-          )<div>Email: {session.user.email}</div>
+          <div>Email: {session.user.email}</div>
           <div>
             <label htmlFor="username">Name</label>
             <input

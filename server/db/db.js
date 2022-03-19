@@ -24,16 +24,16 @@ if (process.env.DATABASE_URL) {
 
 const db = new Sequelize(process.env.REACT_APP_DATABASE_URL, config);
 
-async function test() {
-  try {
-    await db.sync();
-    console.log('Connection has been established successfully.');
-    await db.close();
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-}
+// async function test() {
+//   try {
+//     await db.sync();
+//     console.log('Connection has been established successfully.');
+//     await db.close();
+//   } catch (error) {
+//     console.error('Unable to connect to the database:', error);
+//   }
+// }
 
-test();
+// test();
 
 module.exports = db;
