@@ -13,6 +13,7 @@ import {
   BrowserRouter as Router,
 } from 'react-router-dom';
 import { useNavigate } from 'react-router';
+import SingleItem from './components/SingleItem';
 
 const Routing = () => {
   const [session, setSession] = useState(null);
@@ -34,7 +35,8 @@ const Routing = () => {
             <Route exact path="/home" element={<Main />} />
             <Route exact path="/login" element={<Auth />} />
             <Route path="/" element={<Navigate to="/home" />} />
-            <Route path="/items" element={<AllItems />} />
+            <Route exact path="/items" element={<AllItems />} />
+            <Route path="/items/:id" element={<SingleItem />} />
           </Routes>
         </main>
       ) : (
@@ -46,6 +48,8 @@ const Routing = () => {
               path="/profile"
               element={<Account key={session.user.id} session={session} />}
             />
+            <Route exact path="/items" element={<AllItems />} />
+            <Route path="/items/:id" element={<SingleItem />} />
           </Routes>
         </main>
       )}

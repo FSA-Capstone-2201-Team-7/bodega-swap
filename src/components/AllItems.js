@@ -3,7 +3,7 @@ import { supabase } from '../supabaseClient';
 
 const AllItems = () => {
   const [loading, setLoading] = useState(true);
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(null);
 
   useEffect(() => {
     getItems();
