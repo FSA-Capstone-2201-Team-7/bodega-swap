@@ -5,6 +5,7 @@ import Auth from './components/Auth';
 import Account from './components/Account';
 import { Main, HaggleView, TradesAndMessages } from './components';
 import NavBar from './components/NavBar';
+import { AllItems } from './components';
 import {
   Routes,
   Route,
@@ -12,6 +13,7 @@ import {
   BrowserRouter as Router,
 } from 'react-router-dom';
 import { useNavigate } from 'react-router';
+import SingleItem from './components/SingleItem';
 
 
 const Routing = () => {
@@ -34,6 +36,8 @@ const Routing = () => {
             <Route exact path="/home" element={<Main />} />
             <Route exact path="/login" element={<Auth />} />
             <Route path="/" element={<Navigate to="/home" />} />
+            <Route exact path="/items" element={<AllItems />} />
+            <Route path="/items/:id" element={<SingleItem />} />
           </Routes>
         </main>
       ) : (
@@ -47,6 +51,8 @@ const Routing = () => {
             />
             <Route exact path="/messages" element={<TradesAndMessages />} />
             <Route exact path="/haggle" element={<HaggleView />} />
+            <Route exact path="/items" element={<AllItems />} />
+            <Route path="/items/:id" element={<SingleItem />} />
           </Routes>
         </main>
       )}
