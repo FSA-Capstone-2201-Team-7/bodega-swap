@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
+import { Link } from 'react-router-dom';
 
 const AllItems = () => {
   const [loading, setLoading] = useState(true);
@@ -39,7 +40,9 @@ const AllItems = () => {
               <div key={idx} className="single-item-container">
                 <p>{item.name}</p>
                 <p>{item.description}</p>
-                <img src={item.image_url} alt="" />
+                <Link to={`/items/${item.id}`}>
+                  <img src={item.image_url} alt="" />
+                </Link>
               </div>
             );
           })}
