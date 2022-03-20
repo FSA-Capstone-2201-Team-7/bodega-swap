@@ -29,3 +29,5 @@ const AllItems = () => {
 
   return <div>{loading ? <p>Loading</p> : <p>hello</p>}</div>;
 };
+
+export default AllItems;

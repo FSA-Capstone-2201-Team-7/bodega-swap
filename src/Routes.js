@@ -5,6 +5,7 @@ import Auth from './components/Auth';
 import Account from './components/Account';
 import { Main } from './components';
 import NavBar from './components/NavBar';
+import { AllItems } from './components';
 import {
   Routes,
   Route,
@@ -33,6 +34,7 @@ const Routing = () => {
             <Route exact path="/home" element={<Main />} />
             <Route exact path="/login" element={<Auth />} />
             <Route path="/" element={<Navigate to="/home" />} />
+            <Route path="/items" element={<AllItems />} />
           </Routes>
         </main>
       ) : (
