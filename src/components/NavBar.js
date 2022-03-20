@@ -13,17 +13,22 @@ const NavBar = ({session}) => {
        {!session ? (
          <nav>
            <Link to="/home">Home</Link>
-           <Link to='login'>Login</Link>
+           <Link to="login">Login</Link>
          </nav>
        ) : (
          <nav>
            <Link to="/home">Home</Link>
+           <div>---</div>
            <Link to="/profile">Profile</Link>
+           <div>---</div>
+           <Link to="/messages">Messages</Link>
+           <div>---</div>
+           <Link to="/haggle">haggletest</Link>
+           <div>---</div>
            <Link
              className="navLink"
              to="/"
              onClick={async () => {
-               
                await supabase.auth.signOut();
                navigate(`/home`);
              }}

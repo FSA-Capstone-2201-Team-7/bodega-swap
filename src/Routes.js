@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from './supabaseClient';
 import Auth from './components/Auth';
 import Account from './components/Account';
-import { Main } from './components';
+import { Main, HaggleView, TradesAndMessages } from './components';
 import NavBar from './components/NavBar';
 import {
   Routes,
@@ -12,6 +12,7 @@ import {
   BrowserRouter as Router,
 } from 'react-router-dom';
 import { useNavigate } from 'react-router';
+
 
 const Routing = () => {
   const [session, setSession] = useState(null);
@@ -44,6 +45,8 @@ const Routing = () => {
               path="/profile"
               element={<Account key={session.user.id} session={session} />}
             />
+            <Route exact path="/messages" element={<TradesAndMessages />} />
+            <Route exact path="/haggle" element={<HaggleView />} />
           </Routes>
         </main>
       )}
