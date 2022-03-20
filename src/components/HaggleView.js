@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MDBRow, MDBCol } from 'mdb-react-ui-kit';
 import { supabase } from '../supabaseClient';
-import { useEffect } from 'react/cjs/react.production.min';
+
 import { Card, Image, Form, Button, Container } from 'react-bootstrap';
 
 const HaggleView = ({id}) => {
-  const [user1, setUser1] = useState('')
-  const [user2, setUser2] = useState({});
+  const [swapInfo, setSwap] = useState({});
+  const [ownerWantsItems, setOwnerWants] = useState()
+
+  useEffect(() => {
+    getBarter();
+  }, []);
+  useEffect(() => {
+    getSingleItems()
+  }, [])
+  
+
   const getBarter = async () => {
     try {
       let { data, error } = await supabase
@@ -14,16 +23,17 @@ const HaggleView = ({id}) => {
         .select()
         .match({ id: 1 });
         if(data) {
-          console.log(data);
-         
+         setSwap(data[0])
         }
     } catch (error) {
       console.error('try agina', error);
     }
   };
-  getBarter();
-  console.log('her',user1);
 
+
+   const { ownerWants, hagglerWants} = swapInfo
+   //console.log(ownerWants)
+ 
   //   const getItems = async () => {
   //     try {
 
@@ -42,21 +52,43 @@ const HaggleView = ({id}) => {
   //   };
   //   console.log(getItems())
 
-  // const getSingleItems = async () => {
-  //   try {
-  //     const { data, error } = await supabase
-  //       .from('items')
-  //       .select()
-  //       .match({ id: 1 });
-
-  //     if (data) {
-  //       console.log(data);
-  //     }
-  //   } catch (error) {
-  //     console.error('try agina', error);
-  //   }
-  // };
-
+  const getSingleItems = () => {
+    try {
+      let items = []
+     ownerWants.map( async (el) => {
+       const  { data, error } = await supabase
+        .from('items')
+        .select()
+        .match({ id: el });
+       
+      if (data) {
+        console.log(data)
+        items.push(data)
+        
+       
+        console.log(items);
+        
+      }
+      
+    })
+    setOwnerWants(items)
+        // const { data, error } = await supabase
+        //   .from('items')
+        //   .select()
+        //   .match({ id: 1 });
+         
+        // if (data) {
+        //   setOwnerWants(data);
+        //   console.log('owner Items', ownerWantsItems);
+        // }
+   
+      
+    } catch (error) {
+      console.error('try agina', error);
+    }
+  };
+  
+console.log('owner Items', ownerWantsItems);
   // const { singleItem } = getSingleItems();
 
   return (
@@ -71,7 +103,12 @@ const HaggleView = ({id}) => {
           Inventory
         </Button>
       </Container>
-      <Container></Container>
+      <Container className='OwnerWants'>
+       {/* {ownerWants.map((id) => {
+
+       })} */}
+       
+      </Container>
       <Form>
         <Image
           src="https://bcmquwtslvmqbutdhiyo.supabase.in/storage/v1/object/sign/avatars/external-content.duckduckgo.com.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhdmF0YXJzL2V4dGVybmFsLWNvbnRlbnQuZHVja2R1Y2tnby5jb20uanBnIiwiaWF0IjoxNjQ3NzM4NDgwLCJleHAiOjE5NjMwOTg0ODB9.M3dUjFKXtqWqYRhzn31IPLY7yHkoDlMJUnQHZIeWO7g"
