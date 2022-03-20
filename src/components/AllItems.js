@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { useEffect } from 'react/cjs/react.production.min';
 
 const AllItems = () => {
   const [loading, setLoading] = useState(true);
+  const [items, setItems] = useState([]);
+
   useEffect(() => {
     getItems();
   }, []);
@@ -18,7 +19,7 @@ const AllItems = () => {
       }
 
       if (data) {
-        console.log(data);
+        setItems(data);
       }
     } catch (error) {
       console.error(error);
@@ -27,7 +28,25 @@ const AllItems = () => {
     }
   };
 
-  return <div>{loading ? <p>Loading</p> : <p>hello</p>}</div>;
+  return (
+    <div>
+      {loading ? (
+        <p>Loading</p>
+      ) : (
+        <div>
+          {items.map((item, idx) => {
+            return (
+              <div key={idx} className="single-item-container">
+                <p>{item.name}</p>
+                <p>{item.description}</p>
+                <img src={item.image_url} alt="" />
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default AllItems;
