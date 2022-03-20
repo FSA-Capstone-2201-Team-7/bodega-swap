@@ -18,13 +18,13 @@ const SingleItem = () => {
       setLoading(true);
       let { data, error, status } = await supabase
         .from('items')
-        .select()
+        .select(`*, users(username)`)
         .eq('id', params.id);
       if (error && status !== 406) {
         throw error;
       }
       if (data) {
-        setItem(data);
+        setItem(data[0]);
       }
     } catch (error) {
       console.error(error);
@@ -33,7 +33,20 @@ const SingleItem = () => {
     }
   };
 
-  return <div>{loading ? <p>Loading</p> : <div>{console.log(item)}</div>}</div>;
+  return (
+    <div>
+      {loading ? (
+        <p>Loading</p>
+      ) : (
+        <div className="single-item-container">
+          <p>{item.name}</p>
+          <p>Owner: {item.users.username}</p>
+          <p>{item.description}</p>
+          <img src={item.image_url} alt="" />
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default SingleItem;
