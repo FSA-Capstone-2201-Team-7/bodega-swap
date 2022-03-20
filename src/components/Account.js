@@ -1,11 +1,10 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import Avatar from './Avatar';
+import { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import Avatar from "./Avatar";
 
 const Account = ({ session }) => {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState(null);
-  const [password, setpassword] = useState(null);
   const [avatarUrl, setAvatarUrl] = useState(null);
 
   useEffect(() => {
@@ -18,9 +17,9 @@ const Account = ({ session }) => {
       const user = supabase.auth.user();
 
       let { data, error, status } = await supabase
-        .from('users')
-        .select(`username, password`)
-        .eq('id', user.id)
+        .from("users")
+        .select(`username,`)
+        .eq("id", user.id)
         .single();
 
       if (error && status !== 406) {
@@ -29,7 +28,6 @@ const Account = ({ session }) => {
 
       if (data) {
         setUsername(data.username);
-        setpassword(data.password);
         setAvatarUrl(data.avatarUrl);
       }
     } catch (error) {
@@ -49,13 +47,12 @@ const Account = ({ session }) => {
       const updates = {
         id: user.id,
         username,
-        password,
         avatarUrl,
         updatedAt: new Date(),
       };
 
-      let { error } = await supabase.from('users').upsert(updates, {
-        returning: 'minimal', // Don't return the value after inserting
+      let { error } = await supabase.from("users").upsert(updates, {
+        returning: "minimal", // Don't return the value after inserting
       });
 
       if (error) {
@@ -71,7 +68,7 @@ const Account = ({ session }) => {
   return (
     <div aria-live="polite">
       {loading ? (
-        'Saving ...'
+        "Saving ..."
       ) : (
         <form onSubmit={updateProfile} className="form-widget">
           <div className="form-widget">
@@ -80,7 +77,7 @@ const Account = ({ session }) => {
               size={150}
               onUpload={(url) => {
                 setAvatarUrl(url);
-                updateProfile({ username, password, profilePicUrl: url });
+                updateProfile({ username, profilePicUrl: url });
               }}
             />
           </div>
@@ -90,19 +87,11 @@ const Account = ({ session }) => {
             <input
               id="username"
               type="text"
-              value={username || ''}
+              value={username || ""}
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
-          <div>
-            <label htmlFor="password">password</label>
-            <input
-              id="password"
-              type="text"
-              value={password || ''}
-              onChange={(e) => setpassword(e.target.value)}
-            />
-          </div>
+
           <div>
             <button className="button block primary" disabled={loading}>
               Update profile
