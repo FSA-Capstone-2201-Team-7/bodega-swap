@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import Avatar from "./Avatar";
+import { Link } from "react-router-dom";
 
 const Account = ({ session }) => {
   const [loading, setLoading] = useState(true);
@@ -18,7 +19,7 @@ const Account = ({ session }) => {
 
       let { data, error, status } = await supabase
         .from("users")
-        .select(`username,`)
+        .select(`username`)
         .eq("id", user.id)
         .single();
 
@@ -77,7 +78,7 @@ const Account = ({ session }) => {
               size={150}
               onUpload={(url) => {
                 setAvatarUrl(url);
-                updateProfile({ username, profilePicUrl: url });
+                updateProfile({ username, avatarUrl: url });
               }}
             />
           </div>
@@ -106,6 +107,9 @@ const Account = ({ session }) => {
       >
         Sign Out
       </button>
+      <Link to={`/listings/${session.user.id}`}>
+        <button>SEE LISTINGS</button>
+      </Link>
     </div>
   );
 };
