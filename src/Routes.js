@@ -50,7 +50,11 @@ const Routing = () => {
               element={<Account key={session.user.id} session={session} />}
             />
             <Route exact path="/messages" element={<TradesAndMessages />} />
-            <Route exact path="/haggle" element={<HaggleView />} />
+            <Route
+              exact
+              path="/haggle"
+              element={<HaggleView />}
+            />
             <Route exact path="/items" element={<AllItems />} />
             <Route path="/items/:id" element={<SingleItem />} />
           </Routes>
