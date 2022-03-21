@@ -8,14 +8,13 @@ const TradesAndMessages = () => {
   //  useEffect(() => {
   //    getBarter();
 
-    
   //  }, []);
   // // will move to differe component then pass swapinfo through params
   // const getBarter = async () => {
   //   try {
   //     setLoading(true);
   //     const { data, error } = await supabase
-  //       .from('barters')
+  //       .from('swaps')
   //       .select()
   //       .match({ id: 1 });
   //     if (data) {
@@ -29,9 +28,7 @@ const TradesAndMessages = () => {
   // };
   // console.log('here', swapInfo)
 
-  return (<div>
-   hello
-  </div>);
+  return <div>hello</div>;
 };
 
 export default TradesAndMessages;

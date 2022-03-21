@@ -4,17 +4,17 @@ import { useLocation } from 'react-router-dom';
 
 const HaggleView = ({ state }) => {
   const [loading, setLoading] = useState(true);
-  const [barter, setBarter] = useState();
-  const location = useLocation();
+  const [swap, setSwap] = useState(null);
+  const location = useLocation(null);
   const { item = '' } = location.state || {};
   const user = supabase.auth.user();
 
   useEffect(() => {
-    const getAllBarters = async () => {
+    const getAllSwaps = async () => {
       try {
         setLoading(true);
         const { data, error } = await supabase
-          .from('barters')
+          .from('swaps')
           .select(
             `
             hagglerid,
@@ -27,23 +27,23 @@ const HaggleView = ({ state }) => {
           )
           .eq('hagglerid', user.id)
           .eq('ownerId', item.userId);
-        setBarter(data);
+        setSwap(data);
 
         console.log('users', data);
       } catch (error) {
         console.error('try agina', error);
-      } 
+      }
     };
-    getAllBarters();
+    getAllSwaps();
   }, [user, item]);
 
   console.log('owenerid', item.userId);
   console.log('hagglerId', user.id);
   useEffect(() => {
-    const makeBarter = async () => {
+    const makeSwap = async () => {
       try {
-        if (!barter.length) {
-          const { data: newBarter } = await supabase.from('barters').insert([
+        if (!swap.length) {
+          const { data: newSwap } = await supabase.from('swaps').insert([
             {
               hagglerid: user.id,
               status: 'pending',
@@ -51,7 +51,7 @@ const HaggleView = ({ state }) => {
               hagglerWants: [item.id],
             },
           ]);
-          setBarter(newBarter);
+          setSwap(newSwap);
         }
       } catch (error) {
         console.error(error);
@@ -59,9 +59,8 @@ const HaggleView = ({ state }) => {
         setLoading(false);
       }
     };
-    makeBarter();
-  }, [barter]);
-  console.log('barter', barter);
+    makeSwap();
+  }, [swap]);
   return (
     <div>
       <div className="HaggleprofileViews">Profiles</div>
