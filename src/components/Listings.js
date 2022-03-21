@@ -1,19 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchListings } from "../store/listings";
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
 
 const Listings = () => {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState(null);
   const user = supabase.auth.user();
-  console.log("user.id", user.id);
-  const dispatch = useDispatch();
-  const listings = useSelector((state) => state.listings);
+
   useEffect(() => {
-    dispatch(fetchListings(user.id));
-    setLoading(false);
-  }, [items]);
+    const getListings = async () => {
+      try {
+        setLoading(true);
+        let { data, error, status } = await supabase
+          .from('items')
+          .select('*')
+          .eq('userId', user.id);
+
+        if (error && status !== 406) {
+          throw error;
+        }
+        if (data) {
+          setItems(data);
+        }
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getListings();
+  }, []);
 
   return (
     <div>
@@ -21,7 +36,7 @@ const Listings = () => {
         <p>Loading</p>
       ) : (
         <div>
-          {listings.map((item, idx) => {
+          {items.map((item, idx) => {
             return (
               <div key={idx}>
                 <p>{item.name}</p>
