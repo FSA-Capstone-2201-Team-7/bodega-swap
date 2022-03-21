@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 const HaggleView = ({ state }) => {
   const [loading, setLoading] = useState(true);
-  const [barter, setBarter] = useState(null);
+  const [barter, setBarter] = useState();
   const location = useLocation();
   const { item = '' } = location.state || {};
   const user = supabase.auth.user();
@@ -32,42 +32,45 @@ const HaggleView = ({ state }) => {
         console.log('users', data);
       } catch (error) {
         console.error('try agina', error);
-      }
+      } 
     };
     getAllBarters();
   }, [user, item]);
-  console.log('barter', barter);
+
+  console.log('owenerid', item.userId);
+  console.log('hagglerId', user.id);
   useEffect(() => {
     const makeBarter = async () => {
       try {
         if (!barter.length) {
-          const { data: newBarter} = await supabase
-            .from('barters')
-            .insert([
-              {
-                hagglerid: user.id,
-                status: 'pending',
-                ownerId: item.userId,
-                hagglerWants: [item.id],
-              },
-            ]);
+          const { data: newBarter } = await supabase.from('barters').insert([
+            {
+              hagglerid: user.id,
+              status: 'pending',
+              ownerId: item.userId,
+              hagglerWants: [item.id],
+            },
+          ]);
           setBarter(newBarter);
         }
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
-    makeBarter()
-  }, []);
-
-
-  return <div>Haggle</div>;
+    makeBarter();
+  }, [barter]);
+  console.log('barter', barter);
+  return (
+    <div>
+      <div className="HaggleprofileViews">Profiles</div>
+      <div className="Haggleitems">Items</div>
+      <div className="haggleChat">Chat</div>
+    </div>
+  );
 };
 export default HaggleView;
-
-
-
-
 
 //   return loading ? (
 //     <p>Loading</p>
@@ -113,6 +116,3 @@ export default HaggleView;
 //   );
 // };
 // export default HaggleView;
-
-
-

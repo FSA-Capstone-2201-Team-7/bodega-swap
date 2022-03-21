@@ -21,8 +21,6 @@ const NavBar = ({ session }) => {
            <div>---</div>
            <Link to="/messages">Messages</Link>
            <div>---</div>
-           <Link to="/haggle">haggletest</Link>
-           <div>---</div>
            <Link
              className="navLink"
              to="/"
