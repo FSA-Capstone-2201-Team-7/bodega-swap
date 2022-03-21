@@ -1,6 +1,6 @@
-import './App.css';
-import './index.css';
-import Routing from './Routes';
+import "./App.css";
+import "./index.css";
+import Routing from "./Routes";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 const App = () => {
   return (
@@ -11,6 +11,8 @@ const App = () => {
 };
 
 export default App;
+
+// o: remove
 
 // import "./App.css";
 // import { useState, useEffect } from "react";

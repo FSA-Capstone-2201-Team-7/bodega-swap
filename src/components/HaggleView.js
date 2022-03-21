@@ -37,6 +37,7 @@ const HaggleView = ({ state }) => {
     getAllSwaps();
   }, [user, item]);
 
+  // o: is this still needed?
   console.log('owenerid', item.userId);
   console.log('hagglerId', user.id);
   useEffect(() => {
@@ -70,6 +71,8 @@ const HaggleView = ({ state }) => {
   );
 };
 export default HaggleView;
+
+// o: remove this
 
 //   return loading ? (
 //     <p>Loading</p>

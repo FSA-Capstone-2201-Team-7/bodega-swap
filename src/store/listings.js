@@ -1,5 +1,8 @@
 import { supabase } from "../supabaseClient";
 
+// o: have you considered that you may not need redux
+//  check out useContext -> https://daveceddia.com/usecontext-hook/
+
 // Action types
 const GET_LISTINGS = "GET_LISTINGS";
 

@@ -3,6 +3,7 @@ import { supabase } from '../supabaseClient';
 import { HaggleView } from '.';
 
 const TradesAndMessages = () => {
+  // o: remove if not being used
   // const [swapInfo, setSwap] = useState({});
   //  const [loading, setLoading] = useState(true);
   //  useEffect(() => {

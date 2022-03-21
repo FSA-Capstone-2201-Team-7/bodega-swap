@@ -15,6 +15,8 @@ const Account = ({ session }) => {
   const getProfile = async () => {
     try {
       setLoading(true);
+      // o: is this user object being loaded in more than one place?
+      //  might be useful to use a custom hook for this
       const user = supabase.auth.user();
 
       let { data, error, status } = await supabase
@@ -52,6 +54,8 @@ const Account = ({ session }) => {
         updatedAt: new Date(),
       };
 
+      // o: I am assuming this is still a work in progress.. because you
+      //  are not doing anything with the data here
       let { error } = await supabase.from("users").upsert(updates, {
         returning: "minimal", // Don't return the value after inserting
       });

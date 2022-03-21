@@ -24,6 +24,8 @@ if (process.env.DATABASE_URL) {
 
 const db = new Sequelize(process.env.REACT_APP_DATABASE_URL, config);
 
+// o: remove
+
 // async function test() {
 //   try {
 //     await db.sync();

@@ -62,6 +62,8 @@ const Routing = () => {
 };
 export default Routing;
 
+// o: remove
+
 // import './App.css';
 // import { useState, useEffect } from 'react';
 // import { supabase } from './supabaseClient';

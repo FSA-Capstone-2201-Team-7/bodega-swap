@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchListings } from "../store/listings";
 
 const Listings = () => {
+  // o: this is hard to read below because of lack of spacing
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState(null);
   const user = supabase.auth.user();

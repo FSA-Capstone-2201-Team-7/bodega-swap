@@ -1,3 +1,5 @@
+// o: you can make this into a json file
+
 const ItemList = [
   {
     name: 'Nike Sneakers',
