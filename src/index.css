@@ -43,7 +43,7 @@ body,
   position: relative;
   width: 100%;
 }
-.row [class^="col"] {
+.row [class^='col'] {
   float: left;
   margin: 0.5rem 2%;
   min-height: 0.125rem;
@@ -99,7 +99,7 @@ body,
   width: 96%;
 }
 .row::after {
-  content: "";
+  content: '';
   display: table;
   clear: both;
 }
@@ -369,4 +369,9 @@ button.primary,
   width: 17px;
   animation: spin 1s linear infinite;
   filter: invert(1);
+}
+
+.single-item-container img {
+  height: 20rem;
+  width: 20rem;
 }
