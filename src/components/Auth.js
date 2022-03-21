@@ -21,7 +21,7 @@ export default function Auth() {
           email,
           password,
         });
-        console.log('signin', user)
+
         if (error) throw error;
       }
     } catch (error) {
