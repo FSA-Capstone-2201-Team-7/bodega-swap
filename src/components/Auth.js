@@ -21,6 +21,7 @@ export default function Auth() {
           email,
           password,
         });
+
         if (error) throw error;
       }
     } catch (error) {

@@ -1,7 +1,7 @@
 import './App.css';
 import './index.css';
 import Routing from './Routes';
-
+// import 'bootstrap/dist/css/bootstrap.min.css';
 const App = () => {
   return (
     <div>
