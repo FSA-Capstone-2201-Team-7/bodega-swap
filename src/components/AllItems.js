@@ -3,6 +3,7 @@ import { supabase } from '../supabaseClient';
 import { Link } from 'react-router-dom';
 import HaggleView from './HaggleView';
 
+
 const AllItems = () => {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState(null);
@@ -44,8 +45,8 @@ const AllItems = () => {
                 <Link to={`/items/${item.id}`}>
                   <img src={item.image_url} alt="" />
                 </Link>
-                <Link to='/haggle' state={{ item}}>
-                  <button type="button">Haggle!</button>
+                <Link to='/createproposal' state={{item}}>
+                  <button type="button">Create Proposal</button>
                 </Link>
               </div>
             );

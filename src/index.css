@@ -116,8 +116,10 @@ body,
 
 @media only screen and (min-width: 45em) {
   /* 720px */
+  
   .col-1 {
     width: 4.33%;
+   color: rgba(0, 0, 0, 0.959);
   }
   .col-2 {
     width: 12.66%;

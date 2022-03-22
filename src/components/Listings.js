@@ -6,6 +6,9 @@ const Listings = () => {
   const [items, setItems] = useState(null);
   const user = supabase.auth.user();
 
+
+
+  
   useEffect(() => {
     const getListings = async () => {
       try {
@@ -42,6 +45,7 @@ const Listings = () => {
                 <p>{item.name}</p>
                 <p>{item.description}</p>
                 <img src={item.image_url} alt="" />
+                
               </div>
             );
           })}

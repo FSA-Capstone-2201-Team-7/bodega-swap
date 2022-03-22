@@ -3,10 +3,15 @@ import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
 import Auth from "./components/Auth";
 import Account from "./components/Account";
-import { Main, HaggleView, TradesAndMessages } from "./components";
+import {
+  Main,
+  HaggleView,
+  TradesAndMessages,
+  CreateProposal,
+  AllItems,
+  Listings,
+} from './components';
 import NavBar from "./components/NavBar";
-import { AllItems } from "./components";
-import Listings from "./components/Listings";
 import {
   Routes,
   Route,
@@ -28,16 +33,17 @@ const Routing = () => {
     });
   }, []);
   return (
-    <div className="container" style={{ padding: "50px 0 100px 0" }}>
+    <div className="container" style={{ padding: '50px 0 100px 0' }}>
       <NavBar session={session} />
       {!session ? (
         <main>
           <Routes>
             <Route exact path="/home" element={<Main />} />
             <Route exact path="/login" element={<Auth />} />
-            <Route path="/" element={<Navigate to="/home" />} />
+
             <Route exact path="/items" element={<AllItems />} />
             <Route path="/items/:id" element={<SingleItem />} />
+            <Route path="/" element={<Navigate to="/home" />} />
           </Routes>
         </main>
       ) : (
@@ -52,6 +58,7 @@ const Routing = () => {
             <Route path="/listings/:id" element={<Listings />} />
             <Route exact path="/messages" element={<TradesAndMessages />} />
             <Route exact path="/haggle" element={<HaggleView />} />
+            <Route exact path="createproposal" element={<CreateProposal />} />
             <Route exact path="/items" element={<AllItems />} />
             <Route path="/items/:id" element={<SingleItem />} />
           </Routes>
