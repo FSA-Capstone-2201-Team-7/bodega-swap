@@ -1,44 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { useLocation } from 'react-router-dom';
-import { Card, Container, Row, Col, Form } from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
-const styles = {
-  card: {
-    backgroundColor: 'rgba(128, 128, 128, 0.972)',
-    //** keep to build out functionality */
-    //#rgba(255, 255, 255, 0.972) => white
-    borderRadius: 55,
-    width: '20.5rem',
-    height: '20.5rem',
-  },
-  cardImage: {
-    objectFit: 'cover',
-    borderRadius: 55,
-    height: '80%',
-  },
-  containerHolder: {
-    borderRadius: 100,
-    backgroundColor: 'rgba(0, 0, 0, 0.959)',
-    // ** keep to build out functionality
-    //'rgba(128, 128, 128, 0.972)', => grey
-  },
-};
+// styles to place in building 
+
+// const styles = {
+//   card: {
+//     backgroundColor: 'rgba(128, 128, 128, 0.972)',
+//     //** keep to build out functionality */
+//     //#rgba(255, 255, 255, 0.972) => white
+//     borderRadius: 55,
+//     width: '20.5rem',
+//     height: '20.5rem',
+//   },
+//   cardImage: {
+//     objectFit: 'cover',
+//     borderRadius: 55,
+//     height: '80%',
+//   },
+//   containerHolder: {
+//     borderRadius: 100,
+//     backgroundColor: 'rgba(0, 0, 0, 0.959)',
+//     // ** keep to build out functionality
+//     //'rgba(128, 128, 128, 0.972)', => grey
+//   },
+// };
 
 const CreateProposal = ({ state }) => {
   const [loading, setLoading] = useState(true);
   const [swap, setSwap] = useState(null);
-  const location = useLocation(null);
-  const { item = '' } = location.state || {};
-  const user = supabase.auth.user();
   const [userItems, setUserItems] = useState(null);
   const [defaultImage, setDefault] = useState([
     'http://dummyimage.com/140x100/ddd.png/dddddd/000000',
   ]);
+  const location = useLocation(null);
   const navigate = useNavigate();
+  const user = supabase.auth.user();
+  const { item = '' } = location.state || {};
 
   //this first checks if any swaps are currently made between two users
   useEffect(() => {
@@ -79,7 +78,7 @@ const CreateProposal = ({ state }) => {
               inbound_id: user.id,
               status: 'pending',
               outbound_id: item.ownerId,
-              inbound_offer: item.id,
+              inbound_offer: item,
             },
           ]);
           setSwap(newSwap);
@@ -117,76 +116,63 @@ const CreateProposal = ({ state }) => {
     getListings();
   }, [user.id]);
 
-  const handleSubmit = (image, id) => {
-    setDefault([image, id]);
+  const handleSubmit = (image, item) => {
+
+    setDefault([image, item]);
   };
 
   //updates the proposal on click
-  const handleProposal = async (id) => {
-    if (id) {
+  const handleProposal = async (outbound) => {
+ 
+    if (outbound) {
       const { data } = await supabase
         .from('swaps')
         .update({
           status: 'pending',
-          outbound_offer: id,
-          inbound_offer: item.id,
+          outbound_offer: outbound,
+          inbound_offer: item,
         })
         .eq('id', swap[0].id);
 
       setSwap(data);
-      navigate('/haggle');
+      navigate('/haggle', { state: {swap}});
     }
   };
+
 
   return loading ? (
     <div>Loading</div>
   ) : (
     <div>
-      <Container style={styles.containerHolder}>
-        <Row>
-          <Col>
-            <Card style={styles.card}>
-              <Card.Img
-                variant="top"
-                src={item.image_url}
-                style={styles.cardImage}
-              />
-            </Card>
-          </Col>
-          <Col>
-            <Button onClick={() => handleProposal(defaultImage[1])}>
-              Submit Proposal
-            </Button>
-          </Col>
-          <Col>
-            <Card style={styles.card}>
-              <Card.Img
-                variant="top"
-                src={defaultImage[0]}
-                style={styles.cardImage}
-              />
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-      <div className="Haggleitems">
-        <Container>
-          <Form>
-            {userItems.map((item, idx) => {
-              return (
-                <Card key={item.id} style={{ width: '20.5rem' }}>
-                  <Card.Img variant="top" src={item.image_url} />
-                  <Button
-                    type="button"
-                    onClick={() => handleSubmit(item.image_url, item.id)}
-                  >
-                    Offer
-                  </Button>
-                </Card>
-              );
-            })}
-          </Form>
-        </Container>
+      <div className="flex mb-4">
+        <img src={item.image_url} alt="" className="w-1/2" />
+        <button
+          onClick={() => handleProposal(defaultImage[1])}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+        >
+          {' '}
+          Submit Proposal
+        </button>
+        <img src={defaultImage[0]} alt="" className="w-1/2" />
+      </div>
+      <div className="Swapitems">
+        {userItems.map((item, idx) => {
+          return (
+            <div
+              key={item.id}
+              className="max-w-sm rounded overflow-hidden shadow-lg"
+            >
+              <img src={item.image_url} alt="" className="w-full" />
+              <button
+                type="button"
+                onClick={() => handleSubmit(item.image_url, item)}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+              >
+                Offer
+              </button>
+            </div>
+          );
+        })}
       </div>
       <div className="haggleChat">Chat</div>
     </div>
