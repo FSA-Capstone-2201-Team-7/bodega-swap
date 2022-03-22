@@ -35,7 +35,7 @@ const Listings = () => {
       {loading ? (
         <p>Loading</p>
       ) : (
-        <div className="grid grid-cols-2 gap-10px  ">
+        <div className="grid grid-cols-2 gap-10  ">
           {items.map((item, idx) => {
             return (
               <div key={idx} className="">

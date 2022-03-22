@@ -32,43 +32,69 @@ export default function Auth() {
   };
 
   return (
-    <div className="row flex flex-center">
-      <div className="col-6 form-widget" aria-live="polite">
-        <h1 className="header">Bodega Swap</h1>
-        <p className="description">
-          {signUp ? "Create an account" : "Sign in"}
-        </p>
+    <div className="flex justify-center ">
+      <div className="w-2/4" aria-live="polite">
+        <h1 className="text-2xl my-5">Bodega Swap</h1>
 
         {loading ? (
           "Logging in..."
         ) : (
-          <form onSubmit={handleLogin}>
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              className="inputField"
-              type="email"
-              placeholder="Your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              className="inputField"
-              type="password"
-              placeholder="Your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button className="button block" aria-live="polite">
-              {signUp ? "Sign up" : "Login"}
-            </button>
-          </form>
+          <div className="w-full max-w-s">
+            <p className="mb-5">{signUp ? "Create an account" : "Sign in"}</p>
+            <form
+              className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+              onSubmit={handleLogin}
+            >
+              <div className="mb-4">
+                {" "}
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="email"
+                >
+                  Email
+                </label>
+                <input
+                  id="email"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="email"
+                  placeholder="Your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="mb-4">
+                {" "}
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="password"
+                >
+                  Password
+                </label>
+                <input
+                  id="password"
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  type="password"
+                  placeholder="Your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+
+              <button
+                className=" cursor-pointer mt-5 rounded-lg bg-purple-900 px-4 py-2 text-sm text-white w-full hover:bg-purple-700"
+                aria-live="polite"
+              >
+                {signUp ? "Sign up" : "Login"}
+              </button>
+              <button
+                className=" cursor-pointer mt-5 rounded-lg bg-purple-900 px-4 py-2 text-sm text-white w-full hover:bg-purple-700"
+                onClick={() => setSignUp(!signUp)}
+              >
+                {signUp ? "Already an User" : "Sign Up for a New Account"}
+              </button>
+            </form>
+          </div>
         )}
-        <button onClick={() => setSignUp(!signUp)}>
-          {signUp ? "Already an User" : "Sign Up for a New Account"}
-        </button>
       </div>
     </div>
   );
