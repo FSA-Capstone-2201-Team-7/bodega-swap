@@ -36,7 +36,7 @@ const Profile = () => {
       {loading ? (
         <p>Loading</p>
       ) : (
-        <div>
+        <div className="flex gap-10">
           <div className="avatar-container">
             <img src={user.avatarUrl} alt="" />
           </div>
@@ -44,28 +44,30 @@ const Profile = () => {
             <h3>{user.username}</h3>
             <h3>Gold</h3>
             <h2>REP</h2>
-            <div>
+            <div className="flex space-x-4">
               <div>
                 {" "}
-                <ThumbUpIcon />
+                <ThumbUpIcon className="h-8" />
                 <p>85%</p>
               </div>
               <div>
                 {" "}
-                <ThumbDownIcon />
+                <ThumbDownIcon className="h-8" />
                 <p>15%</p>
               </div>
             </div>
           </div>
-          <div className="totalswaps">
+          <div>
             <h3>Total Swaps</h3>
-            <div>
-              <p>Completed</p>
-              <p>87</p>
-            </div>
-            <div>
-              <p>Active</p>
-              <p>12</p>
+            <div className="flex space-x-4">
+              <div>
+                <p>Completed</p>
+                <p>87</p>
+              </div>
+              <div>
+                <p>Active</p>
+                <p>12</p>
+              </div>
             </div>
           </div>
         </div>

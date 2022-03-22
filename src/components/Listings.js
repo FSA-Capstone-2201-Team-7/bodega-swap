@@ -35,13 +35,13 @@ const Listings = () => {
       {loading ? (
         <p>Loading</p>
       ) : (
-        <div>
+        <div className="grid grid-cols-2 gap-10px  ">
           {items.map((item, idx) => {
             return (
-              <div key={idx}>
+              <div key={idx} className="">
                 <p>{item.name}</p>
                 <p>{item.description}</p>
-                <img src={item.image_url} alt="" />
+                <img className="h-96 w-96" src={item.image_url} alt="" />
               </div>
             );
           })}
