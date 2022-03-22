@@ -13,7 +13,7 @@ const Wishlist = () => {
         setLoading(true);
         let { data, error, status } = await supabase
           .from('wishlists')
-          .select(`*, items(name, description, image_url)`)
+          .select(`*, items(name, description, image_url, id)`)
           .eq('user_id', user.id);
 
         if (error && status !== 406) {
@@ -21,7 +21,6 @@ const Wishlist = () => {
         }
         if (data) {
           setWishList(data[0]);
-          console.log(wishlist);
         }
       } catch (error) {
         console.error(error);
@@ -31,6 +30,16 @@ const Wishlist = () => {
     };
     getWishlist();
   }, []);
+
+  const handleRemove = async (e, id) => {
+    e.preventDefault();
+    try {
+      let { data, error, status } = await supabase
+        .from('wishlist_items')
+        .delete()
+        .match({ item_id: id }, { wishlist_id: wishlist.id });
+    } catch (error) {}
+  };
 
   return loading ? (
     <div>Loading...</div>
@@ -45,8 +54,11 @@ const Wishlist = () => {
               <img src={item.image_url} alt="" />
             </Link>
             <Link to="/haggle" state={{ item }}>
-              <button type="button">Haggle!</button>
+              <button type="button">Haggle!---</button>
             </Link>
+            <button type="button" onClick={(e) => handleRemove(e, item.id)}>
+              \\\Remove From Wishlist
+            </button>
           </div>
         );
       })}
