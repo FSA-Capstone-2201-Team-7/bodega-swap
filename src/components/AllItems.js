@@ -20,7 +20,6 @@ const AllItems = () => {
         if (error && status !== 406) {
           throw error;
         }
-
         if (data) {
           setItems(data);
         }
@@ -31,7 +30,7 @@ const AllItems = () => {
       }
     };
     getItems();
-  }, []);
+  });
 
   return (
     <div>

@@ -13,14 +13,14 @@ const Wishlist = () => {
         setLoading(true);
         let { data, error, status } = await supabase
           .from('wishlists')
-          .select(`*, items(name, description, image_url, id)`)
+          .select(`*, items(*)`)
           .eq('user_id', user.id);
 
         if (error && status !== 406) {
           throw error;
         }
         if (data) {
-          setWishList(data[0]);
+          setWishList(data[0].items);
         }
       } catch (error) {
         console.error(error);
@@ -29,7 +29,7 @@ const Wishlist = () => {
       }
     };
     getWishlist();
-  }, []);
+  });
 
   const handleRemove = async (e, id) => {
     e.preventDefault();
@@ -38,14 +38,24 @@ const Wishlist = () => {
         .from('wishlist_items')
         .delete()
         .match({ item_id: id }, { wishlist_id: wishlist.id });
-    } catch (error) {}
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        setWishList(wishlist.filter((item) => item.id !== data[0].item_id));
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return loading ? (
     <div>Loading...</div>
   ) : (
     <div className="grid grid-cols-3  gap-10 ">
-      {wishlist.items.map((item, idx) => {
+      {wishlist.map((item, idx) => {
         return (
           <div key={idx} className="single-item-container">
             <p>{item.name}</p>
