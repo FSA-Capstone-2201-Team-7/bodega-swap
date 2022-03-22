@@ -77,7 +77,7 @@ const CreateProposal = ({ state }) => {
           const { data: newSwap } = await supabase.from('swaps').insert([
             {
               inbound_id: user.id,
-              status: 'active',
+              status: 'pending',
               outbound_id: item.ownerId,
               inbound_offer: item.id,
             },
@@ -127,7 +127,7 @@ const CreateProposal = ({ state }) => {
       const { data } = await supabase
         .from('swaps')
         .update({
-          status: 'active',
+          status: 'pending',
           outbound_offer: id,
           inbound_offer: item.id,
         })
