@@ -1,9 +1,6 @@
-
-import React, { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
-import { Link} from "react-router-dom";
-
-
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import { Link } from 'react-router-dom';
 
 const AllItems = () => {
   const [loading, setLoading] = useState(true);
@@ -24,7 +21,6 @@ const AllItems = () => {
             user ? user.id : '11111111-1111-1111-1111-111111111111'
           );
 
-
         if (error && status !== 406) {
           throw error;
         }
@@ -38,9 +34,8 @@ const AllItems = () => {
       }
     };
     getItems();
-  });
+  }, []);
 
-  
   return (
     <div>
       {loading ? (

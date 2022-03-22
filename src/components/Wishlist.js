@@ -29,7 +29,7 @@ const Wishlist = () => {
       }
     };
     getWishlist();
-  });
+  }, []);
 
   const handleRemove = async (e, id) => {
     e.preventDefault();
