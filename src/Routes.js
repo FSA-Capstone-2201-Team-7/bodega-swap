@@ -1,7 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
-import Auth from "./components/Auth";
+import Login from "./components/Login";
+import SignUp from "./components/SignUp";
 import Account from "./components/Account";
 import { Main, HaggleView, TradesAndMessages } from "./components";
 import NavBar from "./components/NavBar";
@@ -34,7 +35,8 @@ const Routing = () => {
         <main className="mx-auto max-w-7xl px-8 sm:px-16">
           <Routes>
             <Route exact path="/home" element={<Main />} />
-            <Route exact path="/login" element={<Auth />} />
+            <Route exact path="/login" element={<Login />} />
+            <Route exact path="/signup" element={<SignUp />} />
             <Route path="/" element={<Navigate to="/home" />} />
             <Route exact path="/items" element={<AllItems />} />
             <Route path="/items/:id" element={<SingleItem />} />

@@ -7,12 +7,20 @@ const NavBar = ({ session }) => {
   console.log(localStorage);
   return (
     <header className="sticky top-0 z-50 flex justify-between bg-white p-5 shadow-md md:px-10">
-      <h1 className="text-bold">BODEGA SWAP</h1>
+      <div className="flex">
+        <Link to="/home">
+          <h1 className="text-bold">BODEGA SWAP</h1>
+        </Link>
+
+        <Link className="text-gray-500 pl-5" to="/items">
+          View Items
+        </Link>
+      </div>
+
       {!session ? (
         <nav className="flex items-center justify-end space-x-4 text-gray-500">
-          <Link to="/home">Home</Link>
           <Link to="login">Login</Link>
-          <Link to="/items">View Items</Link>
+          <Link to="signup">SignUp</Link>
         </nav>
       ) : (
         <nav className="flex items-center justify-end space-x-4 text-gray-500">
@@ -22,7 +30,7 @@ const NavBar = ({ session }) => {
 
           <Link to="/messages">Messages</Link>
           <Link to="/account">My Account</Link>
-          <Link to="/items">View Items</Link>
+
           <Link
             className="navLink"
             to="/"
