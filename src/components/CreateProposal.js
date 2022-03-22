@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router';
 
 // styles to place in building 
 
@@ -135,8 +135,9 @@ const CreateProposal = ({ state }) => {
         .eq('id', swap[0].id);
 
       setSwap(data);
-      navigate('/haggle', { state: {swap}});
+    
     }
+     navigate('/messages');
   };
 
 

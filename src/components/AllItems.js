@@ -23,8 +23,6 @@ const AllItems = () => {
             'eq',
             user ? user.id : '11111111-1111-1111-1111-111111111111'
           );
-
-
         if (error && status !== 406) {
           throw error;
         }
@@ -38,7 +36,7 @@ const AllItems = () => {
       }
     };
     getItems();
-  });
+  }, []);
 
   
   return (
