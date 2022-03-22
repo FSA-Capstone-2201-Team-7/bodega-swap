@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .App {
   text-align: center;
 }
@@ -36,7 +40,7 @@
     transform: rotate(360deg);
   }
 }
-nav {
+/*  nav {
   align-items: center;
   background-color: grey;
   display: flex;
@@ -44,5 +48,6 @@ nav {
   width: 100%;
   padding: 20px;
   margin-left: auto;
-  /* margin-bottom: 10px; */
-} 
+
+}
+ */

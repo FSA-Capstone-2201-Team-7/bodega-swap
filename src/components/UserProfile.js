@@ -1,0 +1,78 @@
+import { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import { Link } from "react-router-dom";
+import Listings from "./Listings";
+import { ThumbDownIcon, ThumbUpIcon } from "@heroicons/react/outline";
+
+const Profile = () => {
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const User = supabase.auth.user();
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        setLoading(true);
+        let { data, error, status } = await supabase
+          .from("users")
+          .select("*")
+          .eq("id", User.id);
+
+        if (error && status !== 406) {
+          throw error;
+        }
+        if (data) {
+          setUser(data);
+        }
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getUser();
+  }, []);
+  return (
+    <div>
+      {loading ? (
+        <p>Loading</p>
+      ) : (
+        <div>
+          <div className="avatar-container">
+            <img src={user.avatarUrl} alt="" />
+          </div>
+          <div>
+            <h3>{user.username}</h3>
+            <h3>Gold</h3>
+            <h2>REP</h2>
+            <div>
+              <div>
+                {" "}
+                <ThumbUpIcon />
+                <p>85%</p>
+              </div>
+              <div>
+                {" "}
+                <ThumbDownIcon />
+                <p>15%</p>
+              </div>
+            </div>
+          </div>
+          <div className="totalswaps">
+            <h3>Total Swaps</h3>
+            <div>
+              <p>Completed</p>
+              <p>87</p>
+            </div>
+            <div>
+              <p>Active</p>
+              <p>12</p>
+            </div>
+          </div>
+        </div>
+      )}
+      <Listings />
+    </div>
+  );
+};
+
+export default Profile;
