@@ -4,9 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { Card, Container, Row, Col, Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 
 const styles = {
   card: {
@@ -25,7 +23,7 @@ const styles = {
   containerHolder: {
     borderRadius: 100,
     backgroundColor: 'rgba(0, 0, 0, 0.959)',
-    // ** keep to build out functionality 
+    // ** keep to build out functionality
     //'rgba(128, 128, 128, 0.972)', => grey
   },
 };
@@ -40,7 +38,7 @@ const CreateProposal = ({ state }) => {
   const [defaultImage, setDefault] = useState([
     'http://dummyimage.com/140x100/ddd.png/dddddd/000000',
   ]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   //this first checks if any swaps are currently made between two users
   useEffect(() => {
@@ -69,9 +67,9 @@ const CreateProposal = ({ state }) => {
     getAllSwaps();
   }, [user, item]);
 
-  //...next if there is no swap currently 
+  //...next if there is no swap currently
   //made between the two this creates it in the database
- 
+
   useEffect(() => {
     const makeSwap = async () => {
       try {
@@ -93,8 +91,7 @@ const CreateProposal = ({ state }) => {
     makeSwap();
   }, [swap]);
 
-
-//this gets all the users items to render them into the view to pick from
+  //this gets all the users items to render them into the view to pick from
   useEffect(() => {
     const getListings = async () => {
       try {
@@ -120,25 +117,24 @@ const CreateProposal = ({ state }) => {
     getListings();
   }, [user.id]);
 
-
   const handleSubmit = (image, id) => {
     setDefault([image, id]);
   };
 
-  //updates the proposal on click 
+  //updates the proposal on click
   const handleProposal = async (id) => {
-  
-    if(id) {
-    const { data } = await supabase
-      .from('swaps')
-      .update({
-        status: 'pending',
-        outbound_offer: id,
-      })
-      .eq('id', swap[0].id);
+    if (id) {
+      const { data } = await supabase
+        .from('swaps')
+        .update({
+          status: 'pending',
+          outbound_offer: id,
+          inbound_offer: item.id,
+        })
+        .eq('id', swap[0].id);
 
-     setSwap(data);
-     navigate('/haggle')
+      setSwap(data);
+      navigate('/haggle');
     }
   };
 
@@ -158,11 +154,9 @@ const CreateProposal = ({ state }) => {
             </Card>
           </Col>
           <Col>
-           
-              <Button onClick={() => handleProposal(defaultImage[1])}>
-                Submit Proposal
-              </Button>
-        
+            <Button onClick={() => handleProposal(defaultImage[1])}>
+              Submit Proposal
+            </Button>
           </Col>
           <Col>
             <Card style={styles.card}>

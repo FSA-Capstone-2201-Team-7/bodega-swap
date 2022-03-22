@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { Link } from 'react-router-dom';
-import HaggleView from './HaggleView';
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import { Link } from "react-router-dom";
+import HaggleView from "./HaggleView";
 
 
 const AllItems = () => {
@@ -15,7 +15,7 @@ const AllItems = () => {
   const getItems = async () => {
     try {
       setLoading(true);
-      let { data, error, status } = await supabase.from('items').select();
+      let { data, error, status } = await supabase.from("items").select();
 
       if (error && status !== 406) {
         throw error;
@@ -36,7 +36,7 @@ const AllItems = () => {
       {loading ? (
         <p>Loading</p>
       ) : (
-        <div>
+        <div className="grid grid-cols-3  gap-10 ">
           {items.map((item, idx) => {
             return (
               <div key={idx} className="single-item-container">
@@ -45,7 +45,7 @@ const AllItems = () => {
                 <Link to={`/items/${item.id}`}>
                   <img src={item.image_url} alt="" />
                 </Link>
-                <Link to='/createproposal' state={{item}}>
+                <Link to="/createproposal" state={{ item }}>
                   <button type="button">Create Proposal</button>
                 </Link>
               </div>

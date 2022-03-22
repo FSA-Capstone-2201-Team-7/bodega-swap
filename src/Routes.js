@@ -12,6 +12,8 @@ import {
   Listings,
 } from './components';
 import NavBar from "./components/NavBar";
+
+import Profile from "./components/UserProfile";
 import {
   Routes,
   Route,
@@ -33,14 +35,14 @@ const Routing = () => {
     });
   }, []);
   return (
-    <div className="container" style={{ padding: '50px 0 100px 0' }}>
+    <div>
       <NavBar session={session} />
       {!session ? (
-        <main>
+        <main className="mx-auto max-w-7xl px-8 sm:px-16">
           <Routes>
             <Route exact path="/home" element={<Main />} />
             <Route exact path="/login" element={<Auth />} />
-
+     
             <Route exact path="/items" element={<AllItems />} />
             <Route path="/items/:id" element={<SingleItem />} />
             <Route path="/" element={<Navigate to="/home" />} />
@@ -55,12 +57,13 @@ const Routing = () => {
               path="/profile"
               element={<Account key={session.user.id} session={session} />}
             />
-            <Route path="/listings/:id" element={<Listings />} />
+
             <Route exact path="/messages" element={<TradesAndMessages />} />
             <Route exact path="/haggle" element={<HaggleView />} />
             <Route exact path="createproposal" element={<CreateProposal />} />
             <Route exact path="/items" element={<AllItems />} />
             <Route path="/items/:id" element={<SingleItem />} />
+            <Route path="/account" element={<Profile />} />
           </Routes>
         </main>
       )}

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import Avatar from "./Avatar";
-import { Link } from "react-router-dom";
 
 const Account = ({ session }) => {
   const [loading, setLoading] = useState(true);
@@ -67,11 +66,11 @@ const Account = ({ session }) => {
   };
 
   return (
-    <div aria-live="polite">
+    <div className="mx-auto  p-10" aria-live="polite">
       {loading ? (
         "Saving ..."
       ) : (
-        <form onSubmit={updateProfile} className="form-widget">
+        <form onSubmit={updateProfile} className=" flex-col px-[25%] ">
           <div className="form-widget">
             <Avatar
               url={avatarUrl}
@@ -82,10 +81,15 @@ const Account = ({ session }) => {
               }}
             />
           </div>
-          <div>Email: {session.user.email}</div>
-          <div>
-            <label htmlFor="username">Name</label>
+          <div className="py-5">Email: {session.user.email}</div>
+          <div className="flex-col ">
+            <div>
+              <label className="text-gray-900" htmlFor="username">
+                Name
+              </label>
+            </div>
             <input
+              className="border-purple-900 border py-1 w-full "
               id="username"
               type="text"
               value={username || ""}
@@ -94,22 +98,24 @@ const Account = ({ session }) => {
           </div>
 
           <div>
-            <button className="button block primary" disabled={loading}>
-              Update profile
+            <button
+              className="cursor-pointer mt-5 rounded-lg bg-purple-900 px-4 py-2 text-sm text-white w-full hover:bg-purple-700"
+              disabled={loading}
+            >
+              UPDATE PROFILE
+            </button>
+          </div>
+          <div>
+            <button
+              type="button"
+              className=" cursor-pointer mt-5 rounded-lg bg-purple-900 px-4 py-2 text-sm text-white w-full hover:bg-purple-700"
+              onClick={() => supabase.auth.signOut()}
+            >
+              SIGN OUT
             </button>
           </div>
         </form>
       )}
-      <button
-        type="button"
-        className="button block"
-        onClick={() => supabase.auth.signOut()}
-      >
-        Sign Out
-      </button>
-      <Link to={`/listings/${session.user.id}`}>
-        <button>SEE LISTINGS</button>
-      </Link>
     </div>
   );
 };
