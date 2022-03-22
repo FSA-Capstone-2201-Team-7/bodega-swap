@@ -3,5 +3,15 @@ import NavBar from "./NavBar";
 import HaggleView from "./HaggleView";
 import TradesAndMessages from "./TradesAndMessages";
 import AllItems from './AllItems';
-export { Main, NavBar, HaggleView, TradesAndMessages, AllItems };
+import CreateProposal from "./CreateProposal";
+import Listings from "./Listings";
+export {
+  Main,
+  NavBar,
+  HaggleView,
+  TradesAndMessages,
+  AllItems,
+  CreateProposal,
+  Listings
+};
 

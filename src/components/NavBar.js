@@ -30,6 +30,7 @@ const NavBar = ({ session }) => {
 
           <Link to="/messages">Messages</Link>
           <Link to="/account">My Account</Link>
+          <Link to="/wishlist">Wishlist</Link>
 
           <Link
             className="navLink"
@@ -46,33 +47,5 @@ const NavBar = ({ session }) => {
     </header>
   );
 };
-//   return (
-//     <div className="nav">
-//       {!session ? (
-//         <nav>
-//           <Link to="/home">Home</Link>
-//           <Link to="/login">Login</Link>
-//           <Link to="/items">View Items</Link>
-//         </nav>
-//       ) : (
-//         <nav>
-//           <Link to="/home">Home</Link>
-//           <Link to="/profile">Profile</Link>
-//           <Link to="/items">View Items</Link>
-//           <Link
-//             className="navLink"
-//             to="/"
-//             onClick={async () => {
-//               await supabase.auth.signOut();
-//               navigate(`/home`);
-//             }}
-//           >
-//             logout
-//           </Link>
-//         </nav>
-//       )}
-//     </div>
-//   );
-// };
 
 export default NavBar;

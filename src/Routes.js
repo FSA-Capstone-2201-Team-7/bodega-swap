@@ -4,9 +4,15 @@ import { supabase } from "./supabaseClient";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Account from "./components/Account";
-import { Main, HaggleView, TradesAndMessages } from "./components";
+import {
+  Main,
+  HaggleView,
+  TradesAndMessages,
+  CreateProposal,
+  AllItems,
+  Listings,
+} from "./components";
 import NavBar from "./components/NavBar";
-import { AllItems } from "./components";
 import Profile from "./components/UserProfile";
 import {
   Routes,
@@ -16,6 +22,7 @@ import {
 } from "react-router-dom";
 import { useNavigate } from "react-router";
 import SingleItem from "./components/SingleItem";
+import Wishlist from "./components/Wishlist";
 
 const Routing = () => {
   const [session, setSession] = useState(null);
@@ -38,8 +45,10 @@ const Routing = () => {
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/signup" element={<SignUp />} />
             <Route path="/" element={<Navigate to="/home" />} />
+
             <Route exact path="/items" element={<AllItems />} />
             <Route path="/items/:id" element={<SingleItem />} />
+            <Route path="/wishlist" element={<Wishlist />} />
           </Routes>
         </main>
       ) : (
@@ -51,11 +60,12 @@ const Routing = () => {
               path="/profile"
               element={<Account key={session.user.id} session={session} />}
             />
-
             <Route exact path="/messages" element={<TradesAndMessages />} />
             <Route exact path="/haggle" element={<HaggleView />} />
+            <Route exact path="createproposal" element={<CreateProposal />} />
             <Route exact path="/items" element={<AllItems />} />
             <Route path="/items/:id" element={<SingleItem />} />
+            <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/account" element={<Profile />} />
           </Routes>
         </main>
@@ -64,32 +74,3 @@ const Routing = () => {
   );
 };
 export default Routing;
-
-// import './App.css';
-// import { useState, useEffect } from 'react';
-// import { supabase } from './supabaseClient';
-// import Auth from './components/Auth';
-// import Account from './components/Account';
-// import './index.css';
-
-// const App = () => {
-//   const [session, setSession] = useState(null);
-
-//   useEffect(() => {
-//     setSession(supabase.auth.session());
-
-//     supabase.auth.onAuthStateChange((_event, session) => {
-//       setSession(session);
-//     });
-//   }, []);
-
-//   return (
-//     <div className="container" style={{ padding: '50px 0 100px 0' }}>
-//       {!session ? (
-//         <Auth />
-//       ) : (
-//         <Account key={session.user.id} session={session} />
-//       )}
-//     </div>
-//   );
-// };
