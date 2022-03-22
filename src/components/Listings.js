@@ -6,14 +6,19 @@ const Listings = () => {
   const [items, setItems] = useState(null);
   const user = supabase.auth.user();
 
+
+
+  
   useEffect(() => {
     const getListings = async () => {
       try {
         setLoading(true);
         let { data, error, status } = await supabase
+
           .from('items')
           .select('*')
           .eq('ownerId', user.id);
+
 
         if (error && status !== 406) {
           throw error;

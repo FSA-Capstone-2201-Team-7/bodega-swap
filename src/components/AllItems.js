@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { Link } from 'react-router-dom';
-import HaggleView from './HaggleView';
+
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import { Link} from "react-router-dom";
+
+
 
 const AllItems = () => {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState(null);
+
   const user = supabase.auth.user();
 
   useEffect(() => {
@@ -15,7 +18,12 @@ const AllItems = () => {
         let { data, error, status } = await supabase
           .from('items')
           .select()
-          .not('ownerId', 'eq', user.id);
+          .not(
+            'ownerId',
+            'eq',
+            user ? user.id : '11111111-1111-1111-1111-111111111111'
+          );
+
 
         if (error && status !== 406) {
           throw error;
@@ -32,6 +40,7 @@ const AllItems = () => {
     getItems();
   });
 
+  
   return (
     <div>
       {loading ? (
@@ -46,8 +55,13 @@ const AllItems = () => {
                 <Link to={`/items/${item.id}`}>
                   <img src={item.image_url} alt="" />
                 </Link>
-                <Link to="/haggle" state={{ item }}>
-                  <button type="button">Haggle!</button>
+                <Link to="/createproposal" state={{ item }}>
+                  <button
+                    type="button"
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                  >
+                    Create Proposal
+                  </button>
                 </Link>
               </div>
             );
