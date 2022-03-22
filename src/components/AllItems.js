@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { Link} from "react-router-dom";
@@ -7,33 +8,38 @@ import { Link} from "react-router-dom";
 const AllItems = () => {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState(null);
-  const user = supabase.auth.user()
+
+  const user = supabase.auth.user();
 
   useEffect(() => {
+    const getItems = async () => {
+      try {
+        setLoading(true);
+        let { data, error, status } = await supabase
+          .from('items')
+          .select()
+          .not(
+            'ownerId',
+            'eq',
+            user ? user.id : '11111111-1111-1111-1111-111111111111'
+          );
+
+
+        if (error && status !== 406) {
+          throw error;
+        }
+
+        if (data) {
+          setItems(data);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
     getItems();
   }, []);
-
-  const getItems = async () => {
-    try {
-      setLoading(true);
-      let { data, error, status } = await supabase
-      .from("items")
-      .select()
-      .not('ownerId', 'eq', user.id)
-
-      if (error && status !== 406) {
-        throw error;
-      }
-
-      if (data) {
-        setItems(data);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   
   return (
