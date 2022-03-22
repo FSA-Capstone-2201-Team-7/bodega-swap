@@ -145,6 +145,12 @@ const TradesAndMessages = () => {
                 className="w-1/2"
               />
             </div>
+            <button
+              className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+              onClick={() => navigate('/haggle', { state: { swap } })}
+            >
+              Haggle!
+            </button>
           </div>
         );
       })}
