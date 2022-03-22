@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
@@ -18,9 +19,10 @@ import {
   Route,
   Navigate,
   BrowserRouter as Router,
-} from "react-router-dom";
-import { useNavigate } from "react-router";
-import SingleItem from "./components/SingleItem";
+} from 'react-router-dom';
+import { useNavigate } from 'react-router';
+import SingleItem from './components/SingleItem';
+import Wishlist from './components/Wishlist';
 
 const Routing = () => {
   const [session, setSession] = useState(null);
@@ -41,9 +43,9 @@ const Routing = () => {
           <Routes>
             <Route exact path="/home" element={<Main />} />
             <Route exact path="/login" element={<Auth />} />
-     
             <Route exact path="/items" element={<AllItems />} />
             <Route path="/items/:id" element={<SingleItem />} />
+            <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/" element={<Navigate to="/home" />} />
           </Routes>
         </main>
@@ -61,6 +63,7 @@ const Routing = () => {
             <Route exact path="createproposal" element={<CreateProposal />} />
             <Route exact path="/items" element={<AllItems />} />
             <Route path="/items/:id" element={<SingleItem />} />
+            <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/account" element={<Profile />} />
           </Routes>
         </main>
