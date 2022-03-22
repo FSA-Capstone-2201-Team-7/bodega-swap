@@ -135,8 +135,9 @@ const CreateProposal = ({ state }) => {
         .eq('id', swap[0].id);
 
       setSwap(data);
-      navigate('/haggle', { state: {swap}});
+      
     }
+    navigate('/messages')
   };
 
 
