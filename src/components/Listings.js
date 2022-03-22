@@ -16,7 +16,7 @@ const Listings = () => {
         let { data, error, status } = await supabase
           .from("items")
           .select("*")
-          .eq("userId", user.id);
+          .eq("ownerId", user.id);
 
         if (error && status !== 406) {
           throw error;

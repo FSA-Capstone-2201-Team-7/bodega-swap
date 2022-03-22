@@ -20,6 +20,7 @@ const SingleItem = () => {
         .from('items')
         .select(`*, users:ownerId(username)`)
         .eq('id', params.id);
+      console.log(data);
       if (error && status !== 406) {
         throw error;
       }

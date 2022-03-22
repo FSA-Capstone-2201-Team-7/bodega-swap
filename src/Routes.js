@@ -12,7 +12,6 @@ import {
   Listings,
 } from './components';
 import NavBar from "./components/NavBar";
-
 import Profile from "./components/UserProfile";
 import {
   Routes,

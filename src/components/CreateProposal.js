@@ -127,7 +127,7 @@ const CreateProposal = ({ state }) => {
       const { data } = await supabase
         .from('swaps')
         .update({
-          status: 'pending',
+          status: 'active',
           outbound_offer: id,
           inbound_offer: item.id,
         })
