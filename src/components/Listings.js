@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
 
 const Listings = () => {
   const [loading, setLoading] = useState(true);
@@ -11,9 +11,9 @@ const Listings = () => {
       try {
         setLoading(true);
         let { data, error, status } = await supabase
-          .from('items')
-          .select('*')
-          .eq('userId', user.id);
+          .from("items")
+          .select("*")
+          .eq("userId", user.id);
 
         if (error && status !== 406) {
           throw error;
@@ -35,13 +35,13 @@ const Listings = () => {
       {loading ? (
         <p>Loading</p>
       ) : (
-        <div>
+        <div className="grid grid-cols-2 gap-10  ">
           {items.map((item, idx) => {
             return (
-              <div key={idx}>
+              <div key={idx} className="">
                 <p>{item.name}</p>
                 <p>{item.description}</p>
-                <img src={item.image_url} alt="" />
+                <img className="h-96 w-96" src={item.image_url} alt="" />
               </div>
             );
           })}
