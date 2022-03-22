@@ -58,7 +58,7 @@ const CreateProposal = ({ state }) => {
             `
           )
           .eq('inbound_id', user.id)
-          .eq('outbound_id', item.userId);
+          .eq('outbound_id', item.ownerId);
         setSwap(data);
       } catch (error) {
         console.error('try again', error);
@@ -78,7 +78,7 @@ const CreateProposal = ({ state }) => {
             {
               inbound_id: user.id,
               status: 'active',
-              outbound_id: item.userId,
+              outbound_id: item.ownerId,
               inbound_offer: item.id,
             },
           ]);
@@ -99,7 +99,7 @@ const CreateProposal = ({ state }) => {
         let { data, error, status } = await supabase
           .from('items')
           .select('*')
-          .eq('userId', user.id);
+          .eq('ownerId', user.id);
 
         if (error && status !== 406) {
           throw error;

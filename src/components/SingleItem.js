@@ -18,7 +18,7 @@ const SingleItem = () => {
       setLoading(true);
       let { data, error, status } = await supabase
         .from('items')
-        .select(`*, users(username)`)
+        .select(`*, users:ownerId(username)`)
         .eq('id', params.id);
       if (error && status !== 406) {
         throw error;
