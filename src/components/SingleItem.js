@@ -1,16 +1,19 @@
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import ToggleWishlistButton from './ToggleWishlistButton';
+
 
 const SingleItem = () => {
   const params = useParams();
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState(null);
   const user = supabase.auth.user();
+  const navigate = useNavigate();
+
 
   useEffect(() => {
-    // console.log(params);
     getItem();
   }, []);
 
@@ -18,9 +21,9 @@ const SingleItem = () => {
     try {
       setLoading(true);
       let { data, error, status } = await supabase
-        .from('items')
+        .from("items")
         .select(`*, users:ownerId(username)`)
-        .eq('id', params.id);
+        .eq("id", params.id);
 
       if (error && status !== 406) {
         throw error;
@@ -42,7 +45,13 @@ const SingleItem = () => {
       ) : (
         <div className="single-item-container">
           <p>{item.name}</p>
-          <p>Owner: {item.users.username}</p>
+          <button
+            type="button"
+            onClick={() => navigate("OwnerProfile", { state: { item } })}
+          >
+            <p>Owner: {item.users.username}</p>
+          </button>
+
           <p>{item.description}</p>
           <img src={item.image_url} alt="" />
           <ToggleWishlistButton userId={user.id} itemId={item.id} />

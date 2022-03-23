@@ -2,9 +2,9 @@ import Main from "./Main";
 import NavBar from "./NavBar";
 import HaggleView from "./HaggleView";
 import TradesAndMessages from "./TradesAndMessages";
-import AllItems from './AllItems';
+import AllItems from "./AllItems";
 import CreateProposal from "./CreateProposal";
-import Listings from "./Listings";
+import Listings from "./MyListings";
 export {
   Main,
   NavBar,
@@ -12,6 +12,5 @@ export {
   TradesAndMessages,
   AllItems,
   CreateProposal,
-  Listings
+  Listings,
 };
-

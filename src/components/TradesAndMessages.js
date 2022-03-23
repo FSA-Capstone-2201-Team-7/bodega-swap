@@ -1,12 +1,12 @@
 /* eslint-disable array-callback-return */
-import React, { useState, useEffect, useRef } from 'react';
-import { supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router-dom';
-import Button from '@material-tailwind/react/Button';
-import Popover from '@material-tailwind/react/Popover';
-import PopoverContainer from '@material-tailwind/react/PopoverContainer';
-import PopoverHeader from '@material-tailwind/react/PopoverHeader';
-import PopoverBody from '@material-tailwind/react/PopoverBody';
+import React, { useState, useEffect, useRef } from "react";
+import { supabase } from "../supabaseClient";
+import { useNavigate } from "react-router-dom";
+import Button from "@material-tailwind/react/Button";
+import Popover from "@material-tailwind/react/Popover";
+import PopoverContainer from "@material-tailwind/react/PopoverContainer";
+import PopoverHeader from "@material-tailwind/react/PopoverHeader";
+import PopoverBody from "@material-tailwind/react/PopoverBody";
 
 const TradesAndMessages = () => {
   const [loading, setLoading] = useState(true);
@@ -21,21 +21,21 @@ const TradesAndMessages = () => {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from('swaps')
+          .from("swaps")
           .select(
             `
             inbound_id,
             outbound_id,
             id,
             inbound_offer,
-            status, 
+            status,
             outbound_offer
             `
           )
-          .eq('inbound_id', user.id);
+          .eq("inbound_id", user.id);
         setOutbound(data);
       } catch (error) {
-        console.error('try again', error);
+        console.error("try again", error);
       } finally {
         setLoading(false);
       }
@@ -48,7 +48,7 @@ const TradesAndMessages = () => {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from('swaps')
+          .from("swaps")
           .select(
             `
               inbound_id,
@@ -59,11 +59,11 @@ const TradesAndMessages = () => {
               status
               `
           )
-          .eq('outbound_id', user.id);
+          .eq("outbound_id", user.id);
 
         setInbound(data);
       } catch (error) {
-        console.error('try again', error);
+        console.error("try again", error);
       } finally {
         setLoading(false);
       }
@@ -72,28 +72,28 @@ const TradesAndMessages = () => {
   }, [user.id]);
 
   const handleActivate = async (swap) => {
-    if (swap.status === 'pending') {
+    if (swap.status === "pending") {
       await supabase
-        .from('swaps')
+        .from("swaps")
         .update({
-          status: 'active',
+          status: "active",
         })
-        .eq('id', swap.id);
+        .eq("id", swap.id);
     }
-    navigate('/haggle', { state: { swap } });
+    navigate("/haggle", { state: { swap } });
   };
-  console.log(getInbound);
+
   const handleRemoveOffer = async (swap) => {
     try {
       const { data, error, status } = await supabase
-        .from('swaps')
+        .from("swaps")
         .delete()
-        .eq('id', swap.id);
+        .eq("id", swap.id);
 
       if (error && status !== 406) {
         throw error;
       }
-      console.log(swap.outbound_id, user.id);
+
       if (swap.outbound_id === user.id) {
         console.log(true);
       }
@@ -136,7 +136,7 @@ const TradesAndMessages = () => {
                       className="w-1/2"
                     />
                   </div>
-                  {swap.status === 'active' ? (
+                  {swap.status === "active" ? (
                     <div className="flex">
                       <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
@@ -190,7 +190,7 @@ const TradesAndMessages = () => {
                               type="button"
                               className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                             >
-                              {' '}
+                              {" "}
                               YES I'M SURE
                             </button>
                           </PopoverBody>
@@ -209,7 +209,7 @@ const TradesAndMessages = () => {
             })}
           </div>
         ) : (
-          'no current trades'
+          "no current trades"
         )}
       </div>
       <div className="flex bg-red-500 grid grid-cols-24 pb-10 sm:px-5 gap-x-8 gap-y-16">
@@ -233,7 +233,7 @@ const TradesAndMessages = () => {
                 />
               </div>
               <div className="flex">
-                {swap.status === 'pending' ? (
+                {swap.status === "pending" ? (
                   <div>
                     <Button
                       color="lightBlue"
@@ -257,7 +257,7 @@ const TradesAndMessages = () => {
                   <div>
                     <button
                       className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                      onClick={() => navigate('/haggle', { state: { swap } })}
+                      onClick={() => navigate("/haggle", { state: { swap } })}
                     >
                       Haggle!
                     </button>
@@ -275,10 +275,8 @@ const TradesAndMessages = () => {
               </div>
             </div>
           );
-         
-        })
-        }
-        
+        })}
+
         {/* <div>
         ****useing this fake image to test how to style the other boxes****
           <img
