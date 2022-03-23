@@ -279,13 +279,14 @@ const TradesAndMessages = () => {
         })
         }
         
-        <div>
+        {/* <div>
+        ****useing this fake image to test how to style the other boxes****
           <img
             src="http://dummyimage.com/140x100/ddd.png/dddddd/000000"
             alt=""
             className="object-cover w-full mb-2 overflow-hidden rounded-lg shadow-sm max-h-56"
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );
