@@ -32,7 +32,7 @@ const Main = ({session}) => {
    }, []);
 
 
-  console.log(getImages)
+
   return loading ? (
     <div>loading...</div>
   ) : (
