@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
-
+import Button from '@material-tailwind/react/Button';
+import Popover from '@material-tailwind/react/Popover';
+import PopoverContainer from '@material-tailwind/react/PopoverContainer';
+import PopoverHeader from '@material-tailwind/react/PopoverHeader';
+import PopoverBody from '@material-tailwind/react/PopoverBody';
 
 const TradesAndMessages = () => {
   const [loading, setLoading] = useState(true);
-
   const [getInbound, setInbound] = useState([]);
   const [getOutbound, setOutbound] = useState([]);
   const user = supabase.auth.user();
   const navigate = useNavigate();
+  const buttonRef = useRef();
 
   useEffect(() => {
     const getInboundSwaps = async () => {
@@ -65,7 +69,6 @@ const TradesAndMessages = () => {
     };
     getAllSwaps();
   }, [user.id]);
-  
 
   const handleActivate = async (swap) => {
     if (swap.status === 'pending') {
@@ -78,6 +81,7 @@ const TradesAndMessages = () => {
     }
     navigate('/haggle', { state: { swap } });
   };
+ 
 
   return loading ? (
     <div>Loding...</div>
@@ -146,12 +150,42 @@ const TradesAndMessages = () => {
                 className="w-1/2"
               />
             </div>
-            <button
-              className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-              onClick={() => navigate('/haggle', { state: { swap } })}
-            >
-              Haggle!
-            </button>
+            
+            {swap.status === 'pending' ? (
+              <div>
+                <Button
+                  color="lightBlue"
+                  ref={buttonRef}
+                  ripple="light"
+                  className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                >
+                  Check Status
+                </Button>
+
+                <Popover placement="top" ref={buttonRef}>
+                  <PopoverContainer>
+                    <PopoverHeader>Status: Pending</PopoverHeader>
+                    <PopoverBody>
+                      Your Proposal Has Not Yet Been Confirmed 
+                    </PopoverBody>
+                  </PopoverContainer>
+                </Popover>
+             </div>
+            ) : (
+              <div>
+              <button
+                className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                onClick={() => navigate('/haggle', { state: { swap } })}
+              >
+                Haggle!
+              </button>
+              </div>
+            )}
+            <div>
+             <button type="button" className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+               Remove Offer
+             </button>
+             </div>
           </div>
         );
       })}
