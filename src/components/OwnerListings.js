@@ -5,7 +5,6 @@ import { supabase } from "../supabaseClient";
 function OwnerListings({ user }) {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
-  console.log("userOwnerListings", user);
   useEffect(() => {
     const getListings = async () => {
       try {
@@ -29,7 +28,6 @@ function OwnerListings({ user }) {
     };
     getListings();
   }, [user.id]);
-  console.log("ownerItems", items);
   return (
     <div>
       {loading ? (

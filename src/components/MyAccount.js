@@ -32,7 +32,7 @@ const Profile = () => {
     };
     getUser();
   }, []);
-  console.log("username", user);
+
   return (
     <div>
       {loading ? (

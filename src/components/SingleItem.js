@@ -11,7 +11,6 @@ const SingleItem = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // console.log(params);
     getItem();
   }, []);
 

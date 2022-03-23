@@ -9,7 +9,6 @@ const OwnerProfile = ({ state }) => {
   const [user, setUser] = useState(null);
   const location = useLocation();
   const { item = "" } = location.state || {};
-  console.log("item", item);
 
   useEffect(() => {
     const getUser = async () => {
@@ -35,7 +34,7 @@ const OwnerProfile = ({ state }) => {
     };
     getUser();
   }, []);
-  console.log("owner", user);
+
   return (
     <div>
       {loading ? (
