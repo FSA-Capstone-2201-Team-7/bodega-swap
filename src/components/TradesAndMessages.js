@@ -112,8 +112,8 @@ const TradesAndMessages = () => {
   return loading ? (
     <div>Loding...</div>
   ) : (
-    <div>
-      <div className="flex justify-center bg-blue-500 grid grid-cols-24 pb-10 sm:px-5 gap-x-8 gap-y-16">
+    <div className="flex grid grid-cols-2">
+      <div className="flex justify-center bg-blue-500 grid grid-cols pb-10 sm:px-5 gap-x-8 gap-y-16">
         messages
         <h2>Pending offers</h2>
         {getInbound.length > 0 ? (
@@ -212,8 +212,8 @@ const TradesAndMessages = () => {
           "no current trades"
         )}
       </div>
-      <div className="flex bg-red-500 grid grid-cols-24 pb-10 sm:px-5 gap-x-8 gap-y-16">
-        <div>out-bound</div>
+      <div className="flex justify-center bg-red-500 grid grid-cols pb-10 sm:px-5 gap-x-8 gap-y-16">
+        <h4>out-bound</h4>
         {getOutbound.map((swap) => {
           return (
             <div
@@ -253,6 +253,7 @@ const TradesAndMessages = () => {
                       </PopoverContainer>
                     </Popover>
                   </div>
+                  
                 ) : (
                   <div>
                     <button
