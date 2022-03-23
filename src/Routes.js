@@ -68,6 +68,7 @@ const Routing = () => {
             <Route path="/items/:id" element={<SingleItem />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route exact path="/myAccount" element={<Profile />} />
+            <Route exact path="/items/:id/OwnerProfile" element={<Profile />} />
             <Route
               path="/addUser"
               element={<AddUser key={session.user.id} session={session} />}
