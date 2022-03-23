@@ -15,7 +15,8 @@ const Profile = () => {
         let { data, error, status } = await supabase
           .from("users")
           .select("*")
-          .eq("id", User.id);
+          .eq("id", User.id)
+          .single();
 
         if (error && status !== 406) {
           throw error;

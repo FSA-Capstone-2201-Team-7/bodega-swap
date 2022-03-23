@@ -17,7 +17,8 @@ const OwnerProfile = ({ state }) => {
         let { data, error, status } = await supabase
           .from("users")
           .select("*")
-          .eq("id", item.ownerId);
+          .eq("id", item.ownerId)
+          .single();
 
         if (error && status !== 406) {
           throw error;
@@ -74,7 +75,7 @@ const OwnerProfile = ({ state }) => {
           </div>
         </div>
       )}
-      <OwnerListings />
+      <OwnerListings state={user} />
     </div>
   );
 };
