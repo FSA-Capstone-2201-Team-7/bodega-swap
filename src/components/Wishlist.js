@@ -55,7 +55,7 @@ const Wishlist = () => {
 
   return loading ? (
     <div>Loading...</div>
-  ) : (
+  ) : wishlist.length ? (
     <div className="grid grid-cols-3  gap-10 ">
       {wishlist.map((item, idx) => {
         return (
@@ -78,6 +78,8 @@ const Wishlist = () => {
         );
       })}
     </div>
+  ) : (
+    <div>Your Wishlist is Empty!</div>
   );
 };
 
