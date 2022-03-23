@@ -6,7 +6,6 @@ import ToggleWishlistButton from './ToggleWishlistButton';
 const AllItems = () => {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState(null);
-
   const user = supabase.auth.user();
 
   useEffect(() => {
@@ -59,7 +58,11 @@ const AllItems = () => {
                     Create Proposal
                   </button>
                 </Link>
-                <ToggleWishlistButton userId={user.id} itemId={item.id} />
+                {user ? (
+                  <ToggleWishlistButton userId={user.id} itemId={item.id} />
+                ) : (
+                  <></>
+                )}
               </div>
             );
           })}
