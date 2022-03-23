@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import { useParams, useNavigate } from 'react-router-dom';
+import ToggleWishlistButton from './ToggleWishlistButton';
+
 
 const SingleItem = () => {
   const params = useParams();
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState(null);
-  const [owner, setOwner] = useState(null);
+  const user = supabase.auth.user();
   const navigate = useNavigate();
+
 
   useEffect(() => {
     getItem();
@@ -51,6 +54,7 @@ const SingleItem = () => {
 
           <p>{item.description}</p>
           <img src={item.image_url} alt="" />
+          <ToggleWishlistButton userId={user.id} itemId={item.id} />
         </div>
       )}
     </div>

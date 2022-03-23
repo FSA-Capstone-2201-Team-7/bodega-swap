@@ -12,7 +12,7 @@ const Wishlist = () => {
       try {
         setLoading(true);
         let { data, error, status } = await supabase
-          .from('wishlists')
+          .from('wishlist_items')
           .select(`*, items(*)`)
           .eq('user_id', user.id);
 
@@ -20,7 +20,7 @@ const Wishlist = () => {
           throw error;
         }
         if (data) {
-          setWishList(data[0].items);
+          setWishList(data);
         }
       } catch (error) {
         console.error(error);
@@ -37,14 +37,16 @@ const Wishlist = () => {
       let { data, error, status } = await supabase
         .from('wishlist_items')
         .delete()
-        .match({ item_id: id }, { wishlist_id: wishlist.id });
+        .match({ item_id: id }, { user_id: user.id });
 
       if (error && status !== 406) {
         throw error;
       }
 
       if (data) {
-        setWishList(wishlist.filter((item) => item.id !== data[0].item_id));
+        setWishList(
+          wishlist.filter((item) => item.items.id !== data[0].item_id)
+        );
       }
     } catch (error) {
       console.error(error);
@@ -53,26 +55,31 @@ const Wishlist = () => {
 
   return loading ? (
     <div>Loading...</div>
-  ) : (
+  ) : wishlist.length ? (
     <div className="grid grid-cols-3  gap-10 ">
       {wishlist.map((item, idx) => {
         return (
           <div key={idx} className="single-item-container">
-            <p>{item.name}</p>
-            <p>{item.description}</p>
-            <Link to={`/items/${item.id}`}>
-              <img src={item.image_url} alt="" />
+            <p>{item.items.name}</p>
+            <p>{item.items.description}</p>
+            <Link to={`/items/${item.items.id}`}>
+              <img src={item.items.image_url} alt="" />
             </Link>
             <Link to="/haggle" state={{ item }}>
               <button type="button">Haggle!---</button>
             </Link>
-            <button type="button" onClick={(e) => handleRemove(e, item.id)}>
+            <button
+              type="button"
+              onClick={(e) => handleRemove(e, item.items.id)}
+            >
               \\\Remove From Wishlist
             </button>
           </div>
         );
       })}
     </div>
+  ) : (
+    <div>Your Wishlist is Empty!</div>
   );
 };
 

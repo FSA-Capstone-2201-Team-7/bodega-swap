@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { Link } from 'react-router-dom';
+import ToggleWishlistButton from './ToggleWishlistButton';
 
 const AllItems = () => {
   const [loading, setLoading] = useState(true);
@@ -58,6 +59,7 @@ const AllItems = () => {
                     Create Proposal
                   </button>
                 </Link>
+                <ToggleWishlistButton userId={user.id} itemId={item.id} />
               </div>
             );
           })}
