@@ -18,6 +18,7 @@
 }
 
 .App-header {
+  font-family: monts;
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
