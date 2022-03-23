@@ -6,7 +6,7 @@ const NavBar = ({ session }) => {
   const navigate = useNavigate();
   console.log(localStorage);
   return (
-    <header className="sticky top-0 z-50 flex justify-between bg-white p-5 shadow-md md:px-10">
+    <header className="sticky top-0 flex justify-between bg-white p-5 shadow-md md:px-10">
       <div className="flex">
         <Link to="/home">
           <h1 className="text-bold">BODEGA SWAP</h1>
@@ -24,12 +24,8 @@ const NavBar = ({ session }) => {
         </nav>
       ) : (
         <nav className="flex items-center justify-end space-x-4 text-gray-500">
-          <Link to="/home">Home</Link>
-
-          <Link to="/profile">Profile</Link>
-
           <Link to="/messages">Messages</Link>
-          <Link to="/account">My Account</Link>
+          <Link to="/myAccount">My Account</Link>
           <Link to="/wishlist">Wishlist</Link>
 
           <Link

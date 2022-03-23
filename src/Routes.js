@@ -3,17 +3,16 @@ import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
-import Account from "./components/Account";
+import EditAccount from "./components/EditAccount";
 import {
   Main,
   HaggleView,
   TradesAndMessages,
   CreateProposal,
   AllItems,
-  Listings,
 } from "./components";
 import NavBar from "./components/NavBar";
-import Profile from "./components/UserProfile";
+import Profile from "./components/MyAccount";
 import {
   Routes,
   Route,
@@ -23,6 +22,7 @@ import {
 import { useNavigate } from "react-router";
 import SingleItem from "./components/SingleItem";
 import Wishlist from "./components/Wishlist";
+import AddUser from "./components/AddUser";
 
 const Routing = () => {
   const [session, setSession] = useState(null);
@@ -41,24 +41,25 @@ const Routing = () => {
       {!session ? (
         <main className="mx-auto max-w-7xl px-8 sm:px-16">
           <Routes>
+            <Route path="/" element={<Navigate to="/home" />} />
             <Route exact path="/home" element={<Main />} />
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/signup" element={<SignUp />} />
-            <Route path="/" element={<Navigate to="/home" />} />
 
             <Route exact path="/items" element={<AllItems />} />
-            <Route path="/items/:id" element={<SingleItem />} />
+            <Route exact path="/items/:id" element={<SingleItem />} />
             <Route path="/wishlist" element={<Wishlist />} />
           </Routes>
         </main>
       ) : (
         <main>
           <Routes>
+            <Route path="/" element={<Navigate to="/home" />} />
             <Route exact path="/home" element={<Main />} />
             <Route
               exact
-              path="/profile"
-              element={<Account key={session.user.id} session={session} />}
+              path="/editProfile"
+              element={<EditAccount key={session.user.id} session={session} />}
             />
             <Route exact path="/messages" element={<TradesAndMessages />} />
             <Route exact path="/haggle" element={<HaggleView />} />
@@ -66,7 +67,11 @@ const Routing = () => {
             <Route exact path="/items" element={<AllItems />} />
             <Route path="/items/:id" element={<SingleItem />} />
             <Route path="/wishlist" element={<Wishlist />} />
-            <Route path="/account" element={<Profile />} />
+            <Route exact path="/myAccount" element={<Profile />} />
+            <Route
+              path="/addUser"
+              element={<AddUser key={session.user.id} session={session} />}
+            />
           </Routes>
         </main>
       )}
