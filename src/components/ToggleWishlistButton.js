@@ -12,7 +12,7 @@ const ToggleWishlistButton = (props) => {
         let { data, error, status } = await supabase
           .from('wishlist_items')
           .select(`item_id, user_id`)
-          .match({ user_id: props.user.id, item_id: props.item.id });
+          .match({ user_id: props.userId, item_id: props.itemId });
 
         if (error && status !== 406) {
           throw error;
@@ -37,7 +37,7 @@ const ToggleWishlistButton = (props) => {
         let { error, status } = await supabase
           .from('wishlist_items')
           .delete()
-          .match({ item_id: props.item.id }, { user_id: props.user.id });
+          .match({ item_id: props.itemId }, { user_id: props.userId });
 
         if (error && status !== 406) {
           throw error;
@@ -51,7 +51,7 @@ const ToggleWishlistButton = (props) => {
       try {
         let { error, status } = await supabase
           .from('wishlist_items')
-          .upsert([{ user_id: props.user.id, item_id: props.item.id }]);
+          .upsert([{ user_id: props.userId, item_id: props.itemId }]);
 
         if (error && status !== 406) {
           throw error;
@@ -69,7 +69,7 @@ const ToggleWishlistButton = (props) => {
   ) : (
     <button
       type="button"
-      onClick={(e) => toggleWishlist(e, props.item.id, props.user.id)}
+      onClick={(e) => toggleWishlist(e, props.itemId, props.userId)}
     >
       {onWishlist ? 'remove from wishlist' : 'add to wishlist'}
     </button>

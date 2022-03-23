@@ -45,7 +45,7 @@ const SingleItem = () => {
           <p>Owner: {item.users.username}</p>
           <p>{item.description}</p>
           <img src={item.image_url} alt="" />
-          <ToggleWishlistButton user={user} item={item} />
+          <ToggleWishlistButton userId={user.id} itemId={item.id} />
         </div>
       )}
     </div>
