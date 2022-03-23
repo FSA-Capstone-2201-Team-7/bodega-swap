@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
+import { useNavigate } from "react-router";
 
 function SignUp() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -14,40 +15,18 @@ function SignUp() {
       setLoading(true);
       const { user, error } = await supabase.auth.signUp({ email, password });
       if (error) throw error;
-      alert("Created new account!");
     } catch (error) {
       alert(error.error_description || error.message);
     } finally {
       setLoading(false);
     }
+    navigate("/addUser");
   };
-  useEffect(() => {
-    const createUser = async () => {
-      try {
-        if (!username) {
-          const user = supabase.auth.user();
-          const { data: newUser } = await supabase.from("users").insert([
-            {
-              id: user.id,
-              username: username,
-            },
-          ]);
 
-          if (newUser) {
-            setUsername(newUser.username);
-          }
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    createUser();
-  });
   return (
     <div className="flex justify-center ">
       <div className="w-2/4" aria-live="polite">
         <h1 className="text-2xl my-5">Bodega Swap</h1>
-
         {loading ? (
           "Logging in..."
         ) : (
@@ -74,24 +53,7 @@ function SignUp() {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-              <div className="mb-4 ">
-                <div>
-                  <label
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                    htmlFor="username"
-                  >
-                    Username
-                  </label>
-                </div>
-                <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  id="username"
-                  type="text"
-                  value={username || ""}
-                  placeholder="Create your username"
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </div>
+
               <div className="mb-4">
                 {" "}
                 <label

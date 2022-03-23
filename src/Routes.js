@@ -10,7 +10,6 @@ import {
   TradesAndMessages,
   CreateProposal,
   AllItems,
-  Listings,
 } from "./components";
 import NavBar from "./components/NavBar";
 import Profile from "./components/UserProfile";
@@ -23,6 +22,7 @@ import {
 import { useNavigate } from "react-router";
 import SingleItem from "./components/SingleItem";
 import Wishlist from "./components/Wishlist";
+import AddUser from "./components/AddUser";
 
 const Routing = () => {
   const [session, setSession] = useState(null);
@@ -67,6 +67,10 @@ const Routing = () => {
             <Route path="/items/:id" element={<SingleItem />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/account" element={<Profile />} />
+            <Route
+              path="/addUser"
+              element={<AddUser key={session.user.id} session={session} />}
+            />
           </Routes>
         </main>
       )}
