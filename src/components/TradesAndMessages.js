@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
@@ -43,7 +44,7 @@ const TradesAndMessages = () => {
   }, [user.id]);
 
   useEffect(() => {
-    const getAllSwaps = async () => {
+    const getOutboundSwaps = async () => {
       try {
         setLoading(true);
         const { data } = await supabase
@@ -67,7 +68,7 @@ const TradesAndMessages = () => {
         setLoading(false);
       }
     };
-    getAllSwaps();
+    getOutboundSwaps();
   }, [user.id]);
 
   const handleActivate = async (swap) => {
@@ -81,7 +82,34 @@ const TradesAndMessages = () => {
     }
     navigate('/haggle', { state: { swap } });
   };
- 
+
+  const handleRemoveOffer = async (swap) => {
+    try {
+
+      const { data, error, status } = await supabase
+        .from('swaps')
+        .delete()
+        .eq('id', swap.id);
+       
+      if (error && status !== 406) {
+        throw error;
+      }
+      
+      const render = getOutbound.filter(active => {
+        if(active.id !== swap.id) {
+          return active
+        }
+      })
+    
+      setOutbound(render)
+    
+    
+   
+    } catch (error) {
+      console.error(error);
+    } 
+    
+  };
 
   return loading ? (
     <div>Loding...</div>
@@ -150,7 +178,7 @@ const TradesAndMessages = () => {
                 className="w-1/2"
               />
             </div>
-            
+
             {swap.status === 'pending' ? (
               <div>
                 <Button
@@ -166,26 +194,30 @@ const TradesAndMessages = () => {
                   <PopoverContainer>
                     <PopoverHeader>Status: Pending</PopoverHeader>
                     <PopoverBody>
-                      Your Proposal Has Not Yet Been Confirmed 
+                      Your Proposal Has Not Yet Been Confirmed
                     </PopoverBody>
                   </PopoverContainer>
                 </Popover>
-             </div>
+              </div>
             ) : (
               <div>
-              <button
-                className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                onClick={() => navigate('/haggle', { state: { swap } })}
-              >
-                Haggle!
-              </button>
+                <button
+                  className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                  onClick={() => navigate('/haggle', { state: { swap } })}
+                >
+                  Haggle!
+                </button>
               </div>
             )}
             <div>
-             <button type="button" className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
-               Remove Offer
-             </button>
-             </div>
+              <button
+                type="button"
+                className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                onClick={() => handleRemoveOffer(swap)}
+              >
+                Remove Offer
+              </button>
+            </div>
           </div>
         );
       })}
