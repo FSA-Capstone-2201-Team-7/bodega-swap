@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
-import { Link } from "react-router-dom";
-import MyListings from "./MyListings";
+import { Link, useLocation } from "react-router-dom";
+import OwnerListings from "./OwnerListings";
 import { ThumbDownIcon, ThumbUpIcon } from "@heroicons/react/outline";
 
-const Profile = () => {
+const OwnerProfile = ({ state }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
-  const User = supabase.auth.user();
+  const location = useLocation();
+  const { item = "" } = location.state || {};
+
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -15,7 +17,7 @@ const Profile = () => {
         let { data, error, status } = await supabase
           .from("users")
           .select("*")
-          .eq("id", User.id)
+          .eq("id", item.ownerId)
           .single();
 
         if (error && status !== 406) {
@@ -72,16 +74,11 @@ const Profile = () => {
               </div>
             </div>
           </div>
-          <Link to="/editProfile">
-            <button className="cursor-pointer mt-5 rounded-lg bg-purple-900 px-4 py-2 text-sm text-white w-full hover:bg-purple-700">
-              Edit Account
-            </button>
-          </Link>
         </div>
       )}
-      <MyListings />
+      <OwnerListings user={{ ...user }} />
     </div>
   );
 };
 
-export default Profile;
+export default OwnerProfile;
