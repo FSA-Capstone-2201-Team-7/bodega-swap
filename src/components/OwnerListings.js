@@ -2,19 +2,18 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 
-function OwnerListings({ state }) {
+function OwnerListings({ user }) {
   const [loading, setLoading] = useState(true);
-  const [items, setItems] = useState(null);
-
+  const [items, setItems] = useState([]);
+  console.log("userOwnerListings", user);
   useEffect(() => {
     const getListings = async () => {
       try {
         setLoading(true);
         let { data, error, status } = await supabase
-
           .from("items")
           .select("*")
-          .eq("ownerId", state.id);
+          .eq("ownerId", user.id);
 
         if (error && status !== 406) {
           throw error;
@@ -29,7 +28,8 @@ function OwnerListings({ state }) {
       }
     };
     getListings();
-  }, []);
+  }, [user.id]);
+  console.log("ownerItems", items);
   return (
     <div>
       {loading ? (

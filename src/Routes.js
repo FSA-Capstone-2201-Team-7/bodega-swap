@@ -23,6 +23,7 @@ import { useNavigate } from "react-router";
 import SingleItem from "./components/SingleItem";
 import Wishlist from "./components/Wishlist";
 import AddUser from "./components/AddUser";
+import OwnerProfile from "./components/OwnerProfile";
 
 const Routing = () => {
   const [session, setSession] = useState(null);
@@ -64,14 +65,19 @@ const Routing = () => {
             <Route exact path="/messages" element={<TradesAndMessages />} />
             <Route exact path="/haggle" element={<HaggleView />} />
             <Route exact path="createproposal" element={<CreateProposal />} />
-            <Route exact path="/items" element={<AllItems />} />
-            <Route path="/items/:id" element={<SingleItem />} />
-            <Route path="/wishlist" element={<Wishlist />} />
-            <Route exact path="/myAccount" element={<Profile />} />
-            <Route exact path="/items/:id/OwnerProfile" element={<Profile />} />
             <Route
               path="/addUser"
               element={<AddUser key={session.user.id} session={session} />}
+            />
+            <Route exact path="/myAccount" element={<Profile />} />
+            <Route path="/wishlist" element={<Wishlist />} />
+            <Route exact path="/items" element={<AllItems />} />
+            <Route exact path="/items/:id" element={<SingleItem />} />
+
+            <Route
+              exact
+              path="/items/:id/OwnerProfile"
+              element={<OwnerProfile />}
             />
           </Routes>
         </main>

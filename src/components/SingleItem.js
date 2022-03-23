@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SingleItem = () => {
   const params = useParams();
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState(null);
   const [owner, setOwner] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // console.log(params);
@@ -42,9 +43,12 @@ const SingleItem = () => {
       ) : (
         <div className="single-item-container">
           <p>{item.name}</p>
-          <Link to="OwnerProfile" state={item}>
+          <button
+            type="button"
+            onClick={() => navigate("OwnerProfile", { state: { item } })}
+          >
             <p>Owner: {item.users.username}</p>
-          </Link>
+          </button>
 
           <p>{item.description}</p>
           <img src={item.image_url} alt="" />

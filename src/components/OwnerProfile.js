@@ -10,6 +10,7 @@ const OwnerProfile = ({ state }) => {
   const location = useLocation();
   const { item = "" } = location.state || {};
   console.log("item", item);
+
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -34,6 +35,7 @@ const OwnerProfile = ({ state }) => {
     };
     getUser();
   }, []);
+  console.log("owner", user);
   return (
     <div>
       {loading ? (
@@ -75,7 +77,7 @@ const OwnerProfile = ({ state }) => {
           </div>
         </div>
       )}
-      <OwnerListings state={user} />
+      <OwnerListings user={{ ...user }} />
     </div>
   );
 };
