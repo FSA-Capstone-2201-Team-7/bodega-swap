@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { useParams } from 'react-router-dom';
+import ToggleWishlistButton from './ToggleWishlistButton';
 
 const SingleItem = () => {
   const params = useParams();
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState(null);
-  const [owner, setOwner] = useState(null);
+  const user = supabase.auth.user();
 
   useEffect(() => {
     // console.log(params);
@@ -44,6 +45,7 @@ const SingleItem = () => {
           <p>Owner: {item.users.username}</p>
           <p>{item.description}</p>
           <img src={item.image_url} alt="" />
+          <ToggleWishlistButton user={user} item={item} />
         </div>
       )}
     </div>
