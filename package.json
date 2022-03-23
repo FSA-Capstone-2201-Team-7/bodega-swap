@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@heroicons/react": "^1.0.6",
+    "@material-tailwind/react": "0.3.4",
     "@reach/visually-hidden": "^0.16.0",
     "@supabase/supabase-js": "^1.31.1",
     "@testing-library/jest-dom": "^5.16.2",
