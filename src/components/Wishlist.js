@@ -37,16 +37,16 @@ const Wishlist = () => {
       let { data, error, status } = await supabase
         .from('wishlist_items')
         .delete()
-        .match({ item_id: id }, { user_id: user.id });
+        .match({ item_id: id }, { user_id: user.id })
+        .limit(1)
+        .single();
 
       if (error && status !== 406) {
         throw error;
       }
 
       if (data) {
-        setWishList(
-          wishlist.filter((item) => item.items.id !== data[0].item_id)
-        );
+        setWishList(wishlist.filter((item) => item.items.id !== data.item_id));
       }
     } catch (error) {
       console.error(error);
