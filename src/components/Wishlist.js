@@ -20,7 +20,6 @@ const Wishlist = () => {
           throw error;
         }
         if (data) {
-          console.log(data);
           setWishList(data);
         }
       } catch (error) {
