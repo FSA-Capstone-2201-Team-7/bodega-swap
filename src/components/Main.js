@@ -57,14 +57,7 @@ const Main = ({ session }) => {
             )
           })}
         </div>
-       
-        <Card
-          description={getImages[0].description}
-          imageUrl={getImages[0].image_url}
-          name={getImages[0].name}
-          category={getImages[0].category}
-          ownerId={getImages[0].ownerId}
-        />
+        {/* {keep to use for eventual use on main page} */}
         {/* <Carousel>
           {getImages.map((image) => {
             return <CarouselItem><img src={image.image_url} alt="" /></CarouselItem>;
