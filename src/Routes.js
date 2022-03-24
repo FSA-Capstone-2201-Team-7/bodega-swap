@@ -1,29 +1,29 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { supabase } from "./supabaseClient";
-import Login from "./components/Login";
-import SignUp from "./components/SignUp";
-import EditAccount from "./components/EditAccount";
+import React from 'react';
+import { useState, useEffect } from 'react';
+import { supabase } from './supabaseClient';
+import Login from './components/Login';
+import SignUp from './components/SignUp';
+import EditAccount from './components/EditAccount';
 import {
   Main,
   HaggleView,
   TradesAndMessages,
   CreateProposal,
   AllItems,
-} from "./components";
-import NavBar from "./components/NavBar";
-import Profile from "./components/MyAccount";
+} from './components';
+import NavBar from './components/NavBar';
+import Profile from './components/MyAccount';
 import {
   Routes,
   Route,
   Navigate,
   BrowserRouter as Router,
-} from "react-router-dom";
-import { useNavigate } from "react-router";
-import SingleItem from "./components/SingleItem";
-import Wishlist from "./components/Wishlist";
-import AddUser from "./components/AddUser";
-import OwnerProfile from "./components/OwnerProfile";
+} from 'react-router-dom';
+import { useNavigate } from 'react-router';
+import SingleItem from './components/SingleItem';
+import Wishlist from './components/Wishlist';
+import AddUser from './components/AddUser';
+import OwnerProfile from './components/OwnerProfile';
 
 const Routing = () => {
   const [session, setSession] = useState(null);
@@ -46,7 +46,6 @@ const Routing = () => {
             <Route exact path="/home" element={<Main />} />
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/signup" element={<SignUp />} />
-
             <Route exact path="/items" element={<AllItems />} />
             <Route exact path="/items/:id" element={<SingleItem />} />
             <Route path="/wishlist" element={<Wishlist />} />
@@ -73,7 +72,6 @@ const Routing = () => {
             <Route path="/wishlist" element={<Wishlist />} />
             <Route exact path="/items" element={<AllItems />} />
             <Route exact path="/items/:id" element={<SingleItem />} />
-
             <Route
               exact
               path="/items/:id/OwnerProfile"

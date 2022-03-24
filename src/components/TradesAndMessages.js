@@ -86,8 +86,6 @@ const TradesAndMessages = () => {
 
   const handleRemoveOffer = async (swap) => {
     try {
-      
-    
       const { data, error, status } = await supabase
         .from("swaps")
         .delete()
@@ -96,23 +94,12 @@ const TradesAndMessages = () => {
       if (error && status !== 406) {
         throw error;
       }
-
-      // if (swap.outbound_id === user.id) {
         const render = getOutbound.filter((active) => {
           if (active.id !== swap.id) {
             return active;
           }
         });
-            setOutbound(render);
-    // if (swap.outbound_id !== user.id) {
-    //    const render = getInbound.filter((active) => {
-    //      if (active.id !== swap.id) {
-    //        return active;
-    //      }
-    //    });
-    //    setInbound(render);
-
-    // }
+            setOutbound(render)
     
     } catch (error) {
       console.error(error);
@@ -230,12 +217,6 @@ const TradesAndMessages = () => {
                           </PopoverBody>
                         </PopoverContainer>
                       </Popover>
-                      {/* <button
-                      type="button"
-                      className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                    >
-                      Reject meeting
-                    </button> */}
                     </div>
                   )}
                 </div>

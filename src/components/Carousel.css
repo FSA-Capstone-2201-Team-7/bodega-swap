@@ -1,0 +1,29 @@
+.carousel {
+  overflow: hidden
+}
+
+.inner {
+  white-space: nowrap
+}
+
+.car-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  background-color: grey;
+  color: #fff;
+}
+.buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.buttons > button {
+  margin: 5px
+}
+
+.buttons > button.active {
+  background-color: grey;
+  color: #fff
+}
