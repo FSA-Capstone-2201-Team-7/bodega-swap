@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import Carousel, { CarouselItem } from './UseCarousel';
 
+import Card from './Card';
+
+
 const Main = ({ session }) => {
   const [getImages, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -50,13 +53,13 @@ const Main = ({ session }) => {
         <div className="flex flex-no-wrap overflow-x-scroll scrolling-touch items-start mb-8">
           {getImages.map((image) => {
             return (
-              <div className="flex-none  md:w-1/3 mr-8 md:pb-4 border rounded-lg">
-                <img src={image.image_url} alt="" className=" w-full h-96" />
-              </div>
-            );
+            <div key={image.id} className="flex-none   mr-8  border rounded-lg">
+            <Card imageUrl={image.image_url} />
+            </div>
+            )
           })}
         </div>
-
+        {/* {keep to use for eventual use on main page} */}
         {/* <Carousel>
           {getImages.map((image) => {
             return <CarouselItem><img src={image.image_url} alt="" /></CarouselItem>;

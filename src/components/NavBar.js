@@ -1,6 +1,11 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+
+import { ChatAltIcon } from "@heroicons/react/outline";
+import PersonIcon from "@mui/icons-material/Person";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const NavBar = ({ session }) => {
   const navigate = useNavigate();
@@ -24,10 +29,24 @@ const NavBar = ({ session }) => {
         </nav>
       ) : (
         <nav className=" flex items-center justify-end space-x-4 text-gray-500">
-          <Link to="/messages">Messages</Link>
-          <Link to="/myAccount">My Account</Link>
-          <Link to="/wishlist">Wishlist</Link>
-
+          <Link to="/wishlist">
+            <FavoriteBorderIcon className="hover:scale-110 hover:transition duration-200 ease-out" />
+          </Link>
+          <Link to="/messages">
+            <ChatAltIcon className="h-6 hover:transition duration-200 ease-out hover:scale-110" />
+          </Link>
+          <Link to="/myAccount">
+            <PersonIcon className="hover:scale-110 hover:transition duration-200 ease-out" />
+          </Link>
+          <Link to="/home">
+            {" "}
+            <button
+              type="button"
+              className=" bg-gray-200 p-2 text-sm rounded-md"
+            >
+              List an item
+            </button>
+          </Link>
           <Link
             className="navLink"
             to="/"
@@ -36,7 +55,7 @@ const NavBar = ({ session }) => {
               navigate(`/home`);
             }}
           >
-            Logout
+            <LogoutIcon className="hover:scale-110 hover:transition duration-200 ease-out" />
           </Link>
         </nav>
       )}
