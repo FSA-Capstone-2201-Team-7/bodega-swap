@@ -175,7 +175,7 @@ const CreateProposal = ({ state }) => {
           );
         })}
       </div>
-      <div className="haggleChat">Chat</div>
+     
     </div>
   );
 };
