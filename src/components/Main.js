@@ -44,7 +44,7 @@ const Main = ({session}) => {
             alt=""
             className="h-96 w-full object-cover saturate-200"
           />
-          <div className=" absolute inset-y-14 rounded-lg p-4 text-white text-7xl">
+          <div className="absolute inset-y-14 rounded-lg p-4 text-white text-7xl">
             <ul>The Largest</ul>
             <ul>Community of</ul>
             <ul>Swapping Enthusiasts</ul>
@@ -53,15 +53,22 @@ const Main = ({session}) => {
       </div>
       <div>
         <div>Categories</div>
+        <div className="flex flex-no-wrap overflow-x-scroll scrolling-touch items-start mb-8">
+          {getImages.map((image) => {
+            return (
+              <div className="flex-none  md:w-1/3 mr-8 md:pb-4 border rounded-lg">
+                <img src={image.image_url} alt="" className=" w-full h-96" />
+              </div>
+            );
+          })}
+        </div>
 
-        <Carousel>
+        {/* <Carousel>
           {getImages.map((image) => {
             return <CarouselItem><img src={image.image_url} alt="" /></CarouselItem>;
           })}
-          {/* <CarouselItem>Item 1</CarouselItem>
-          <CarouselItem>Item 2</CarouselItem>
-          <CarouselItem>Item 3</CarouselItem> */}
-        </Carousel>
+      
+        </Carousel> */}
       </div>
     </div>
   );
