@@ -8,7 +8,7 @@ function Footer() {
     <footer className="bg-gray-200 grid grid-cols-3 pt-10 gap-y-4 absolute bottom-0 left-0 right-0">
       <div className="col-span-1 pl-24">
         <h2 className="text-lg font-bold mb-3">Bodega Swap</h2>
-        <address className="text-sm text-gray-700">
+        <address className="text-sm text-gray-500">
           <p className="address">
             5 Hanover Square 11th floor, New York, NY 10004
           </p>
