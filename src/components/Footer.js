@@ -2,7 +2,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <footer className="grid grid-cols-3 px-8 py-10 border-t-gray-400 border absolute bottom-0 w-full ">
+    <footer className="grid grid-cols-3 px-8 py-10 border-t-gray-400 border absolute bottom-0 left-0 right-0">
       <div>
         <h2 className="text-lg font-bold">Bodega Swap</h2>
       </div>
