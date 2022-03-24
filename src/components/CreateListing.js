@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import ItemPic from './ItemPic';
+import { useNavigate } from 'react-router-dom';
 
 const CreateListing = () => {
   const [formData, setFormData] = useState({
@@ -9,7 +10,10 @@ const CreateListing = () => {
     category: '',
     itemPicUrl: '',
   });
+
   const user = supabase.auth.user();
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -17,9 +21,40 @@ const CreateListing = () => {
     console.log(formData);
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      let fullUrl = supabase.storage
+        .from('item-pics')
+        .getPublicUrl(formData.itemPicUrl);
+      console.log(fullUrl);
+      let { data, error } = await supabase.from('items').insert([
+        {
+          name: formData.name,
+          description: formData.description,
+          category: formData.category,
+          image_url: fullUrl.data.publicURL,
+          ownerId: user.id,
+        },
+      ]);
+
+      if (error) {
+        throw error;
+      }
+      if (data) {
+        alert('Listing Successfully Created!');
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setFormData({ name: '', description: '', category: '', itemPicUrl: '' });
+      navigate('/myAccount');
+    }
+  };
+
   return (
     <div className="listing-form">
-      <form id="create-listing">
+      <form id="create-listing" onSubmit={handleSubmit}>
         <ItemPic
           url={formData.itemPicUrl}
           size={150}
