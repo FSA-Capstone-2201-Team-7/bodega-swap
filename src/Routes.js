@@ -41,7 +41,7 @@ const Routing = () => {
     <div className="relative min-h-screen">
       <NavBar session={session} />
       {!session ? (
-        <main className="mx-auto max-w-7xl px-8 sm:px-16 pb-32">
+        <main className="mx-auto max-w-7xl px-8 sm:px-16 pb-52">
           <Routes>
             <Route path="/" element={<Navigate to="/home" />} />
             <Route exact path="/home" element={<Main />} />
@@ -53,7 +53,7 @@ const Routing = () => {
           </Routes>
         </main>
       ) : (
-        <main className="pb-32">
+        <main className="pb-52">
           <Routes>
             <Route path="/" element={<Navigate to="/home" />} />
             <Route exact path="/home" element={<Main />} />
