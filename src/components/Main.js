@@ -1,37 +1,32 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import Carousel, {CarouselItem} from './UseCarousel';
+import Carousel, { CarouselItem } from './UseCarousel';
+import Card from './Card';
 
-
-const Main = ({session}) => {
-  const [getImages, setImages] = useState([])
+const Main = ({ session }) => {
+  const [getImages, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
 
-   useEffect(() => {
-     const getItems = async () => {
-       try {
-         setLoading(true);
-         let { data, error, status } = await supabase
-           .from('items')
-           .select()
-           
+  useEffect(() => {
+    const getItems = async () => {
+      try {
+        setLoading(true);
+        let { data, error, status } = await supabase.from('items').select();
 
-         if (error && status !== 406) {
-           throw error;
-         }
-         if (data) {
-           setImages(data);
-         }
-       } catch (error) {
-         console.error(error);
-       } finally {
-         setLoading(false);
-       }
-     };
-     getItems();
-   }, []);
-
-
+        if (error && status !== 406) {
+          throw error;
+        }
+        if (data) {
+          setImages(data);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getItems();
+  }, []);
 
   return loading ? (
     <div>loading...</div>
@@ -56,13 +51,13 @@ const Main = ({session}) => {
         <div className="flex flex-no-wrap overflow-x-scroll scrolling-touch items-start mb-8">
           {getImages.map((image) => {
             return (
-              <div className="flex-none  md:w-1/3 mr-8 md:pb-4 border rounded-lg">
-                <img src={image.image_url} alt="" className=" w-full h-96" />
-              </div>
-            );
+            <div key={image.id} className="flex-none   mr-8  border rounded-lg">
+            <Card imageUrl={image.image_url} />
+            </div>
+            )
           })}
         </div>
-
+        {/* {keep to use for eventual use on main page} */}
         {/* <Carousel>
           {getImages.map((image) => {
             return <CarouselItem><img src={image.image_url} alt="" /></CarouselItem>;
@@ -72,6 +67,6 @@ const Main = ({session}) => {
       </div>
     </div>
   );
-}
+};
 
-export default Main
+export default Main;

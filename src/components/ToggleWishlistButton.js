@@ -70,6 +70,7 @@ const ToggleWishlistButton = (props) => {
     <button
       type="button"
       onClick={(e) => toggleWishlist(e, props.itemId, props.userId)}
+      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
     >
       {onWishlist ? 'remove from wishlist' : 'add to wishlist'}
     </button>
