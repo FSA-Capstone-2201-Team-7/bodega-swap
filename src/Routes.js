@@ -10,6 +10,7 @@ import {
   TradesAndMessages,
   CreateProposal,
   AllItems,
+  CreateListing,
 } from './components';
 import NavBar from './components/NavBar';
 import Profile from './components/MyAccount';
@@ -77,6 +78,7 @@ const Routing = () => {
               path="/items/:id/OwnerProfile"
               element={<OwnerProfile />}
             />
+            <Route path="/createListing" element={<CreateListing />} />
           </Routes>
         </main>
       )}
