@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { Link } from 'react-router-dom';
 import ToggleWishlistButton from './ToggleWishlistButton';
+import FilterCategory from './FilterCategories';
 
 const AllItems = () => {
   const [loading, setLoading] = useState(true);
@@ -42,6 +43,7 @@ const AllItems = () => {
         <p>Loading</p>
       ) : (
         <div className="grid grid-cols-3  gap-10 ">
+          <FilterCategory />
           {items.map((item, idx) => {
             return (
               <div key={idx} className="single-item-container">
