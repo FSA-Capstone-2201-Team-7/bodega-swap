@@ -26,29 +26,29 @@ function Footer() {
       <div className="flex col-span-2 justify-between">
         <ul className="flex-cols  text-gray-700  text-sm ">
           <h3 className="font-semibold pb-2">Shop</h3>
-          <li className="cursor-pointer">Mobile App</li>
-          <li className="cursor-pointer">Categories</li>
-          <li className="cursor-pointer">Shop Local</li>
+          <li className="cursor-pointer hover:scale-110">Mobile App</li>
+          <li className="cursor-pointer hover:scale-110">Categories</li>
+          <li className="cursor-pointer hover:scale-110">Shop Local</li>
         </ul>
         <ul className="flex-cols text-gray-700  text-sm ">
           <h3 className="font-semibold pb-2">Support</h3>
-          <li className="cursor-pointer ">Contact Us</li>
-          <li className="cursor-pointer">Help Center</li>
-          <li className="cursor-pointer">Trader Protection</li>
-          <li className="cursor-pointer">Safty Guidelines</li>
+          <li className="cursor-pointer hover:scale-110 ">Contact Us</li>
+          <li className="cursor-pointer hover:scale-110">Help Center</li>
+          <li className="cursor-pointer hover:scale-110">Trader Protection</li>
+          <li className="cursor-pointer hover:scale-110">Safty Guidelines</li>
         </ul>
         <ul className="flex-cols  text-gray-700  text-sm">
           <h3 className="font-semibold pb-2">Policy Center</h3>
-          <li className="cursor-pointer">Terms of Service</li>
-          <li className="cursor-pointer">Privacy</li>
-          <li className="cursor-pointer">Prohibited Items</li>
-          <li className="cursor-pointer">Prohibited Conduct</li>
+          <li className="cursor-pointer hover:scale-110">Terms of Service</li>
+          <li className="cursor-pointer hover:scale-110">Privacy</li>
+          <li className="cursor-pointer hover:scale-110">Prohibited Items</li>
+          <li className="cursor-pointer hover:scale-110">Prohibited Conduct</li>
         </ul>
         <ul className="flex-cols pr-24 text-gray-700  text-sm">
           <h3 className="font-semibold pb-2">Company</h3>
-          <li className="cursor-pointer">About Us</li>
-          <li className="cursor-pointer">Blog</li>
-          <li className="cursor-pointer">Careers</li>
+          <li className="cursor-pointer hover:scale-110">About Us</li>
+          <li className="cursor-pointer hover:scale-110">Blog</li>
+          <li className="cursor-pointer hover:scale-110">Careers</li>
         </ul>
       </div>
       <p className="text-gray-500 py-1 col-span-1 pl-24 text-sm bg-gray-300">
