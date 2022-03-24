@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import Carousel, { CarouselItem } from './UseCarousel';
+
 import Card from './Card';
+
 
 const Main = ({ session }) => {
   const [getImages, setImages] = useState([]);
