@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
+import ItemPic from './ItemPic';
 
 const CreateListing = () => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     category: '',
+    itemPicUrl: '',
   });
-  const owner = supabase.auth.user();
+  const user = supabase.auth.user();
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -18,6 +20,13 @@ const CreateListing = () => {
   return (
     <div className="listing-form">
       <form id="create-listing">
+        <ItemPic
+          url={formData.itemPicUrl}
+          size={150}
+          onUpload={(url) => {
+            setFormData({ ...formData, itemPicUrl: url });
+          }}
+        />
         <label htmlFor="name">Name</label>
         <input
           name="name"
@@ -26,7 +35,6 @@ const CreateListing = () => {
           value={formData.name}
           onChange={handleChange}
         />
-
         <label htmlFor="description">Description</label>
         <input
           name="description"
@@ -62,6 +70,7 @@ const CreateListing = () => {
           >{`Video Games & Consoles`}</option>
           <option value="Other/Misc.">Other/Misc.</option>
         </select>
+        <button type="submit">Create Listing</button>
       </form>
     </div>
   );
