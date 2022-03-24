@@ -1,24 +1,26 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { Menu, Transition } from '@headlessui/react';
-import { ChevronDownIcon } from '@heroicons/react/solid';
-
+import React, { useState, useEffect, Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/solid";
 
 const classNames = (...classes) => {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 };
 const FilterCategory = (props) => {
   const { list, setSelected, loading } = props;
   return loading ? (
     <div>Loading...</div>
   ) : (
-    <Menu as="div" className="relative inline-block text-left">
+    <Menu
+      as="div"
+      className="col-span-3 text-left flex justify-self-end pt-6 pr-[5%]"
+    >
       <div>
         <Menu.Button
           as="div"
-          className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+          className="inline-flex rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
         >
           Search
-          <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+          <ChevronDownIcon className=" -mr-1 ml-2 h-5 w-5" aria-hidden="true" />
         </Menu.Button>
       </div>
 
@@ -33,7 +35,7 @@ const FilterCategory = (props) => {
       >
         <Menu.Items
           as="div"
-          className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+          className="origin-top-left absolute  right-[7%] mt-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
         >
           {list.map((el, i) => {
             return (
@@ -48,8 +50,8 @@ const FilterCategory = (props) => {
                 {({ active }) => (
                   <div
                     className={classNames(
-                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
+                      active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                      "block px-4 py-2 text-sm"
                     )}
                   >
                     {el}
@@ -65,4 +67,3 @@ const FilterCategory = (props) => {
 };
 
 export default FilterCategory;
-
