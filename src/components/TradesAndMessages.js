@@ -17,6 +17,7 @@ const TradesAndMessages = () => {
   const buttonRef = useRef();
 
   useEffect(() => {
+
     const getInboundSwaps = async () => {
       try {
         setLoading(true);
@@ -93,17 +94,36 @@ const TradesAndMessages = () => {
       if (error && status !== 406) {
         throw error;
       }
+        const render = getOutbound.filter((active) => {
+          if (active.id !== swap.id) {
+            return active;
+          }
+        });
+            setOutbound(render)
+    
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleRemoveProposal = async (swap) => {
+    try {
+      const { data, error, status } = await supabase
+        .from('swaps')
+        .delete()
+        .eq('id', swap.id);
 
-      if (swap.outbound_id === user.id) {
-        console.log(true);
+      if (error && status !== 406) {
+        throw error;
       }
-      const render = getOutbound.filter((active) => {
-        if (active.id !== swap.id) {
-          return active;
-        }
-      });
+      // if (swap.outbound_id !== user.id) {
+         const render = getInbound.filter((active) => {
+           if (active.id !== swap.id) {
+             return active;
+           }
+         });
+         setInbound(render);
 
-      setOutbound(render);
+      // }
     } catch (error) {
       console.error(error);
     }
@@ -136,7 +156,7 @@ const TradesAndMessages = () => {
                       className="w-1/2"
                     />
                   </div>
-                  {swap.status === "active" ? (
+                  {swap.status === 'active' ? (
                     <div className="flex">
                       <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
@@ -189,19 +209,14 @@ const TradesAndMessages = () => {
                             <button
                               type="button"
                               className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                              onClick={() => handleRemoveProposal(swap)}
                             >
-                              {" "}
+                              {' '}
                               YES I'M SURE
                             </button>
                           </PopoverBody>
                         </PopoverContainer>
                       </Popover>
-                      {/* <button
-                      type="button"
-                      className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                    >
-                      Reject meeting
-                    </button> */}
                     </div>
                   )}
                 </div>

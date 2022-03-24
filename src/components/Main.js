@@ -32,18 +32,12 @@ const Main = ({session}) => {
    }, []);
 
 
-  console.log(getImages)
+
   return loading ? (
     <div>loading...</div>
   ) : (
     <div>
       <div>
-        {/* <img
-        src="https://pbs.twimg.com/media/Da4LRjeWAAAZkLj?format=jpg&name=medium"
-        alt=""
-      />
-      <div>-----</div> */}
-
         <div className="flex grid bg-white border overflow-hidden">
           <img
             src="https://pbs.twimg.com/media/ElK-sofWAAY8iE7?format=jpg&name=large"
@@ -56,28 +50,18 @@ const Main = ({session}) => {
             <ul>Swapping Enthusiasts</ul>
           </div>
         </div>
-
-        {/* <div>----</div>
-      <img
-        src="https://pbs.twimg.com/media/CoFWFV9WAAE3agy?format=jpg&name=large"
-        alt=""
-      /> */}
       </div>
       <div>
         <div>Categories</div>
-       
-          {/* {getImages.map((image) => {
-        
-              return (
-         
-                  <CarouselItem key={image.id}>
-                    <img src={image.image_url} alt="" />
-                  </CarouselItem>
-            
-              );
-            
-          })} */}
-        
+
+        <Carousel>
+          {getImages.map((image) => {
+            return <CarouselItem><img src={image.image_url} alt="" /></CarouselItem>;
+          })}
+          {/* <CarouselItem>Item 1</CarouselItem>
+          <CarouselItem>Item 2</CarouselItem>
+          <CarouselItem>Item 3</CarouselItem> */}
+        </Carousel>
       </div>
     </div>
   );
