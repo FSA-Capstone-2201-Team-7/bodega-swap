@@ -30,13 +30,13 @@ const NavBar = ({ session }) => {
       ) : (
         <nav className=" flex items-center justify-end space-x-4 text-gray-500">
           <Link to="/wishlist">
-            <FavoriteBorderIcon />
+            <FavoriteBorderIcon className="hover:scale-110 hover:transition duration-200 ease-out" />
           </Link>
           <Link to="/messages">
-            <ChatAltIcon className="h-6" />
+            <ChatAltIcon className="h-6 hover:transition duration-200 ease-out hover:scale-110" />
           </Link>
           <Link to="/myAccount">
-            <PersonIcon />
+            <PersonIcon className="hover:scale-110 hover:transition duration-200 ease-out" />
           </Link>
           <Link to="/home">
             {" "}
@@ -55,7 +55,7 @@ const NavBar = ({ session }) => {
               navigate(`/home`);
             }}
           >
-            <LogoutIcon />
+            <LogoutIcon className="hover:scale-110 hover:transition duration-200 ease-out" />
           </Link>
         </nav>
       )}
