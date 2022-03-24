@@ -56,9 +56,9 @@ function Footer() {
         All rights reserved.
       </p>
       <div className="flex col-span-2 py-1 justify-end pr-24 space-x-2 bg-gray-300">
-        <TwitterIcon />
-        <InstagramIcon />
-        <FacebookIcon />
+        <TwitterIcon className="cursor-pointer" />
+        <InstagramIcon className="cursor-pointer" />
+        <FacebookIcon className="cursor-pointer" />
       </div>
     </footer>
   );
