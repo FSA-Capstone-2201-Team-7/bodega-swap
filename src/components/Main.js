@@ -1,37 +1,31 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import Carousel, {CarouselItem} from './UseCarousel';
+import Carousel, { CarouselItem } from './UseCarousel';
 
-
-const Main = ({session}) => {
-  const [getImages, setImages] = useState([])
+const Main = ({ session }) => {
+  const [getImages, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
 
-   useEffect(() => {
-     const getItems = async () => {
-       try {
-         setLoading(true);
-         let { data, error, status } = await supabase
-           .from('items')
-           .select()
-           
+  useEffect(() => {
+    const getItems = async () => {
+      try {
+        setLoading(true);
+        let { data, error, status } = await supabase.from('items').select();
 
-         if (error && status !== 406) {
-           throw error;
-         }
-         if (data) {
-           setImages(data);
-         }
-       } catch (error) {
-         console.error(error);
-       } finally {
-         setLoading(false);
-       }
-     };
-     getItems();
-   }, []);
-
-
+        if (error && status !== 406) {
+          throw error;
+        }
+        if (data) {
+          setImages(data);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getItems();
+  }, []);
 
   return loading ? (
     <div>loading...</div>
@@ -72,6 +66,6 @@ const Main = ({session}) => {
       </div>
     </div>
   );
-}
+};
 
-export default Main
+export default Main;
