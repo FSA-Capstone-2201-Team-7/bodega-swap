@@ -38,7 +38,7 @@ const NavBar = ({ session }) => {
           <Link to="/myAccount">
             <PersonIcon className="hover:scale-110 hover:transition duration-200 ease-out" />
           </Link>
-          <Link to="/home">
+          <Link to="/createListing">
             {" "}
             <button
               type="button"
