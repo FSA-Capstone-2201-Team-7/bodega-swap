@@ -1,7 +1,7 @@
 import React from 'react';
 import { supabase } from '../supabaseClient';
 import { useLocation } from 'react-router-dom';
-
+import Chat from './Chat';
 
 
 const HaggleView = ({state}) => {
@@ -27,6 +27,7 @@ const HaggleView = ({state}) => {
         </div>
       </div>
       <div className="haggleChat">Chat</div>
+      <Chat />
     </div>
   );
 };
