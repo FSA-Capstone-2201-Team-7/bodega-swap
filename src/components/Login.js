@@ -3,7 +3,7 @@ import { supabase } from "../supabaseClient";
 import { useNavigate } from "react-router";
 
 export default function Auth() {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ export default function Auth() {
     e.preventDefault();
 
     try {
-      setLoading(true);
+     
       const { user, error } = await supabase.auth.signIn({
         email,
         password,
@@ -22,9 +22,9 @@ export default function Auth() {
     } catch (error) {
       alert(error.error_description || error.message);
     } finally {
-      setLoading(false);
+     
     }
-    navigate("/home");
+    navigate('/home');
   };
 
   return (
@@ -32,9 +32,7 @@ export default function Auth() {
       <div className="w-2/4" aria-live="polite">
         <h1 className="text-2xl my-5">Bodega Swap</h1>
 
-        {loading ? (
-          "Logging in..."
-        ) : (
+     
           <div className="w-full max-w-s">
             <p className="mb-5">Log in</p>
             <form
@@ -89,7 +87,7 @@ export default function Auth() {
               </button>
             </form>
           </div>
-        )}
+   
       </div>
     </div>
   );
