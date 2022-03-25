@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { useParams, useNavigate } from 'react-router-dom';
-import ToggleWishlistButton from './ToggleWishlistButton';
-import Card from './Card'
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import { useParams, useNavigate } from "react-router-dom";
+import ToggleWishlistButton from "./ToggleWishlistButton";
+import Card from "./Card";
 
 const SingleItem = () => {
   const params = useParams();
@@ -19,9 +19,9 @@ const SingleItem = () => {
     try {
       setLoading(true);
       let { data, error, status } = await supabase
-        .from('items')
+        .from("items")
         .select(`*, users:ownerId(username)`)
-        .eq('id', params.id);
+        .eq("id", params.id);
 
       if (error && status !== 406) {
         throw error;
@@ -55,12 +55,18 @@ const SingleItem = () => {
               )
             }
             secondButton={
-              <button
-                type="button"
-                onClick={() => navigate('OwnerProfile', { state: { item } })}
-              >
-                <p>Owner: {item.users.username}</p>
-              </button>
+              user ? (
+                <button
+                  type="button"
+                  onClick={() => navigate("OwnerProfile", { state: { item } })}
+                >
+                  <p>Owner: {item.users.username}</p>
+                </button>
+              ) : (
+                <h3>
+                  <p>Owner: {item.users.username}</p>
+                </h3>
+              )
             }
           />
         </div>
