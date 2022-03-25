@@ -69,8 +69,8 @@ const Card = (props) => {
       <Link to={`/items/${id}`}>
         <img className="h-96 w-96" src={imageUrl} alt="" />
       </Link>
-      {firstButton || <button type="button"></button>}
-      {secondButton || <button type="button"></button>}
+      {firstButton || null}
+      {secondButton || null}
     </div>
   );
       
