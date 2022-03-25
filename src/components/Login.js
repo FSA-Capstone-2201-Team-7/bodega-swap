@@ -1,12 +1,16 @@
-import { useState } from "react";
-import { supabase } from "../supabaseClient";
-import { useNavigate } from "react-router";
+import { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import { useNavigate } from 'react-router';
 
 export default function Auth() {
-  const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setLoading(false);
+  }, [loading]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,7 +28,7 @@ export default function Auth() {
     } finally {
       setLoading(false);
     }
-    navigate("/home");
+    navigate('/home');
   };
 
   return (
@@ -33,7 +37,7 @@ export default function Auth() {
         <h1 className="text-2xl my-5">Bodega Swap</h1>
 
         {loading ? (
-          "Logging in..."
+          'Logging in...'
         ) : (
           <div className="w-full max-w-s">
             <p className="mb-5">Log in</p>
@@ -42,7 +46,7 @@ export default function Auth() {
               onSubmit={handleLogin}
             >
               <div className="mb-4">
-                {" "}
+                {' '}
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
                   htmlFor="email"
@@ -59,7 +63,7 @@ export default function Auth() {
                 />
               </div>
               <div className="mb-4">
-                {" "}
+                {' '}
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
                   htmlFor="password"
