@@ -11,8 +11,8 @@
   align-items: center;
   justify-content: center;
   height: 200px;
-  background-color: grey;
   color: #fff;
+  padding-top: 10%;
 }
 .buttons {
   display: flex;

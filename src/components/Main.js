@@ -62,10 +62,16 @@ const Main = ({ session }) => {
             );
           })}
         </div>
+        <div>Recently Added</div>
+        
         {/* {keep to use for eventual use on main page} */}
         {/* <Carousel>
           {getImages.map((image) => {
-            return <CarouselItem><img src={image.image_url} alt="" /></CarouselItem>;
+            return (
+              <CarouselItem>
+                <Card imageUrl={image.image_url} id={image.id} />
+              </CarouselItem>
+            );
           })}
       
         </Carousel> */}
