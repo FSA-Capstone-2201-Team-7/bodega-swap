@@ -12,16 +12,19 @@ const HaggleView = ({ state }) => {
   const user = supabase.auth.user();
   const { swap = '' } = location.state || {};
 
+
+
+  //splitting the swap object to correctly place the inofrmation of each side of the screen
   let theirObj;
   let yourObj;
   if (swap.outbound_id !== user.id) {
-    theirObj = [swap.outbound_id, swap.outbound_offer];
-    yourObj = [swap.inbound_offer];
-  } else {
-    theirObj = [swap.inbound_id, swap.inbound_offer];
+    theirObj = [swap.outbound_id, swap.inbound_offer];
     yourObj = [swap.outbound_offer];
+  } else {
+    theirObj = [swap.inbound_id, swap.outbound_offer];
+    yourObj = [swap.inbound_offer];
   }
-  console.log(theirObj);
+
 
   //1st id, second offer obj, thirdAvatarUrl
 
@@ -60,7 +63,7 @@ const HaggleView = ({ state }) => {
           `
           )
           .eq('id', theirObj[0]);
-        // setTheirInfo(...data);
+   
         setTheirInfo([...theirObj, ...data]);
       } catch (error) {
         console.error(error);
@@ -73,9 +76,9 @@ const HaggleView = ({ state }) => {
 
 
  
-
-  //  console.log('other guy', theirInfo);
-  //  console.log('you', yourInfo.avatarUrl)
+// console.log(swap)
+//    console.log('other guy', theirInfo);
+//    console.log('you', yourInfo[2].avatarUrl);
 
   return loading ? (
     <div>Loading....</div>
@@ -86,7 +89,7 @@ const HaggleView = ({ state }) => {
         <div className="w-6/12 sm:w-2/12 px-4 grid place-items-center">
           <img
             src="https://www.creative-tim.com/learning-lab/tailwind-starter-kit/img/team-4-470x470.png"
-            // src={yourInfo.avatarUrl}
+            // src={yourInfo[2].avatarUrl}
             alt="..."
             className="shadow rounded-full w-full  align-middle border-none ml-52"
           />
@@ -97,10 +100,8 @@ const HaggleView = ({ state }) => {
             Inventory
           </button>
         </div>
-        <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-5">
-          <Card id={swap.inbound_offer.id} />
-          <div>nkfjsd</div>
-          <div>nkfjsd</div>
+        <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
+          {/* <Card id={yourInfo[1].id} imageUrl={yourInfo[1].image_url} /> */}
         </div>
       </div>
 
@@ -112,7 +113,7 @@ const HaggleView = ({ state }) => {
         <div className="w-6/12 sm:w-2/12 px-4 grid place-items-center">
           <img
             src="https://www.creative-tim.com/learning-lab/tailwind-starter-kit/img/team-4-470x470.png"
-            // src={theirInfo.avatarUrl}
+            // src={theirInfo[2].avatarUrl}
 
             alt="..."
             className="shadow rounded-full w-full border-none ml-52"
@@ -124,14 +125,16 @@ const HaggleView = ({ state }) => {
             Inventory
           </button>
         </div>
-        <div className="bg-red-300 h-screen w-full">
-          <Card
-            imageUrl={swap.outbound_offer.image_url}
-            id={swap.outbound_offer.id}
-            name={swap.outbound_offer.name}
-          />
-          <div>nkfjsd</div>
-          <div>nkfjsd</div>
+        <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
+          {/* <Card id={theirInfo[1].id} imageUrl={theirInfo[1].image_url} /> */}
+          {/* <div className="w-6/12 sm:w-6/12">
+            <img
+              src={theirInfo[1].image_url}
+              alt=""
+              className="shadow-xl rounded-full w-full"
+            />
+          
+          </div> */}
         </div>
       </div>
       {/* <div className="flex flex-wrap justify-center">
