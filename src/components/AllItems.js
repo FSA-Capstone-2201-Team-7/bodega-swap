@@ -72,37 +72,40 @@ const AllItems = () => {
             loading={loading}
           />
           {items.map((item, idx) => {
-            return (
-              <div key={item.id}>
-                {filterItem === "All" || item.category === filterItem ? (
-                  <div>
-                    <Card
-                      id={item.id}
-                      imageUrl={item.image_url}
-                      name={item.name}
-                      description={item.description}
-                      category={item.category}
-                      ownerId={item.ownerId}
-                    />
-                    <Link to="/createproposal" state={{ item }}>
-                      <button
-                        type="button"
-                        className="bg-blue-300 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full"
-                      >
-                        <ForumIcon />
-                      </button>
-                    </Link>
-                    {user ? (
-                      <ToggleWishlistButton userId={user.id} itemId={item.id} />
-                    ) : (
-                      <></>
-                    )}
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </div>
-            );
+            if (filterItem === 'All' || item.category === filterItem) {
+              return (
+                <div key={item.id}>
+                  <Card
+                    id={item.id}
+                    imageUrl={item.image_url}
+                    name={item.name}
+                    description={item.description}
+                    category={item.category}
+                    ownerId={item.ownerId}
+                    firstButton={
+                      <Link to="/createproposal" state={{ item }}>
+                        <button
+                          type="button"
+                          className="bg-blue-300 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full"
+                        >
+                          <ForumIcon />
+                        </button>
+                      </Link>
+                    }
+                    secondButton={
+                      user ? (
+                        <ToggleWishlistButton
+                          userId={user.id}
+                          itemId={item.id}
+                        />
+                      ) : (
+                        <></>
+                      )
+                    }
+                  />
+                </div>
+              );
+            }
           })}
         </div>
       )}
@@ -111,3 +114,16 @@ const AllItems = () => {
 };
 
 export default AllItems;
+
+
+// {/* <Link to="/createproposal" state={{ item }}>
+//   <button
+//     type="button"
+//     className="bg-blue-300 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full"
+//   >
+//     <ForumIcon />
+//   </button>
+// </Link>;
+// {
+//   user ? <ToggleWishlistButton userId={user.id} itemId={item.id} /> : <></>;
+// } */}

@@ -21,10 +21,10 @@ const Chat = () => {
     <div className="bg-gray-300 h-screen flex justify-center rounded shadow-2xl">
       <div className=" flex justify-center grid grid-cols-1 ">
         <div className="w-96 bg-white rounded shadow-2xl">
-          <nav class=" h-10 bg-gray-900 rounded-tr rounded-tl flex justify-between items-center">
-            <div class="flex justify-center items-center">
+          <nav className=" h-10 bg-gray-900 rounded-tr rounded-tl flex justify-between items-center">
+            <div className="flex justify-center items-center">
               {' '}
-              <span class="text-xl font-medium text-gray-300 ml-1">
+              <span className="text-xl font-medium text-gray-300 ml-1">
                 USERNAMES?
               </span>{' '}
             </div>
