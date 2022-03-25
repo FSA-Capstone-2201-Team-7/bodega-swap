@@ -1,37 +1,3 @@
-// import React from 'react';
-// import { Link } from 'react-router-dom';
-
-// const Card = (props) => {
-//   const { name, description, imageUrl, category, ownerId, id } = props;
-//   const dropDownhandler = () => {
-
-//   }
-
-//   return name || description ? (
-//     <div className="max-w-sm rounded overflow-hidden shadow-lg ">
-//       <button type="button" onClick={() => dropDownhandler()}>
-//         <Link to={`/items/${id}`}>
-//           <img className="h-96 w-96" src={imageUrl} alt="" />
-//         </Link>
-//       </button>
-//       <div className="px-6 py-4 pt-4 pb-2">
-//         <div className="font-bold text-xl mb-2">{name || null}</div>
-//         <p className="text-gray-700 text-base text-ellipsis overflow-hidden">
-//           {description || null}
-//         </p>
-//       </div>
-//     </div>
-//   ) : (
-//     <div className="max-w-sm rounded overflow-hidden shadow-lg ">
-//       <img className="h-96 w-96" src={imageUrl} alt="" />
-//     </div>
-//   );
-      
-   
- 
-// };
-// export default Card;
-
 import React, {Fragment} from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronDownIcon } from '@heroicons/react/solid';
@@ -59,7 +25,7 @@ const Card = (props) => {
         <div>
           <Menu.Button
             as="div"
-            className="inline-flex justify-center w-full  shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+            className="inline-flex justify-center w-full  shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
           >
             <ChevronDownIcon
               className="-mr-1 ml-2 h-5 w-5"
@@ -100,7 +66,11 @@ const Card = (props) => {
     </div>
   ) : (
     <div className="max-w-sm rounded overflow-hidden shadow-lg ">
-      <img className="h-96 w-96" src={imageUrl} alt="" />
+      <Link to={`/items/${id}`}>
+        <img className="h-96 w-96" src={imageUrl} alt="" />
+      </Link>
+      {firstButton || <button type="button"></button>}
+      {secondButton || <button type="button"></button>}
     </div>
   );
       
