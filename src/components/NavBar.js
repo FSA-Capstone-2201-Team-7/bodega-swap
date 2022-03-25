@@ -6,7 +6,6 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { ChatAltIcon } from "@heroicons/react/outline";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
-import SearchBar from "./SearchBar";
 
 const NavBar = ({ session }) => {
   const navigate = useNavigate();
@@ -22,7 +21,7 @@ const NavBar = ({ session }) => {
           View Items
         </Link>
       </div>
-      <SearchBar />
+
       {!session ? (
         <nav className="flex items-center justify-end space-x-4 text-gray-500">
           <Link to="login">Login</Link>
