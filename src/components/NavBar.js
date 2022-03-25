@@ -1,15 +1,15 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "../supabaseClient";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
-import { ChatAltIcon } from "@heroicons/react/outline";
-import PersonIcon from "@mui/icons-material/Person";
-import LogoutIcon from "@mui/icons-material/Logout";
+import { ChatAltIcon } from '@heroicons/react/outline';
+import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const NavBar = ({ session }) => {
   const navigate = useNavigate();
-  console.log(localStorage);
+  // console.log(localStorage);
   return (
     <header className="sticky top-0 flex justify-between bg-white p-5 shadow-md md:px-10 z-50 ">
       <div className="flex">
@@ -39,7 +39,7 @@ const NavBar = ({ session }) => {
             <PersonIcon className="hover:scale-110 hover:transition duration-200 ease-out" />
           </Link>
           <Link to="/createListing">
-            {" "}
+            {' '}
             <button
               type="button"
               className=" bg-gray-200 p-2 text-sm rounded-md"

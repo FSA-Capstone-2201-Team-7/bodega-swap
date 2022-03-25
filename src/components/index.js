@@ -5,7 +5,7 @@ import TradesAndMessages from './TradesAndMessages';
 import AllItems from './AllItems';
 import CreateProposal from './CreateProposal';
 import Listings from './MyListings';
-import CreateListing from './CreateListing';
+import CreateOrEditListing from './CreateOrEditListing';
 export {
   Main,
   NavBar,
@@ -14,5 +14,5 @@ export {
   AllItems,
   CreateProposal,
   Listings,
-  CreateListing,
+  CreateOrEditListing,
 };

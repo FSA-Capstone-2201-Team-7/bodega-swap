@@ -2,12 +2,17 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import VisuallyHidden from '@reach/visually-hidden';
 
-const ItemPic = ({ url, size, onUpload }) => {
+const ItemPic = ({ url, size, onUpload, mode }) => {
   const [itemPicUrl, setItemPicUrl] = useState(null);
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    if (url) downloadImage(url);
+    if (url && mode === 'edit') {
+      console.log(url);
+      downloadImage(url);
+    } else {
+      setItemPicUrl(null);
+    }
   }, [url]);
 
   const downloadImage = async (path) => {
