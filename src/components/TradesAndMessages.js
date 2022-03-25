@@ -128,7 +128,7 @@ const TradesAndMessages = () => {
       console.error(error);
     }
   };
-
+ 
   return loading ? (
     <div>Loding...</div>
   ) : (
