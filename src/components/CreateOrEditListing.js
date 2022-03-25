@@ -1,18 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import ItemPic from './ItemPic';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const CreateListing = () => {
+const CreateOrEditListing = (props) => {
+  const [loading, setLoading] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     category: '',
+    active: null,
     itemPicUrl: '',
   });
 
   const user = supabase.auth.user();
   const navigate = useNavigate();
+  const params = useParams();
+
+  useEffect(() => {
+    const getItem = async () => {
+      try {
+        setLoading(true);
+        let { data, error, status } = await supabase
+          .from('items')
+          .select('name, description, category, active, image_url')
+          .eq('id', params.id)
+          .limit(1)
+          .single();
+        if (error) throw error;
+        if (data) {
+          console.log(data);
+          setFormData({
+            name: data.name,
+            description: data.description,
+            category: data.category,
+            active: data.active,
+            itemPicUrl: data.image_url,
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (props.mode === 'edit') getItem();
+  }, []);
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -111,4 +142,4 @@ const CreateListing = () => {
   );
 };
 
-export default CreateListing;
+export default CreateOrEditListing;
