@@ -57,7 +57,7 @@ const Main = ({ session }) => {
                 key={image.id}
                 className="flex-none   mr-8  border rounded-lg"
               >
-                <Card imageUrl={image.image_url} />
+                <Card imageUrl={image.image_url} id={image.id}/>
               </div>
             );
           })}

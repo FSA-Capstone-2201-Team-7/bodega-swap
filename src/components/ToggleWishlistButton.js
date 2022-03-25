@@ -28,7 +28,7 @@ const ToggleWishlistButton = (props) => {
       }
     };
     isOnWishlist();
-  }, []);
+  }, [props.itemId, props.userId]);
 
   const toggleWishlist = async (e, itemId, userId) => {
     e.preventDefault();
