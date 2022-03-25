@@ -1,11 +1,12 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "../supabaseClient";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-import { ChatAltIcon } from '@heroicons/react/outline';
-import PersonIcon from '@mui/icons-material/Person';
-import LogoutIcon from '@mui/icons-material/Logout';
+import { ChatAltIcon } from "@heroicons/react/outline";
+import PersonIcon from "@mui/icons-material/Person";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SearchBar from "./SearchBar";
 
 const NavBar = ({ session }) => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const NavBar = ({ session }) => {
           View Items
         </Link>
       </div>
-
+      <SearchBar />
       {!session ? (
         <nav className="flex items-center justify-end space-x-4 text-gray-500">
           <Link to="login">Login</Link>
@@ -39,7 +40,7 @@ const NavBar = ({ session }) => {
             <PersonIcon className="hover:scale-110 hover:transition duration-200 ease-out" />
           </Link>
           <Link to="/createListing">
-            {' '}
+            {" "}
             <button
               type="button"
               className=" bg-gray-200 p-2 text-sm rounded-md"
