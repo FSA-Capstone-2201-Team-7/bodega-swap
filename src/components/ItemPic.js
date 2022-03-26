@@ -8,7 +8,6 @@ const ItemPic = ({ url, size, onUpload, mode }) => {
 
   useEffect(() => {
     if (url) {
-      console.log(url);
       downloadImage(url);
     } else if (!url) setItemPicUrl(null);
   }, [url]);
@@ -18,17 +17,15 @@ weird, it is probably a result of coding for the particularities of supabase's s
 
   const downloadImage = (path) => {
     try {
-      console.log(path);
       const { data, error } = supabase.storage
         .from('item-pics')
         .getPublicUrl(path);
       if (error) {
         throw error;
       }
-      console.log(data);
       setItemPicUrl(data.publicURL);
     } catch (error) {
-      console.log('Error downloading image: ', error.message);
+      console.error('Error downloading image: ', error.message);
     }
   };
 
