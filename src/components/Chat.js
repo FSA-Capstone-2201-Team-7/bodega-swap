@@ -33,7 +33,9 @@ const Chat = (props) => {
       try {
         const { data } = await supabase
           .from('messages')
-          .select()
+          .select(`
+          content
+          `)
           .eq('conversations_ID', conversationId.id);
 
            setMessages(data);
@@ -41,7 +43,7 @@ const Chat = (props) => {
           supabase
             .from('messages')
             .on('INSERT', (message) => {
-              setMessages([...data, message.new]);
+              setMessages([...messages, message.new]);
               console.log('message received!', message.new);
             })
             .subscribe();
@@ -54,40 +56,8 @@ const Chat = (props) => {
       }
     };
     getUserMessages();
-  }, [conversationId, realtimeMessage]);
+  }, [conversationId, realtimeMessage, messages]);
 
-  // useEffect(() => {
-  //   const realtime = async () => {
-  //     try {
-
-  //         supabase
-  //           .from('messages')
-  //           .on('INSERT', (message) => {
-  //             if(message.new) {
-  //               setMessages([...messages, message.new])
-  //             }
-
-  //             console.log('message received!', message.new);
-  //           })
-  //           .subscribe();
-
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   realtime();
-  // }, [input, messages]);
-  // const realtime = () => {
-
-  //           supabase
-  //             .from('messages')
-  //             .on('INSERT', (message) => {
-  //               setRealTime(message.new)
-  //               console.log('message received!', message.new);
-  //             })
-  //             .subscribe();
-
-  //     };
 
   const createMessage = async () => {
     try {
