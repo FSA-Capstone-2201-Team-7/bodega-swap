@@ -13,6 +13,9 @@ const ItemPic = ({ url, size, onUpload, mode }) => {
     } else if (!url) setItemPicUrl(null);
   }, [url]);
 
+  /* most of the below code came from supabase, so if it looks
+weird, it is probably a result of coding for the particularities of supabase's storage system. */
+
   const downloadImage = (path) => {
     try {
       console.log(path);
