@@ -4,7 +4,8 @@ import { supabase } from '../supabaseClient';
 const Chat = (props) => {
   const [messages, setMessages] = useState([]);
   const [conversationId, setConversation] = useState('');
-  const [newMessage, setNewMessage] = useState('');
+  const [newMessage, setNewMessage] = useState(null);
+  const [input, setInput] = useState('') 
   const user = supabase.auth.user();
 
   // const { sender, receiver } = props;
@@ -43,26 +44,51 @@ const Chat = (props) => {
     getUserMessages();
   }, [conversationId]);
 
-  useEffect(() => {
-    const createMessage = async () => {
+  // useEffect(() => {
+  //   const createMessage = async () => {
+  //     try {
+  //       await supabase
+  //         .from('messages')
+  //         .insert([
+  //           { 
+  //             content: newMessage, 
+  //             sender_Id: props.sender, 
+  //             conversations_ID: conversationId.id
+  //           }
+  //         ])
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  // }, []);
+  
+   const createMessage = async () => {
       try {
-        await supabase
+        if(input) {
+       const {data} = await supabase
           .from('messages')
           .insert([
             { 
-              content: newMessage, 
+              content: input, 
               sender_Id: props.sender, 
               conversations_ID: conversationId.id
             }
           ])
+          console.log(data)
+          setInput('')
+        }
       } catch (error) {
         console.error(error);
       }
-    };
-  }, []);
-  
+    }
 
-  const HadnleMessage = async () => {};
+   
+  const handleChange = (e) => {
+    const {value} = e.target
+    console.log(value)
+    setInput(value)
+
+  }
 
   return (
     // <div className="p:2 sm:p-6 justify-between h-screen bg-base-100 container w-2xl">
@@ -75,17 +101,20 @@ const Chat = (props) => {
       djkad
       </div> */}
         <div className="justify-center mt-4 flex">
-          <input
-            type="text"
-            placeholder="Type here"
-            className="input input-ghost w-full max-w-xs"
-          />
-          <button
-            className="btn btn-active btn-ghost"
-            onClick={() => HadnleMessage}
-          >
-            Send
-          </button>
+            <input
+              type="text"
+              value={input}
+              placeholder="Type here"
+              onChange={handleChange}
+              className="input input-ghost w-full max-w-xs"
+            />
+            <button
+              type="button"
+              className="btn btn-active btn-ghost"
+              onClick={() => createMessage()}
+            >
+              Send
+            </button>
         </div>
       </div>
     </div>
