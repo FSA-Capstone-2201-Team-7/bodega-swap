@@ -7,24 +7,23 @@ const ItemPic = ({ url, size, onUpload, mode }) => {
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    if (url && mode === 'edit') {
+    if (url) {
       console.log(url);
       downloadImage(url);
-    } else {
-      setItemPicUrl(null);
-    }
+    } else if (!url) setItemPicUrl(null);
   }, [url]);
 
-  const downloadImage = async (path) => {
+  const downloadImage = (path) => {
     try {
-      const { data, error } = await supabase.storage
+      console.log(path);
+      const { data, error } = supabase.storage
         .from('item-pics')
-        .download(path);
+        .getPublicUrl(path);
       if (error) {
         throw error;
       }
-      const url = URL.createObjectURL(data);
-      setItemPicUrl(url);
+      console.log(data);
+      setItemPicUrl(data.publicURL);
     } catch (error) {
       console.log('Error downloading image: ', error.message);
     }
@@ -51,7 +50,7 @@ const ItemPic = ({ url, size, onUpload, mode }) => {
         throw uploadError;
       }
 
-      onUpload(filePath);
+      onUpload(filePath, mode);
     } catch (error) {
       alert(error.message);
     } finally {
