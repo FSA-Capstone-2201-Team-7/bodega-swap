@@ -8,6 +8,8 @@ const CreateOrEditListing = (props) => {
   //is being edited, or created. If it is being edited, the 'mode' prop will be 'edit'.
   //If it is being created, the 'mode' prop will be 'create'.
   const [loading, setLoading] = useState(null);
+  //loading is not currently used, but will be pending our
+  //design of a loading component
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -33,7 +35,6 @@ const CreateOrEditListing = (props) => {
           .single();
         if (error) throw error;
         if (data) {
-          // console.log(data);
           setFormData({
             name: data.name,
             description: data.description,
@@ -48,6 +49,8 @@ const CreateOrEditListing = (props) => {
         setLoading(false);
       }
     };
+    /* depending on whether the mode is 'edit' or 'create',
+    a listing may be fetched and its info set to local state. */
     if (props.mode === 'edit') {
       getItem();
     } else
@@ -74,7 +77,14 @@ const CreateOrEditListing = (props) => {
       let fullUrl = supabase.storage
         .from('item-pics')
         .getPublicUrl(formData.itemPicName);
-      console.log(fullUrl);
+      /* due to how the supabase storage works, a url
+      must be generated and set to an item in order for
+      the image to properly display. If the url is set to
+      the path/file name of the image in storage, the image
+      will not properly display. Here, a working url is 
+      created and placed in the upsert call so that the
+      image_url column in the 'items' table has a working url */
+
       let { data, error } = await supabase.from('items').upsert([
         {
           id: params.id,
@@ -124,6 +134,9 @@ const CreateOrEditListing = (props) => {
                 .remove([formData.itemPicName]);
             setFormData({ ...formData, itemPicName: url });
           }}
+          /*this function could probably be defined inside
+          the ItemPic component, but this was how it was coded
+          in the supabase example, so it hasn't been changed */
         />
         <label htmlFor="name">Name</label>
         <input
