@@ -46,8 +46,6 @@ const Chat = (props) => {
             })
             .subscribe();
            
-             
-            
         }
       } catch (error) {
         console.error(error);
