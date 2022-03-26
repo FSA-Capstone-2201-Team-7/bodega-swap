@@ -75,15 +75,30 @@ const TradesAndMessages = () => {
 
   const handleActivate = async (swap) => {
     if (swap.status === 'pending') {
-      await supabase
+      const { data } = await supabase
         .from('swaps')
         .update({
           status: 'active',
         })
         .eq('id', swap.id);
+      // console.log(data);
+      if (data) {
+       const {data: conversation } = await supabase.from('conversations').insert([
+          {
+            sender_Id: user.id,
+            receiver_Id: swap.inbound_id
+          },
+        ]);
+        if(conversation) {
+          console.log('conversation', conversation)
+        }
+      }
     }
+
+
     navigate('/haggle', { state: { swap } });
   };
+ console.log(getInbound);
 
   const handleRemoveOffer = async (swap) => {
     try {
@@ -300,111 +315,3 @@ const TradesAndMessages = () => {
 };
 
 export default TradesAndMessages;
-// {/* <div>
-//                 {swap.status === 'active' ? (
-//                   <div className="flex">
-//                     <button
-//                       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-//                       onClick={() => handleActivate(swap)}
-//                     >
-//                       Currently active
-//                     </button>
-//                     <Button
-//                       color="lightBlue"
-//                       ref={buttonRef}
-//                       ripple="light"
-//                       className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-//                     >
-//                       CHECK USERS REP
-//                     </Button>
-
-//                     <Popover placement="top" ref={buttonRef}>
-//                       <PopoverContainer>
-//                         <PopoverHeader>USERNAME?</PopoverHeader>
-//                         <PopoverBody>
-//                           Here we can list breif information about the user
-//                           and their rep?
-//                         </PopoverBody>
-//                       </PopoverContainer>
-//                     </Popover>
-//                   </div>
-//                 ) : (
-//               <div className="flex"> */}
-//       <button
-//         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-//         onClick={() => handleActivate(swap)}
-//       >
-//         ACCEPT MEETING
-//       </button>
-//       <Button
-//         color="lightBlue"
-//         ref={buttonRef}
-//         ripple="light"
-//         className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-//       >
-//         REJECT MEETING
-//       </Button>
-
-//       <Popover placement="top" ref={buttonRef}>
-//         <PopoverContainer>
-//           <PopoverHeader>Are you sure? </PopoverHeader>
-//           <PopoverBody>
-//             Rejecting meetings may hurt your rep and the
-//             possiblity for any future offers
-//             <button
-//               type="button"
-//               className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-//               onClick={() => handleRemoveProposal(swap)}
-//             >
-//               {' '}
-//               YES I'M SURE
-//             </button>
-//           </PopoverBody>
-//         </PopoverContainer>
-//       </Popover>
-//     </div>
-//   )}
-// </div>
-//     {
-//       /* <div className="flex">
-//   {swap.status === 'pending' ? (
-//     <div>
-//       <Button
-//         color="lightBlue"
-//         ref={buttonRef}
-//         ripple="light"
-//         className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-//       >
-//         Check Status
-//       </Button>
-
-//       <Popover placement="top" ref={buttonRef}>
-//         <PopoverContainer>
-//           <PopoverHeader>Status: Pending</PopoverHeader>
-//           <PopoverBody>
-//             Your Proposal Has Not Yet Been Confirmed
-//           </PopoverBody>
-//         </PopoverContainer>
-//       </Popover>
-//     </div>
-//   ) : (
-//     <div>
-//       <button
-//         className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-//         onClick={() => navigate('/haggle', { state: { swap } })}
-//       >
-//         Haggle!
-//       </button>
-//     </div>
-//   )}
-//   <div>
-//     <button
-//       type="button"
-//       className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-//       onClick={() => handleRemoveOffer(swap)}
-//     >
-//       Remove Offer
-//     </button>
-//   </div>
-// </div> */
-//     }

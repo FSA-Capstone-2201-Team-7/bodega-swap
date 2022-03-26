@@ -1,30 +1,93 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 
-
-const Chat = () => {
-  const [messages, setMessages] = useState([])
+const Chat = (props) => {
+  const [messages, setMessages] = useState([]);
+  const [conversationId, setConversation] = useState('');
+  const [newMessage, setNewMessage] = useState('');
   const user = supabase.auth.user();
+
+  // const { sender, receiver } = props;
+  //   console.log('sender, ', props.sender);
+  //   // console.log('reciver meeee', receiver);
+  // console.log(props)
+
+  useEffect(() => {
+    const getConversation = async () => {
+      try {
+        const { data } = await supabase
+          .from('conversations')
+          .select(`id`)
+          .eq('sender_Id', props.sender)
+          .eq('receiver_Id', props.receiver);
+        setConversation(...data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getConversation();
+  }, [props.sender, props.receiver]);
 
   useEffect(() => {
     const getUserMessages = async () => {
       try {
-        const {data} = await supabase
-        .from('messages')
-        .select()
-        .eq('sender_Id', user.id)
-        setMessages(data)
+        const { data } = await supabase
+          .from('messages')
+          .select()
+          .eq('conversations_ID', conversationId.id);
+        setMessages(data);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-    }
-    getUserMessages()
-  }, [])
-console.log(messages)
-  return (
-    <div className="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen bg-black ">
+    };
+    getUserMessages();
+  }, [conversationId]);
 
-hello
+  useEffect(() => {
+    const createMessage = async () => {
+      try {
+        await supabase
+          .from('messages')
+          .insert([
+            { 
+              content: newMessage, 
+              sender_Id: props.sender, 
+              conversations_ID: conversationId.id
+            }
+          ])
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  }, []);
+  
+
+  const HadnleMessage = async () => {};
+
+  return (
+    // <div className="p:2 sm:p-6 justify-between h-screen bg-base-100 container w-2xl">
+    <div className="grid grid-cols-1 px-10 justify-items-center gap-10 mt-96">
+      <div className="bg-base-100 w-full grid grid-rows-1 justify-center">
+        {/* {messages.map((el) => {
+          return <div>{el.content}</div>;
+        })} */}
+        {/* <div className="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
+      djkad
+      </div> */}
+        <div className="justify-center mt-4 flex">
+          <input
+            type="text"
+            placeholder="Type here"
+            className="input input-ghost w-full max-w-xs"
+          />
+          <button
+            className="btn btn-active btn-ghost"
+            onClick={() => HadnleMessage}
+          >
+            Send
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
