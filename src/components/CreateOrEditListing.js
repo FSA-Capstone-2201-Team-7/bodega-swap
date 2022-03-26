@@ -119,6 +119,24 @@ const CreateOrEditListing = (props) => {
     }
   };
 
+  const handleDeleteListing = async (e) => {
+    e.preventDefault();
+
+    try {
+      let { data, error } = await supabase
+        .from('items')
+        .delete()
+        .eq('id', params.id);
+
+      if (error) throw error;
+      if (data) alert('Listing Successfully Deleted!');
+    } catch (error) {
+      console.error(error);
+    } finally {
+      navigate('/myAccount');
+    }
+  };
+
   return (
     <div className="listing-form">
       <form id="create-listing" onSubmit={handleSubmit}>
@@ -205,6 +223,13 @@ const CreateOrEditListing = (props) => {
           {props.mode === 'edit' ? 'Edit Listing' : 'Create Listing'}
         </button>
       </form>
+      {props.mode === 'edit' ? (
+        <button type="button" onClick={handleDeleteListing}>
+          Delete Listing
+        </button>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
