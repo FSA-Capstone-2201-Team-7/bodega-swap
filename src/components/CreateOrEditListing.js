@@ -4,6 +4,9 @@ import ItemPic from './ItemPic';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const CreateOrEditListing = (props) => {
+  //Props passed down to this component will determine whether a listing in question
+  //is being edited, or created. If it is being edited, the 'mode' prop will be 'edit'.
+  //If it is being created, the 'mode' prop will be 'create'.
   const [loading, setLoading] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
@@ -30,7 +33,7 @@ const CreateOrEditListing = (props) => {
           .single();
         if (error) throw error;
         if (data) {
-          console.log(data);
+          // console.log(data);
           setFormData({
             name: data.name,
             description: data.description,
@@ -89,7 +92,9 @@ const CreateOrEditListing = (props) => {
         throw error;
       }
       if (data) {
-        alert('Listing Successfully Created!');
+        props.mode === 'create'
+          ? alert('Listing Successfully Created!')
+          : alert('Listing Updated Successfully!');
       }
     } catch (error) {
       console.error(error);
@@ -112,7 +117,11 @@ const CreateOrEditListing = (props) => {
           url={formData.itemPicName}
           size={150}
           mode={props.mode}
-          onUpload={(url) => {
+          onUpload={async (url, mode) => {
+            if (mode === 'edit')
+              await supabase.storage
+                .from('item-pics')
+                .remove([formData.itemPicName]);
             setFormData({ ...formData, itemPicName: url });
           }}
         />
