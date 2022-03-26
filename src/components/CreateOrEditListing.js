@@ -68,7 +68,6 @@ const CreateOrEditListing = (props) => {
     const name = e.target.name;
     const value = e.target.value;
     setFormData({ ...formData, [name]: value });
-    console.log(formData);
   };
 
   const handleSubmit = async (e) => {
@@ -127,12 +126,12 @@ const CreateOrEditListing = (props) => {
           url={formData.itemPicName}
           size={150}
           mode={props.mode}
-          onUpload={async (url, mode) => {
+          onUpload={async (fileName, mode) => {
             if (mode === 'edit')
               await supabase.storage
                 .from('item-pics')
                 .remove([formData.itemPicName]);
-            setFormData({ ...formData, itemPicName: url });
+            setFormData({ ...formData, itemPicName: fileName });
           }}
           /*this function could probably be defined inside
           the ItemPic component, but this was how it was coded
