@@ -4,7 +4,12 @@ import ItemPic from './ItemPic';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const CreateOrEditListing = (props) => {
+  //Props passed down to this component will determine whether a listing in question
+  //is being edited, or created. If it is being edited, the 'mode' prop will be 'edit'.
+  //If it is being created, the 'mode' prop will be 'create'.
   const [loading, setLoading] = useState(null);
+  //loading is not currently used, but will be pending our
+  //design of a loading component
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -30,7 +35,6 @@ const CreateOrEditListing = (props) => {
           .single();
         if (error) throw error;
         if (data) {
-          console.log(data);
           setFormData({
             name: data.name,
             description: data.description,
@@ -45,6 +49,8 @@ const CreateOrEditListing = (props) => {
         setLoading(false);
       }
     };
+    /* depending on whether the mode is 'edit' or 'create',
+    a listing may be fetched and its info set to local state. */
     if (props.mode === 'edit') {
       getItem();
     } else
@@ -62,7 +68,6 @@ const CreateOrEditListing = (props) => {
     const name = e.target.name;
     const value = e.target.value;
     setFormData({ ...formData, [name]: value });
-    console.log(formData);
   };
 
   const handleSubmit = async (e) => {
@@ -71,7 +76,14 @@ const CreateOrEditListing = (props) => {
       let fullUrl = supabase.storage
         .from('item-pics')
         .getPublicUrl(formData.itemPicName);
-      console.log(fullUrl);
+      /* due to how the supabase storage works, a url
+      must be generated and set to an item in order for
+      the image to properly display. If the url is set to
+      the path/file name of the image in storage, the image
+      will not properly display. Here, a working url is 
+      created and placed in the upsert call so that the
+      image_url column in the 'items' table has a working url */
+
       let { data, error } = await supabase.from('items').upsert([
         {
           id: params.id,
@@ -89,7 +101,9 @@ const CreateOrEditListing = (props) => {
         throw error;
       }
       if (data) {
-        alert('Listing Successfully Created!');
+        props.mode === 'create'
+          ? alert('Listing Successfully Created!')
+          : alert('Listing Updated Successfully!');
       }
     } catch (error) {
       console.error(error);
@@ -105,6 +119,24 @@ const CreateOrEditListing = (props) => {
     }
   };
 
+  const handleDeleteListing = async (e) => {
+    e.preventDefault();
+
+    try {
+      let { data, error } = await supabase
+        .from('items')
+        .delete()
+        .eq('id', params.id);
+
+      if (error) throw error;
+      if (data) alert('Listing Successfully Deleted!');
+    } catch (error) {
+      console.error(error);
+    } finally {
+      navigate('/myAccount');
+    }
+  };
+
   return (
     <div className="listing-form">
       <form id="create-listing" onSubmit={handleSubmit}>
@@ -112,9 +144,16 @@ const CreateOrEditListing = (props) => {
           url={formData.itemPicName}
           size={150}
           mode={props.mode}
-          onUpload={(url) => {
-            setFormData({ ...formData, itemPicName: url });
+          onUpload={async (fileName, mode) => {
+            if (mode === 'edit')
+              await supabase.storage
+                .from('item-pics')
+                .remove([formData.itemPicName]);
+            setFormData({ ...formData, itemPicName: fileName });
           }}
+          /*this function could probably be defined inside
+          the ItemPic component, but this was how it was coded
+          in the supabase example, so it hasn't been changed */
         />
         <label htmlFor="name">Name</label>
         <input
@@ -184,6 +223,13 @@ const CreateOrEditListing = (props) => {
           {props.mode === 'edit' ? 'Edit Listing' : 'Create Listing'}
         </button>
       </form>
+      {props.mode === 'edit' ? (
+        <button type="button" onClick={handleDeleteListing}>
+          Delete Listing
+        </button>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
