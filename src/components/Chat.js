@@ -2,26 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 
 const Chat = (props) => {
+  const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
-  const [conversationId, setConversation] = useState('');
-  const [newMessage, setNewMessage] = useState(null);
-  const [input, setInput] = useState('') 
+  const [conversationId, setConversation] = useState([]);
+  const [input, setInput] = useState('');
+  const [realtimeMessage, setRealTime] = useState([]);
   const user = supabase.auth.user();
-
-  // const { sender, receiver } = props;
-  //   console.log('sender, ', props.sender);
-  //   // console.log('reciver meeee', receiver);
-  // console.log(props)
 
   useEffect(() => {
     const getConversation = async () => {
       try {
+        setLoading(true);
         const { data } = await supabase
           .from('conversations')
           .select(`id`)
           .eq('sender_Id', props.sender)
           .eq('receiver_Id', props.receiver);
-        setConversation(...data);
+        if (data) {
+          setConversation(...data);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -36,85 +35,141 @@ const Chat = (props) => {
           .from('messages')
           .select()
           .eq('conversations_ID', conversationId.id);
-        setMessages(data);
+
+           setMessages(data);
+        if (data) {
+          supabase
+            .from('messages')
+            .on('INSERT', (message) => {
+              setMessages([...data, message.new]);
+              console.log('message received!', message.new);
+            })
+            .subscribe();
+           
+             
+            
+        }
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
     getUserMessages();
-  }, [conversationId]);
+  }, [conversationId, realtimeMessage]);
 
   // useEffect(() => {
-  //   const createMessage = async () => {
+  //   const realtime = async () => {
   //     try {
-  //       await supabase
-  //         .from('messages')
-  //         .insert([
-  //           { 
-  //             content: newMessage, 
-  //             sender_Id: props.sender, 
-  //             conversations_ID: conversationId.id
-  //           }
-  //         ])
+
+  //         supabase
+  //           .from('messages')
+  //           .on('INSERT', (message) => {
+  //             if(message.new) {
+  //               setMessages([...messages, message.new])
+  //             }
+
+  //             console.log('message received!', message.new);
+  //           })
+  //           .subscribe();
+
   //     } catch (error) {
   //       console.error(error);
   //     }
   //   };
-  // }, []);
-  
-   const createMessage = async () => {
-      try {
-        if(input) {
-       const {data} = await supabase
-          .from('messages')
-          .insert([
-            { 
-              content: input, 
-              sender_Id: props.sender, 
-              conversations_ID: conversationId.id
-            }
-          ])
-          console.log(data)
-          setInput('')
-        }
-      } catch (error) {
-        console.error(error);
+  //   realtime();
+  // }, [input, messages]);
+  // const realtime = () => {
+
+  //           supabase
+  //             .from('messages')
+  //             .on('INSERT', (message) => {
+  //               setRealTime(message.new)
+  //               console.log('message received!', message.new);
+  //             })
+  //             .subscribe();
+
+  //     };
+
+  const createMessage = async () => {
+    try {
+      if (input) {
+        const { data } = await supabase.from('messages').insert([
+          {
+            content: input,
+            sender_Id: props.sender,
+            conversations_ID: conversationId.id,
+          },
+        ]);
+
+        setInput('');
       }
+    } catch (error) {
+      console.error(error);
     }
+  };
 
-   
+  // const newMessage = supabase
+  //   .from('messages')
+  //   .on('INSERT', (message) => {
+
+  //     console.log('all messages', messages)
+  //     console.log('message received!', message.new);
+  //   })
+  //   .subscribe();
+  // const hello = supabase
+  //    .from('messages')
+  //    .on('INSERT', (message) => {
+  //      console.log('with data', [...messages, message.new]);
+
+  //    setMessages([...messages, message.new])
+  //      console.log('message received!', message.new);
+  //    })
+  //    .subscribe();
+
   const handleChange = (e) => {
-    const {value} = e.target
-    console.log(value)
-    setInput(value)
-
-  }
-
-  return (
+    const { value } = e.target;
+    setInput(value);
+  };
+  
+  return loading ? (
+    <div>Loading....</div>
+  ) : (
     // <div className="p:2 sm:p-6 justify-between h-screen bg-base-100 container w-2xl">
     <div className="grid grid-cols-1 px-10 justify-items-center gap-10 mt-96">
       <div className="bg-base-100 w-full grid grid-rows-1 justify-center">
-        {/* {messages.map((el) => {
-          return <div>{el.content}</div>;
+        {/* {messages.map( async (el) => {
+          if(el.content) {
+             return <div>{el.content}</div>
+          }
+          
         })} */}
+        {messages &&
+          messages?.map((message, i) => {
+            return message ? (
+              <div key={i}>{message.content}</div>
+            ) : (
+              <div key={i}>noope</div>
+            );
+          })}
         {/* <div className="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
       djkad
       </div> */}
         <div className="justify-center mt-4 flex">
-            <input
-              type="text"
-              value={input}
-              placeholder="Type here"
-              onChange={handleChange}
-              className="input input-ghost w-full max-w-xs"
-            />
-            <button
-              type="button"
-              className="btn btn-active btn-ghost"
-              onClick={() => createMessage()}
-            >
-              Send
-            </button>
+          <input
+            type="text"
+            value={input}
+            placeholder="Type here"
+            onChange={handleChange}
+            className="input input-ghost w-full max-w-xs"
+          />
+          <button
+            type="button"
+            className="btn btn-active btn-ghost"
+            onClick={() => createMessage()}
+          >
+            Send
+          </button>
         </div>
       </div>
     </div>

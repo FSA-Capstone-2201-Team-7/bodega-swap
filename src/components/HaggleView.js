@@ -30,8 +30,8 @@ const HaggleView = ({ state }) => {
           setYourInfo(swap.outbound_offer);
           setNotUserId(swap.outbound_id);
         } else {
-          setYourInfo({ ...swap.inbound_offer, ...data[0] });
-          console.log('here');
+          // setYourInfo({ ...swap.inbound_offer, ...data[0] || '' });
+          setYourInfo({ ...swap.inbound_offer });
           setNotUserId(swap.inbound_id);
         }
       } catch (error) {
@@ -58,9 +58,11 @@ console.log(notUserId)
           .eq('id', notUserId);
 
         if (swap.outbound_id !== user.id) {
-          setTheirInfo({ ...swap.inbound_offer, ...data[0] });
+          // setTheirInfo({ ...swap.inbound_offer, ...data[0] || '' });
+          setTheirInfo({ ...swap.inbound_offer });
         } else {
-          setTheirInfo({ ...swap.outbound_offer, ...data[0] });
+          // setTheirInfo({ ...swap.outbound_offer, ...data[0] || '' });
+          setTheirInfo({ ...swap.outbound_offer });
         }
 
       
