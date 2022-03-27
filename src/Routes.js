@@ -54,7 +54,7 @@ const Routing = () => {
           </Routes>
         </main>
       ) : (
-        <main className="pb-52">
+        <main className="px-8 sm:px-16 pb-12">
           <Routes>
             <Route path="/" element={<Navigate to="/home" />} />
             <Route exact path="/home" element={<Main />} />

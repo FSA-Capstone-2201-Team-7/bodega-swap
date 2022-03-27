@@ -56,11 +56,11 @@ function Footer() {
             <li className="cursor-pointer hover:scale-110">Careers</li>
           </ul>
         </div>
-        <p className="text-gray-500 py-1 col-span-1 pl-24 text-sm bg-gray-300">
+        <p className="text-gray-500 py-1 md:pl-14  lg:col-span-1 lg:pl-24 text-sm bg-gray-300">
           Copyright &copy; <span className="year">2022</span> Bodega Swap, Inc.
           All rights reserved.
         </p>
-        <div className="flex col-span-2 py-1 justify-end pr-24 space-x-2 bg-gray-300">
+        <div className="flex lg:col-span-2 py-1 justify-end md:pr-14 lg:pr-24 space-x-2 bg-gray-300">
           <TwitterIcon className="cursor-pointer" />
           <InstagramIcon className="cursor-pointer" />
           <FacebookIcon className="cursor-pointer" />
