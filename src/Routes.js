@@ -42,7 +42,7 @@ const Routing = () => {
     <div className="flex-col flex h-screen  justify-between">
       <NavBar session={session} />
       {!session ? (
-        <main className=" px-8 sm:px-16">
+        <main className=" px-8 sm:px-16 pb-12">
           <Routes>
             <Route path="/" element={<Navigate to="/home" />} />
             <Route exact path="/home" element={<Main />} />

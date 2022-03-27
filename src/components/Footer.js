@@ -6,7 +6,7 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 function Footer() {
   return (
     <footer className="">
-      <div className="bg-gray-200 grid grid-cols-3 pt-10 gap-y-4 ">
+      <div className="bg-gray-200 grid grid-cols-1 lg:grid-cols-3 pt-10 gap-y-4 ">
         <div className="col-span-1 pl-24">
           <h2 className="text-lg font-bold mb-3">Bodega Swap</h2>
           <address className="text-sm text-gray-500">
@@ -25,7 +25,7 @@ function Footer() {
           </address>
         </div>
         <div className="flex col-span-2 justify-between">
-          <ul className="flex-cols  text-gray-700  text-sm ">
+          <ul className="flex-cols text-gray-700 md:pl-14  text-sm ">
             <h3 className="font-semibold pb-2">Shop</h3>
             <li className="cursor-pointer hover:scale-110">Mobile App</li>
             <li className="cursor-pointer hover:scale-110">Categories</li>
@@ -49,7 +49,7 @@ function Footer() {
               Prohibited Conduct
             </li>
           </ul>
-          <ul className="flex-cols pr-24 text-gray-700  text-sm">
+          <ul className="flex-cols md:pr-14 lg:pr-24 text-gray-700  text-sm">
             <h3 className="font-semibold pb-2">Company</h3>
             <li className="cursor-pointer hover:scale-110">About Us</li>
             <li className="cursor-pointer hover:scale-110">Blog</li>
