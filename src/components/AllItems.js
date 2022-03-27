@@ -65,14 +65,14 @@ const AllItems = () => {
       {loading ? (
         <p>Loading</p>
       ) : (
-        <div className="grid grid-cols-3 px-10 justify-items-center gap-10 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-2 lg:px-10 justify-items-center gap-10 ">
           <FilterCategory
             list={list}
             setSelected={setFilterItem}
             loading={loading}
           />
           {items.map((item, idx) => {
-            if (filterItem === 'All' || item.category === filterItem) {
+            if (filterItem === "All" || item.category === filterItem) {
               return (
                 <div key={item.id}>
                   <Card
@@ -114,7 +114,6 @@ const AllItems = () => {
 };
 
 export default AllItems;
-
 
 // {/* <Link to="/createproposal" state={{ item }}>
 //   <button
