@@ -77,23 +77,6 @@ const Chat = (props) => {
     }
   };
 
-  // const newMessage = supabase
-  //   .from('messages')
-  //   .on('INSERT', (message) => {
-
-  //     console.log('all messages', messages)
-  //     console.log('message received!', message.new);
-  //   })
-  //   .subscribe();
-  // const hello = supabase
-  //    .from('messages')
-  //    .on('INSERT', (message) => {
-  //      console.log('with data', [...messages, message.new]);
-
-  //    setMessages([...messages, message.new])
-  //      console.log('message received!', message.new);
-  //    })
-  //    .subscribe();
 
   const handleChange = (e) => {
     const { value } = e.target;
@@ -103,26 +86,52 @@ const Chat = (props) => {
   return loading ? (
     <div>Loading....</div>
   ) : (
-    // <div className="p:2 sm:p-6 justify-between h-screen bg-base-100 container w-2xl">
+    <div className="container ">
+      <div className="p:2 sm:p-6 justify-between h-screen bg-base-100 max-w-2xl border rounded">
+        <div className="w-96 mr-5 ml-5">
+          <div class="relative flex items-center p-3 border-b border-gray-300">
+            <span class="absolute w-3 h-3 bg-green-600 rounded-full left-10 top-3"></span>
+          </div>
+        </div>
+        <div className="grid grid-rows-1 px-10 justify-items-center gap-10">
+          {messages &&
+            messages?.map((message, i) => {
+              return message ? (
+                <div
+                  key={i}
+                  className="bg-indigo-500 w-max
+      rounded-[10px] relative grid grid-rows-1 text-white text-xl"
+                >
+                  {message.content}
+                  {/* <div className="relative w-0 h-0 border-t-[13px] border-t-transparent border-b-[13px] border-b-transparent border-r-[26px] border-r-indigo-500 right-[100%] top-[50%] translate-y-[-50%]" /> */}
+                </div>
+              ) : (
+                <div key={i}>noope</div>
+              );
+            })}
+
+          {/* <div
+        className="realitive w-[120px] h-[80px] bg-indigo-500
+      rounded-[10px] flex justify-center items-center text-white text-xl"
+      >
+        {message.content}
+      </div> */}
+          {/* <div className="absolute w-0 h-0 border-t-[13px] border-t-transparent border-b-[13px] border-b-transparent border-r-[26px] border-r-indigo-500 right-[100%] top-[50%] translate-y-[-50%]"></div> */}
+          {/* <div className="p:2 sm:p-6 justify-between h-screen bg-base-100 container w-2xl">
     <div className="grid grid-cols-1 px-10 justify-items-center gap-10 mt-96">
       <div className="bg-base-100 w-full grid grid-rows-1 justify-center">
-        {/* {messages.map( async (el) => {
-          if(el.content) {
-             return <div>{el.content}</div>
-          }
-          
-        })} */}
+       
         {messages &&
           messages?.map((message, i) => {
             return message ? (
-              <div key={i}>{message.content}</div>
+              <div key={i}>
+                {message.content}
+                </div>
             ) : (
               <div key={i}>noope</div>
             );
           })}
-        {/* <div className="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
-      djkad
-      </div> */}
+       
         <div className="justify-center mt-4 flex">
           <input
             type="text"
@@ -140,33 +149,42 @@ const Chat = (props) => {
           </button>
         </div>
       </div>
+    </div> */}
+        </div>
+      </div>
+      <div className="justify-center flex bg-base-100 w-full">
+        <input
+          type="text"
+          value={input}
+          placeholder="Type here"
+          onChange={handleChange}
+          className="input input-ghost w-full max-w-xs"
+        />
+        <button
+          type="button"
+          className="btn btn-active btn-ghost"
+          onClick={() => createMessage()}
+        >
+          Send
+        </button>
+      </div>
     </div>
   );
 };
 
 export default Chat;
 
+//  {/* <div className="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
+//       djkad
+//       </div> */}
+
+
 //f90aa699-5105-4fec-a8b9-82796c0e2158
 //5409317d-20d1-4707-9043-d091d719296d
 
 //import React from 'react';
 
-// const style = {
-//    journal-scroll::-webkit-scrollbar: {
-//         width: 6px;
-//         cursor: pointer;
-//     }
 
-//     #journal-scroll::-webkit-scrollbar-track {
-//         background-color: rgba(229, 231, 235, var(--bg-opacity));
-//         cursor: pointer;
-//     }
-
-//     #journal-scroll::-webkit-scrollbar-thumb {
-//         cursor: pointer;
-//         background-color: #a0aec0;
-//     }
-// }
 
 // const Chat = () => {
 //   return (
