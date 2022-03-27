@@ -45,7 +45,7 @@ const Routing = () => {
         <main className=" px-8 sm:px-16 pb-12">
           <Routes>
             <Route path="/" element={<Navigate to="/home" />} />
-            <Route exact path="/home" element={<Main />} />
+            <Route exact path="/home" element={<Main session={session} />} />
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/signup" element={<SignUp />} />
             <Route exact path="/items" element={<AllItems />} />

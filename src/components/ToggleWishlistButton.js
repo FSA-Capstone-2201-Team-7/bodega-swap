@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const ToggleWishlistButton = (props) => {
   const [onWishlist, setOnWishlist] = useState(null);
@@ -11,7 +11,7 @@ const ToggleWishlistButton = (props) => {
       try {
         setLoading(true);
         let { data, error, status } = await supabase
-          .from("wishlist_items")
+          .from('wishlist_items')
           .select(`item_id, user_id`)
           .match({ user_id: props.userId, item_id: props.itemId });
 
@@ -36,9 +36,9 @@ const ToggleWishlistButton = (props) => {
     if (onWishlist) {
       try {
         let { error, status } = await supabase
-          .from("wishlist_items")
+          .from('wishlist_items')
           .delete()
-          .match({ item_id: props.itemId }, { user_id: props.userId });
+          .match({ item_id: itemId }, { user_id: userId });
 
         if (error && status !== 406) {
           throw error;
@@ -51,8 +51,8 @@ const ToggleWishlistButton = (props) => {
     } else {
       try {
         let { error, status } = await supabase
-          .from("wishlist_items")
-          .upsert([{ user_id: props.userId, item_id: props.itemId }]);
+          .from('wishlist_items')
+          .upsert([{ user_id: userId, item_id: itemId }]);
 
         if (error && status !== 406) {
           throw error;
