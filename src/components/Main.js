@@ -17,7 +17,10 @@ const Main = () => {
           .from('items')
           .select(`name, description, ownerId, id, category, listed, image_url`)
           .eq('listed', true)
-          .neq('ownerId', user.id);
+          .neq(
+            'ownerId',
+            user ? user.id : '11111111-1111-1111-1111-111111111111'
+          );
 
         if (error && status !== 406) {
           throw error;
