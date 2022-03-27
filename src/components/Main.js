@@ -16,6 +16,7 @@ const Main = () => {
         let { data, error, status } = await supabase
           .from('items')
           .select(`name, description, ownerId, id, category, listed, image_url`)
+          .eq('listed', true)
           .neq('ownerId', user.id);
 
         if (error && status !== 406) {
