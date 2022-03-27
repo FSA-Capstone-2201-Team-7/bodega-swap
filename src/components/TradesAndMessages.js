@@ -31,7 +31,9 @@ const TradesAndMessages = () => {
             id,
             inbound_offer,
             status,
-            outbound_offer
+            outbound_offer,
+            inbound_accept,
+            outbound_accept
             `
           )
           .eq('inbound_id', user.id);
@@ -58,11 +60,14 @@ const TradesAndMessages = () => {
               id,
               inbound_offer,
               outbound_offer,
-              status
+              status,
+              outbound_accept,
+              inbound_accept
+              
               `
           )
           .eq('outbound_id', user.id);
-
+console.log('inbound', data)
         setInbound(data);
       } catch (error) {
         console.error('try again', error);
@@ -130,7 +135,7 @@ const TradesAndMessages = () => {
       if (error && status !== 406) {
         throw error;
       }
-      // if (swap.outbound_id !== user.id) {
+
       const render = getInbound.filter((active) => {
         if (active.id !== swap.id) {
           return active;
@@ -138,7 +143,7 @@ const TradesAndMessages = () => {
       });
       setInbound(render);
 
-      // }
+  
     } catch (error) {
       console.error(error);
     }

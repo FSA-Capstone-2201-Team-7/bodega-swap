@@ -58,7 +58,8 @@ const Chat = (props) => {
   }, [conversationId, messages]);
 
 
-  const createMessage = async () => {
+  const createMessage = async (e) => {
+    console.log('event? ', e)
     try {
       if (input) {
         await supabase.from('messages').insert([
@@ -98,13 +99,9 @@ const Chat = (props) => {
           <div>online?</div>
         </div>
       </div>
-      <div className="p:2 sm:p-6 justify-between h-screen bg-base-100 max-w-2xl border rounded overflow-auto">
+      <div className="p:2 sm:p-6 justify-between h-screen bg-base-100 max-w-2xl rounded overflow-auto">
         {messages ? (
-          <InfiniteScroll
-            dataLength={messages.length}
-          
-            loader={<h4>...</h4>}
-          >
+          <InfiniteScroll dataLength={messages.length} loader={<h4>...</h4>}>
             <div className="justify-items-center pt-5">
               <ul className="space-y-12 grid grid-cols-1">
                 {messages &&
@@ -115,20 +112,21 @@ const Chat = (props) => {
             </div>
           </InfiniteScroll>
         ) : (
-          <div>Loading..</div>
+          <div>Loading....</div>
         )}
       </div>
-      <div className="justify-center flex bg-base-100 w-full">
+      <div className="pb-5 pt-5 justify-center flex bg-base-100 w-full">
         <input
           type="text"
           value={input}
           placeholder="Type here"
           onChange={handleChange}
-          className="input input-ghost w-full max-w-xs"
+          className="input input-ghost input-lg w-full max-w-xs"
         />
+      
         <button
-          type="button"
-          className="btn btn-active btn-ghost"
+          type="click"
+          className="btn btn-active btn-ghost btn-lg"
           onClick={() => createMessage()}
         >
           Send
