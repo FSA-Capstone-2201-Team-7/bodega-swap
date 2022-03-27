@@ -137,35 +137,7 @@ const HaggleView = ({ state }) => {
       console.error(error);
     }
   };
-  const handleRemoveAcceptance = async (check) => {
-    try {
-      if (check.inOrOut === 'inbound') {
-        await supabase
-          .from('swaps')
-          .update({
-            inbound_accept: false,
-          })
-          .eq('id', swap.id);
-      } else {
-        await supabase
-          .from('swaps')
-          .update({
-            outbound_accept: false,
-          })
-          .eq('id', swap.id);
-      }
-      supabase
-        .from('swaps')
-        .on('UPDATE', (payload) => {
-          setYourInfo({ ...yourInfo, userAccept: false });
-        })
-        .subscribe();
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
-  console.log('changed', yourInfo);
   return loading ? (
     <div>Loading....</div>
   ) : (
@@ -179,38 +151,52 @@ const HaggleView = ({ state }) => {
             alt="..."
             className="shadow rounded-full w-full  align-middle border-none ml-52"
           />
-          <button
-            type="button"
-            className="bg-blue-300 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full w-full ml-52"
-          >
-            Inventory
-          </button>
+        
         </div>
-
-        <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
-          <Card id={yourInfo.id} imageUrl={yourInfo.image_url} />
-        </div>
-        <div>
-          {yourInfo.userAccept ? (
-            <div>
-              <button className="btn loading lg:btn-lg btn-xs sm:btn-sm md:btn-md">
-                Waiting Response
-              </button>
-              <button
-                className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
-                onClick={() => handleRemoveAcceptance(yourInfo)}
+        <div className="drawer">
+          <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+          <div className="drawer-content">
+            <div className="flex grid grid-cols-2">
+              <label
+                htmlFor="my-drawer"
+                className="btn btn-primary drawer-button"
               >
-                Remove Response
-              </button>
+                Open Inventory
+              </label>
+              {yourInfo.userAccept ? (
+                <div>
+                  <button className="btn loading btn-xs sm:btn-sm md:btn-md w-full">
+                    Waiting Response
+                  </button>
+                 
+                </div>
+              ) : (
+                <button
+                  className="btn btn-xs sm:btn-sm md:btn-md w-full"
+                  onClick={() => handleAcceptance(yourInfo)}
+                >
+                  Accept Terms
+                </button>
+              )}
             </div>
-          ) : (
-            <button
-              className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
-              onClick={() => handleAcceptance(yourInfo)}
-            >
-              Accept Terms
-            </button>
-          )}
+
+            <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
+              <Card id={yourInfo.id} imageUrl={yourInfo.image_url} />
+            </div>
+          </div>
+          <div className="drawer-side">
+            <label for="my-drawer" className="drawer-overlay"></label>
+
+            <ul className="menu p-4 overflow-y-auto w-60 md:w-auto bg-base-100 text-base-content">
+              <label
+                htmlFor="my-drawer"
+                className="btn btn-primary drawer-button"
+              >
+                Close Inventory
+              </label>
+              {/* <Card id={yourInfo.id} imageUrl={yourInfo.image_url} /> */}
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -227,30 +213,62 @@ const HaggleView = ({ state }) => {
             alt="..."
             className="shadow rounded-full w-full border-none ml-52"
           />
-          <button
-            type="button"
-            className="bg-blue-300 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full w-full ml-52"
-          >
-            Inventory
-          </button>
         </div>
-        <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
-          <Card id={theirInfo.id} imageUrl={theirInfo.image_url} />
+        <div className="drawer drawer-end">
+          <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
+          <div className="drawer-content">
+            <div className="flex grid grid-cols-2">
+              <label
+                htmlFor="my-drawer-4"
+                className="btn btn-primary drawer-button"
+              >
+                Open Inventory
+              </label>
+              {theirInfo.notUserAccept ? (
+                <div>
+                  <button className="btn loading btn-xs sm:btn-sm md:btn-md w-full">
+                    Waiting Response
+                  </button>
+                  {/* <button
+                className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+                onClick={() => handleRemoveAcceptance(yourInfo)}
+              >
+                Remove Response
+              </button> */}
+                </div>
+              ) : (
+                <button
+                  className="btn btn-xs sm:btn-sm md:btn-md w-full"
+                  onClick={() => handleAcceptance(theirInfo)}
+                >
+                  Accept Terms
+                </button>
+              )}
+            </div>
+
+            <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
+              <Card id={theirInfo.id} imageUrl={theirInfo.image_url} />
+            </div>
+          </div>
+          <div className="drawer-side">
+            <label for="my-drawer-4" className="drawer-overlay"></label>
+
+            <ul className="menu p-4 overflow-y-auto w-full md:w-auto bg-base-100 text-base-content">
+              <label
+                htmlFor="my-drawer-4"
+                className="btn btn-primary drawer-button"
+              >
+                Close Inventory
+              </label>
+              
+            </ul>
+          </div>
         </div>
-        {/* {theirInfo.notUserAccept ? (
-          <button className="btn loading">Waiting Response</button>
-        ) : (
-          <button
-            className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
-      
-            onClick={(theirInfo) => handleAcceptance(theirInfo)}
-          >
-            Accept Terms
-          </button>
-        )} */}
       </div>
     </div>
   );
 };
 
 export default HaggleView;
+
+
