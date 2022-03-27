@@ -29,6 +29,9 @@ const Chat = (props) => {
     getConversation();
   }, [props.sender, props.receiver]);
 
+
+  //here we implement realtime by applying any change made with messages 
+  //to the database to be seen in realtime with .on() .subscribe()
   useEffect(() => {
     const getUserMessages = async () => {
       try {
@@ -76,11 +79,13 @@ const Chat = (props) => {
       console.error(error);
     }
   };
-  const fetchMessages = () => {
-    if(messages) {
-      return messages
-    }
-  }
+
+  //will be used to develop infinite scroll properties
+  // const fetchMessages = () => {
+  //   if(messages) {
+  //     return messages
+  //   }
+  // }
 
   const handleChange = (e) => {
     const { value } = e.target;

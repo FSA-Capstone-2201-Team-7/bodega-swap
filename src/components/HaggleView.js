@@ -10,6 +10,7 @@ const HaggleView = ({ state }) => {
   const [yourInfo, setYourInfo] = useState({});
   const [theirInfo, setTheirInfo] = useState({});
   const [notUserId, setNotUserId] = useState('');
+  const [checked, setchecked] = useState(false);
   const user = supabase.auth.user();
   const { swap = '' } = location.state || {};
 
@@ -32,8 +33,7 @@ const HaggleView = ({ state }) => {
             ...swap.outbound_offer,
             ...data[0],
             userAccept: swap.outbound_accept,
-            inOrOut: 'outbound'
-           
+            inOrOut: 'outbound',
           });
           setNotUserId(swap.outbound_id);
         } else {
@@ -41,7 +41,7 @@ const HaggleView = ({ state }) => {
             ...swap.inbound_offer,
             ...data[0],
             userAccept: swap.inbound_accept,
-            inOrOut: 'inbound'
+            inOrOut: 'inbound',
           });
 
           setNotUserId(swap.inbound_id);
@@ -59,6 +59,8 @@ const HaggleView = ({ state }) => {
     swap.inbound_offer,
     swap.outbound_offer,
     user.id,
+    swap.inbound_accept,
+    swap.outbound_accept,
   ]);
 
   //here we grab the non-users infor and do the same thing
@@ -80,7 +82,7 @@ const HaggleView = ({ state }) => {
             ...swap.inbound_offer,
             ...data[0],
             notUserAccept: swap.inbound_accept,
-            inOrOut: 'inbound'
+            inOrOut: 'inbound',
           });
         } else {
           setTheirInfo({
@@ -104,42 +106,66 @@ const HaggleView = ({ state }) => {
     swap.outbound_id,
     swap.outbound_offer,
     user.id,
+    swap.inbound_accept,
+    swap.outbound_accept,
   ]);
-  console.log(theirInfo, yourInfo)
-  console.log(swap)
 
+  const handleAcceptance = async (check) => {
+    try {
+      if (check.inOrOut === 'inbound') {
+        await supabase
+          .from('swaps')
+          .update({
+            inbound_accept: true,
+          })
+          .eq('id', swap.id);
+      } else {
+        await supabase
+          .from('swaps')
+          .update({
+            outbound_accept: true,
+          })
+          .eq('id', swap.id);
+      }
+      supabase
+        .from('swaps')
+        .on('UPDATE', (payload) => {
+          setYourInfo({ ...yourInfo, userAccept: true });
+        })
+        .subscribe();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleRemoveAcceptance = async (check) => {
+    try {
+      if (check.inOrOut === 'inbound') {
+        await supabase
+          .from('swaps')
+          .update({
+            inbound_accept: false,
+          })
+          .eq('id', swap.id);
+      } else {
+        await supabase
+          .from('swaps')
+          .update({
+            outbound_accept: false,
+          })
+          .eq('id', swap.id);
+      }
+      supabase
+        .from('swaps')
+        .on('UPDATE', (payload) => {
+          setYourInfo({ ...yourInfo, userAccept: false });
+        })
+        .subscribe();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-
-const handleAcceptance = async (check) => {
-console.log(check.inOrOut)
-if(check.inOrOut === 'inbound') {
-  const { data } = await supabase
-    .from('swaps')
-    .update({
-    inbound_accept: true
-    })
-    .eq('id', swap.id);
-   
-} else {
-  const { data } = await supabase
-    .from('swaps')
-    .update({
-      outbound_accept: true
-    })
-    .eq('id', swap.id);
-
-}
-  // const { data } = await supabase
-  //   .from('swaps')
-  //   .update({
-      
-     
-  //   })
-  //   .eq('id', swap.id);
-}
-
-console.log('here', swap.id)
-
+  console.log('changed', yourInfo);
   return loading ? (
     <div>Loading....</div>
   ) : (
@@ -164,16 +190,28 @@ console.log('here', swap.id)
         <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
           <Card id={yourInfo.id} imageUrl={yourInfo.image_url} />
         </div>
-        {yourInfo.userAccept ? (
-          <button className="btn loading">Waiting Response</button>
-        ) : (
-          <button
-            className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
-            onClick={() => handleAcceptance(yourInfo)}
-          >
-            Accept Terms
-          </button>
-        )}
+        <div>
+          {yourInfo.userAccept ? (
+            <div>
+              <button className="btn loading lg:btn-lg btn-xs sm:btn-sm md:btn-md">
+                Waiting Response
+              </button>
+              <button
+                className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+                onClick={() => handleRemoveAcceptance(yourInfo)}
+              >
+                Remove Response
+              </button>
+            </div>
+          ) : (
+            <button
+              className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+              onClick={() => handleAcceptance(yourInfo)}
+            >
+              Accept Terms
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="relative">
@@ -199,16 +237,17 @@ console.log('here', swap.id)
         <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
           <Card id={theirInfo.id} imageUrl={theirInfo.image_url} />
         </div>
-        {theirInfo.notUserAccept ? (
+        {/* {theirInfo.notUserAccept ? (
           <button className="btn loading">Waiting Response</button>
         ) : (
           <button
             className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
-            onClick={() => handleAcceptance(theirInfo)}
+      
+            onClick={(theirInfo) => handleAcceptance(theirInfo)}
           >
             Accept Terms
           </button>
-        )}
+        )} */}
       </div>
     </div>
   );
