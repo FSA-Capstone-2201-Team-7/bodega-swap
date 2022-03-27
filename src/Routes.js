@@ -1,9 +1,9 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { supabase } from './supabaseClient';
-import Login from './components/Login';
-import SignUp from './components/SignUp';
-import EditAccount from './components/EditAccount';
+import React from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "./supabaseClient";
+import Login from "./components/Login";
+import SignUp from "./components/SignUp";
+import EditAccount from "./components/EditAccount";
 import {
   Main,
   HaggleView,
@@ -11,21 +11,21 @@ import {
   CreateProposal,
   AllItems,
   CreateOrEditListing,
-} from './components';
-import NavBar from './components/NavBar';
-import Profile from './components/MyAccount';
+} from "./components";
+import NavBar from "./components/NavBar";
+import Profile from "./components/MyAccount";
 import {
   Routes,
   Route,
   Navigate,
   BrowserRouter as Router,
-} from 'react-router-dom';
-import { useNavigate } from 'react-router';
-import SingleItem from './components/SingleItem';
-import Wishlist from './components/Wishlist';
-import AddUser from './components/AddUser';
-import OwnerProfile from './components/OwnerProfile';
-import Footer from './components/Footer';
+} from "react-router-dom";
+import { useNavigate } from "react-router";
+import SingleItem from "./components/SingleItem";
+import Wishlist from "./components/Wishlist";
+import AddUser from "./components/AddUser";
+import OwnerProfile from "./components/OwnerProfile";
+import Footer from "./components/Footer";
 
 const Routing = () => {
   const [session, setSession] = useState(null);
@@ -39,10 +39,10 @@ const Routing = () => {
     });
   }, []);
   return (
-    <div className="relative min-h-screen">
+    <div className="flex-col flex h-screen  justify-between">
       <NavBar session={session} />
       {!session ? (
-        <main className="mx-auto max-w-7xl px-8 sm:px-16 pb-52">
+        <main className=" px-8 sm:px-16">
           <Routes>
             <Route path="/" element={<Navigate to="/home" />} />
             <Route exact path="/home" element={<Main />} />
