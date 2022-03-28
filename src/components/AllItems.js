@@ -67,6 +67,7 @@ const AllItems = () => {
         <p>Loading</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-2 lg:px-10 justify-items-center gap-10 ">
+          <SearchBar items={items} />
           <FilterCategory
             list={list}
             setSelected={setFilterItem}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
 import { SearchIcon, XIcon } from "@heroicons/react/outline";
+import { Link } from "react-router-dom";
+
 function SearchBar(props) {
   const [loading, setLoading] = useState(true);
   const { items } = props;
@@ -24,7 +25,7 @@ function SearchBar(props) {
   };
   return (
     <div>
-      <div className="searchinput">
+      <div className="flex">
         <input
           placeholder="Search"
           type="text"
@@ -32,19 +33,21 @@ function SearchBar(props) {
           value={wordEntered}
         />
 
-        <div className="icon">
+        <div className="">
           {filteredData.length === 0 ? (
-            <SearchIcon />
+            <SearchIcon className="h-6" />
           ) : (
-            <XIcon className="cursor-pointer" onClick={clearInput} />
+            <XIcon className="h-6 cursor-pointer" onClick={clearInput} />
           )}
         </div>
       </div>
-      <div className="dataresult">
+      <div className="shadow px-2">
         {filteredData.slice(0, 10).map((item, key) => {
           return (
-            <div>
-              <p>{item.name}</p>
+            <div className="mt-1 ">
+              <Link to={`/items/${item.id}`}>
+                <p className="cursor-pointer hover:bg-gray-200">{item.name}</p>
+              </Link>
             </div>
           );
         })}
