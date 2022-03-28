@@ -56,34 +56,44 @@ const Wishlist = () => {
   return loading ? (
     <div>Loading...</div>
   ) : wishlist.length ? (
-    <div className="grid grid-cols-3  gap-10 ">
-      <h3 className="col-span-3">My Wishlist</h3>
-      {wishlist.map((item, idx) => {
-        return (
-          <div key={idx} className="single-item-container">
-            <Link to={`/items/${item.items.id}`}>
-              <img className="h-96 w-96" src={item.items.image_url} alt="" />
-            </Link>
-            <p>{item.items.name}</p>
-
-            <Link to="/haggle" state={{ item }}>
-              <button
-                className="cursor-pointer mt-5 rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white w-full hover:bg-indigo-500"
-                type="button"
-              >
-                Haggle
-              </button>
-            </Link>
-            <button
-              type="button"
-              className="cursor-pointer mt-5 rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white w-full hover:bg-red-500"
-              onClick={(e) => handleRemove(e, item.items.id)}
+    <div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-10 mt-4 justify-items-center ">
+        <h3 className="md:col-span-2 col-span-1 lg:col-span-3 text-2xl">
+          My Wishlist
+        </h3>
+        {wishlist.map((item, idx) => {
+          return (
+            <div
+              key={idx}
+              className=" max-w-sm card card-compact w-96 bg-base-100 shadow-xl"
             >
-              Remove From Wishlist
-            </button>
-          </div>
-        );
-      })}
+              <Link to={`/items/${item.items.id}`}>
+                <img className="h-80 w-96" src={item.items.image_url} alt="" />
+              </Link>
+              <div className="card-body">
+                <p className="card-title">{item.items.name}</p>
+              </div>
+              <div className="card-actions justify-end">
+                <Link to="/createproposal" state={{ item }}>
+                  <button
+                    className="cursor-pointer rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white w-full hover:bg-indigo-500"
+                    type="button"
+                  >
+                    Haggle
+                  </button>
+                </Link>
+              </div>
+              <button
+                type="button"
+                className="cursor-pointer mt-5 rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white w-full hover:bg-red-500"
+                onClick={(e) => handleRemove(e, item.items.id)}
+              >
+                Remove From Wishlist
+              </button>
+            </div>
+          );
+        })}
+      </div>
     </div>
   ) : (
     <div>Your Wishlist is Empty!</div>

@@ -1,19 +1,26 @@
-import React, {Fragment} from 'react';
-import { Link } from 'react-router-dom';
-import { ChevronDownIcon } from '@heroicons/react/solid';
-import { Menu, Transition } from '@headlessui/react';
+import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
+import { ChevronDownIcon } from "@heroicons/react/solid";
+import { Menu, Transition } from "@headlessui/react";
 
 const classNames = (...classes) => {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 };
 
 const Card = (props) => {
-  const { name, description, imageUrl, category, ownerId, id, firstButton, secondButton = "" } = props;
-  const dropDownhandler = () => {
+  const {
+    name,
+    description,
+    imageUrl,
+    category,
+    ownerId,
+    id,
+    firstButton,
+    secondButton = "",
+  } = props;
+  const dropDownhandler = () => {};
 
-  }
-
-  return name || description ? (
+  return description ? (
     <div className="max-w-sm rounded overflow-hidden shadow-lg ">
       <button type="button" onClick={() => dropDownhandler()}>
         <Link to={`/items/${id}`}>
@@ -68,17 +75,14 @@ const Card = (props) => {
     <div className="max-w-sm rounded overflow-hidden shadow-lg ">
       <Link to={`/items/${id}`}>
         <img className="h-96 w-96" src={imageUrl} alt="" />
+        <p>{name}</p>
       </Link>
       {firstButton || null}
       {secondButton || null}
     </div>
   );
-      
-   
- 
 };
 export default Card;
-
 
 // <div className="px-6 py-4 pt-4 pb-2">
 //   <div className="font-bold text-xl mb-2">{name || null}</div>
