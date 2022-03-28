@@ -12,7 +12,7 @@ const FilterCategory = (props) => {
   ) : (
     <Menu
       as="div"
-      className="col-span-3 text-left flex justify-self-end pt-6 pr-[5%]"
+      className="md:col-span-2 lg:col-span-3 text-left flex justify-self-end pt-6 pr-[5%]"
     >
       <div>
         <Menu.Button

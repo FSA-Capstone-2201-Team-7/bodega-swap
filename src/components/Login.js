@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router';
+import { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import { useNavigate } from "react-router";
 
 export default function Auth() {
   const [loading, setLoading] = useState(null);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,16 +28,16 @@ export default function Auth() {
     } finally {
      
     }
-    navigate('/home');
+    navigate("/home");
   };
 
   return (
     <div className="flex justify-center ">
-      <div className="w-2/4" aria-live="polite">
+      <div className="lg:w-2/4" aria-live="polite">
         <h1 className="text-2xl my-5">Bodega Swap</h1>
 
         {loading ? (
-          'Logging in...'
+          "Logging in..."
         ) : (
           <div className="w-full max-w-s">
             <p className="mb-5">Log in</p>
@@ -46,7 +46,7 @@ export default function Auth() {
               onSubmit={handleLogin}
             >
               <div className="mb-4">
-                {' '}
+                {" "}
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
                   htmlFor="email"
@@ -63,7 +63,7 @@ export default function Auth() {
                 />
               </div>
               <div className="mb-4">
-                {' '}
+                {" "}
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
                   htmlFor="password"
