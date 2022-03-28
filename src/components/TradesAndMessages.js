@@ -86,7 +86,7 @@ console.log('inbound', data)
           status: 'active',
         })
         .eq('id', swap.id);
-   
+
       if (data) {
        const {data: conversation } = await supabase.from('conversations').insert([
           {

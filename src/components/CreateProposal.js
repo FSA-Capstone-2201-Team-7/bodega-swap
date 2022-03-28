@@ -125,12 +125,14 @@ const CreateProposal = ({ state }) => {
           outbound_offer: outbound,
         },
       ]);
+
       navigate('/messages');
     }
     
   };
 
   
+
 
   return loading ? (
     <div>Loading</div>
@@ -169,8 +171,10 @@ const CreateProposal = ({ state }) => {
       </div>
     </div>
     )
+
   )
   
+
 };
 
 export default CreateProposal;
