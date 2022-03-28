@@ -2,26 +2,30 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import VisuallyHidden from '@reach/visually-hidden';
 
-const ItemPic = ({ url, size, onUpload }) => {
+const ItemPic = ({ url, size, onUpload, mode }) => {
   const [itemPicUrl, setItemPicUrl] = useState(null);
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    if (url) downloadImage(url);
+    if (url) {
+      downloadImage(url);
+    } else if (!url) setItemPicUrl(null);
   }, [url]);
 
-  const downloadImage = async (path) => {
+  /* most of the below code came from supabase, so if it looks
+weird, it is probably a result of coding for the particularities of supabase's storage system. */
+
+  const downloadImage = (path) => {
     try {
-      const { data, error } = await supabase.storage
+      const { data, error } = supabase.storage
         .from('item-pics')
-        .download(path);
+        .getPublicUrl(path);
       if (error) {
         throw error;
       }
-      const url = URL.createObjectURL(data);
-      setItemPicUrl(url);
+      setItemPicUrl(data.publicURL);
     } catch (error) {
-      console.log('Error downloading image: ', error.message);
+      console.error('Error downloading image: ', error.message);
     }
   };
 
@@ -46,7 +50,7 @@ const ItemPic = ({ url, size, onUpload }) => {
         throw uploadError;
       }
 
-      onUpload(filePath);
+      onUpload(filePath, mode);
     } catch (error) {
       alert(error.message);
     } finally {

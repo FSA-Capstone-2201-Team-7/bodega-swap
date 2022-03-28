@@ -1,83 +1,99 @@
-import { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
-import Avatar from "./Avatar";
+import { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import Avatar from './Avatar';
+import { useNavigate } from 'react-router-dom';
 
 const Account = ({ session }) => {
   const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState(null);
-  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [profileData, setProfileData] = useState({
+    username: '',
+    avatarUrl: '',
+    avatarFileName: '',
+  });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const getProfile = async () => {
+      try {
+        setLoading(true);
+        const user = supabase.auth.user();
+
+        let { data, error, status } = await supabase
+          .from('users')
+          .select(`username, avatarUrl, avatarFileName`)
+          .limit(1)
+          .single()
+          .eq('id', user.id);
+
+        if (error && status !== 406) {
+          throw error;
+        }
+
+        if (data) {
+          setProfileData({
+            username: data.username,
+            avatarUrl: data.avatarUrl,
+            avatarFileName: data.avatarFileName,
+          });
+        }
+      } catch (error) {
+        alert(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
     getProfile();
-  }, [session]);
+  }, []);
 
-  const getProfile = async () => {
-    try {
-      setLoading(true);
-      const user = supabase.auth.user();
-
-      let { data, error, status } = await supabase
-        .from("users")
-        .select(`username`)
-        .eq("id", user.id)
-        .single();
-
-      if (error && status !== 406) {
-        throw error;
-      }
-
-      if (data) {
-        setUsername(data.username);
-        setAvatarUrl(data.avatarUrl);
-      }
-    } catch (error) {
-      alert(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateProfile = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       setLoading(true);
+      let fullUrl = supabase.storage
+        .from('avatars')
+        .getPublicUrl(profileData.avatarFileName);
       const user = supabase.auth.user();
 
       const updates = {
         id: user.id,
-        username,
-        avatarUrl,
+        username: profileData.username,
+        avatarFileName: profileData.avatarFileName,
+        avatarUrl: fullUrl.publicURL,
         updatedAt: new Date(),
       };
 
-      let { error } = await supabase.from("users").upsert(updates, {
-        returning: "minimal", // Don't return the value after inserting
-      });
+      let { data, error } = await supabase.from('users').upsert(updates);
 
       if (error) {
         throw error;
       }
+
+      if (data) alert('Profile Successfully Updated!');
     } catch (error) {
       alert(error.message);
     } finally {
       setLoading(false);
+      navigate('/myAccount');
     }
   };
 
   return (
     <div className="mx-auto  p-10" aria-live="polite">
       {loading ? (
-        "Saving ..."
+        'Saving ...'
       ) : (
-        <form onSubmit={updateProfile} className=" flex-col px-[25%] ">
+        <form onSubmit={handleSubmit} className=" flex-col px-[25%] ">
           <div className="form-widget">
             <Avatar
-              url={avatarUrl}
+              url={profileData.avatarFileName}
               size={150}
-              onUpload={(url) => {
-                setAvatarUrl(url);
-                updateProfile({ username, avatarUrl: url });
+              onUpload={async (fileName) => {
+                await supabase.storage
+                  .from('avatars')
+                  .remove([profileData.avatarFileName]);
+                setProfileData({ ...profileData, avatarFileName: fileName });
               }}
             />
           </div>
@@ -92,8 +108,10 @@ const Account = ({ session }) => {
               className="border-purple-900 border py-1 w-full "
               id="username"
               type="text"
-              value={username || ""}
-              onChange={(e) => setUsername(e.target.value)}
+              value={profileData.username}
+              onChange={(e) =>
+                setProfileData({ ...profileData, username: e.target.value })
+              }
             />
           </div>
 

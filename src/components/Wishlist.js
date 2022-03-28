@@ -13,7 +13,7 @@ const Wishlist = () => {
         setLoading(true);
         let { data, error, status } = await supabase
           .from('wishlist_items')
-          .select(`*, items(*)`)
+          .select(`*, items(id, name, image_url, description, listed)`)
           .eq('user_id', user.id);
 
         if (error && status !== 406) {

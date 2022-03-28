@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { useNavigate } from "react-router";
 
 export default function Auth() {
-  // const [loading, setLoading] = useState(false);
+
+  const [loading, setLoading] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setLoading(false);
+  }, [loading]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -29,7 +34,7 @@ export default function Auth() {
 
   return (
     <div className="flex justify-center ">
-      <div className="w-2/4" aria-live="polite">
+      <div className="lg:w-2/4" aria-live="polite">
         <h1 className="text-2xl my-5">Bodega Swap</h1>
 
      
