@@ -13,6 +13,7 @@ const Chat = (props) => {
   useEffect(() => {
     const getConversation = async () => {
       try {
+        setLoading(true)
        
         const { data } = await supabase
           .from('conversations')
@@ -27,12 +28,8 @@ const Chat = (props) => {
             .select(`id`)
             .eq('sender_Id', props.receiver)
             .eq('receiver_Id', props.sender);
-         
           setConversation(...reversed);
-          
-          
         } 
-        
       } catch (error) {
         console.error(error);
       } 
@@ -40,8 +37,7 @@ const Chat = (props) => {
     getConversation();
   }, [props.sender, props.receiver]);
 
-
-
+  
   //here we implement realtime by applying any change made with messages 
   //to the database to be seen in realtime with .on() .subscribe()
   useEffect(() => {
@@ -111,7 +107,6 @@ const Chat = (props) => {
       <div className="w-96 mr-5 ml-5 pb-5 pt-5">
         <div className="relative flex items-centerp-3 border-b border-gray-300">
           <span className="absolute w-3 h-3 bg-green-600 rounded-full right-14 top-3 text-white">
-            {' '}
           </span>
           <div>online?</div>
         </div>

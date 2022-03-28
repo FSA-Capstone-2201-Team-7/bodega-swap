@@ -29,8 +29,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const CreateProposal = ({ state }) => {
   const [loading, setLoading] = useState(true);
-  const [swap, setSwap] = useState(null);
-  const [userItems, setUserItems] = useState(null);
+  const [swap, setSwap] = useState([]);
+  const [userItems, setUserItems] = useState([]);
   const [defaultImage, setDefault] = useState([
     'http://dummyimage.com/140x100/ddd.png/dddddd/000000',
   ]);
@@ -99,7 +99,7 @@ const CreateProposal = ({ state }) => {
         if (data) {
           setUserItems(data);
         }
-        console.log(swap.id);
+        
       } catch (err) {
         console.log(err);
       } finally {
@@ -107,7 +107,7 @@ const CreateProposal = ({ state }) => {
       }
     };
     getListings();
-  }, [user.id]);
+  }, [user.id, swap.id]);
 
   const handleSubmit = (image, item) => {
     setDefault([image, item]);
@@ -125,11 +125,12 @@ const CreateProposal = ({ state }) => {
           outbound_offer: outbound,
         },
       ]);
+      navigate('/messages');
     }
-    navigate('/messages');
+    
   };
 
-  console.log(swap);
+  
 
   return loading ? (
     <div>Loading</div>
@@ -168,7 +169,8 @@ const CreateProposal = ({ state }) => {
       </div>
     </div>
     )
-  );
+  )
+  
 };
 
 export default CreateProposal;
