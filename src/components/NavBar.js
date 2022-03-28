@@ -1,11 +1,11 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "../supabaseClient";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-import { ChatAltIcon } from '@heroicons/react/outline';
-import PersonIcon from '@mui/icons-material/Person';
-import LogoutIcon from '@mui/icons-material/Logout';
+import { ChatAltIcon } from "@heroicons/react/outline";
+import PersonIcon from "@mui/icons-material/Person";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const NavBar = ({ session }) => {
   const navigate = useNavigate();
@@ -23,9 +23,19 @@ const NavBar = ({ session }) => {
       </div>
 
       {!session ? (
-        <nav className="flex items-center justify-end space-x-4 text-gray-500">
-          <Link to="login">Login</Link>
-          <Link to="signup">SignUp</Link>
+        <nav className="flex items-center justify-end space-x-4 text-white">
+          <Link
+            className="py-1.5 px-3 hover:bg-indigo-500 bg-indigo-600 rounded-sm"
+            to="login"
+          >
+            Login
+          </Link>
+          <Link
+            className="text-gray-900 py-1.5 px-2.5 border rounded-sm hover:text-white hover:bg-indigo-200 border-indigo-500 hover:border-indigo-200 "
+            to="signup"
+          >
+            SignUp
+          </Link>
         </nav>
       ) : (
         <nav className=" flex items-center justify-end space-x-4 text-gray-500">
@@ -39,10 +49,11 @@ const NavBar = ({ session }) => {
             <PersonIcon className="hover:scale-110 hover:transition duration-200 ease-out" />
           </Link>
           <Link to="/createListing">
-            {' '}
+            {" "}
             <button
               type="button"
-              className=" bg-gray-200 p-2 text-sm rounded-md"
+              className=" bg-indigo-500
+              p-2 text-sm rounded-md text-white"
             >
               List an item
             </button>

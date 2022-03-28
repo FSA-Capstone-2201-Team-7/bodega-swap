@@ -76,42 +76,48 @@ function AddUser({ session }) {
       {loading ? (
         "Saving ..."
       ) : (
-        <form onSubmit={updateProfile} className=" flex-col px-[30%] pt-[10%] ">
-          <div className="form-widget">
-            <Avatar
-              url={avatarUrl}
-              size={150}
-              onUpload={(url) => {
-                setAvatarUrl(url);
-                updateProfile({ username, avatarUrl: url });
-              }}
-            />
-          </div>
-          <div className="py-5">Email: {session.user.email}</div>
-          <div className="flex-col ">
-            <div>
-              <label className="text-gray-900" htmlFor="username">
-                Name
-              </label>
+        <div>
+          <h3>Welcome! Let's Create Your Profile</h3>
+          <form
+            onSubmit={updateProfile}
+            className=" flex-col px-[30%] pt-[10%] "
+          >
+            <div className="form-widget">
+              <Avatar
+                url={avatarUrl}
+                size={150}
+                onUpload={(url) => {
+                  setAvatarUrl(url);
+                  updateProfile({ username, avatarUrl: url });
+                }}
+              />
             </div>
-            <input
-              className="border-purple-900 border py-1 w-full "
-              id="username"
-              type="text"
-              value={username || ""}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
+            <div className="py-5">Email: {session.user.email}</div>
+            <div className="flex-col ">
+              <div>
+                <label className="text-gray-900" htmlFor="username">
+                  Name
+                </label>
+              </div>
+              <input
+                className="border-purple-900 border py-1 w-full "
+                id="username"
+                type="text"
+                value={username || ""}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
 
-          <div>
-            <button
-              className="cursor-pointer mt-5 rounded-lg bg-purple-900 px-4 py-2 text-sm text-white w-full hover:bg-purple-700"
-              disabled={loading}
-            >
-              Continue
-            </button>
-          </div>
-        </form>
+            <div>
+              <button
+                className="cursor-pointer mt-5 rounded-lg bg-purple-900 px-4 py-2 text-sm text-white w-full hover:bg-purple-700"
+                disabled={loading}
+              >
+                Continue
+              </button>
+            </div>
+          </form>
+        </div>
       )}
     </div>
   );
