@@ -255,7 +255,11 @@ const CreateOrEditListing = (props) => {
         </button>
       </form>
       {props.mode === "edit" ? (
-        <button type="button" onClick={handleDeleteListing}>
+        <button
+          className="mt-5 bg-indigo-500 hover:bg-indigo-400 py-2 px-2 w-full rounded-md text-indigo-50"
+          type="button"
+          onClick={handleDeleteListing}
+        >
           Delete Listing
         </button>
       ) : (
