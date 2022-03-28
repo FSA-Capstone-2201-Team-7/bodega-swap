@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { Link } from 'react-router-dom';
-import ToggleWishlistButton from './ToggleWishlistButton';
-import FilterCategory from './FilterCategories';
-import Card from './Card';
-import ForumIcon from '@mui/icons-material/Forum';
-
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import { Link } from "react-router-dom";
+import ToggleWishlistButton from "./ToggleWishlistButton";
+import FilterCategory from "./FilterCategories";
+import Card from "./Card";
+import ForumIcon from "@mui/icons-material/Forum";
+import SearchBar from "./SearchBar";
 const AllItems = () => {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
-  const [filterItem, setFilterItem] = useState('All');
+  const [filterItem, setFilterItem] = useState("All");
   const [list, setList] = useState([]);
   const user = supabase.auth.user();
 
@@ -18,13 +18,13 @@ const AllItems = () => {
       try {
         setLoading(true);
         let { data, error, status } = await supabase
-          .from('items')
+          .from("items")
           .select()
           .neq(
-            'ownerId',
-            user ? user.id : '11111111-1111-1111-1111-111111111111'
+            "ownerId",
+            user ? user.id : "11111111-1111-1111-1111-111111111111"
           )
-          .neq('listed', false);
+          .neq("listed", false);
 
         if (error && status !== 406) {
           throw error;
@@ -51,7 +51,7 @@ const AllItems = () => {
             })
           )
         );
-        set.unshift('All');
+        set.unshift("All");
 
         setList(set);
       } catch (error) {
@@ -66,6 +66,7 @@ const AllItems = () => {
         <p>Loading</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-2 lg:px-10 justify-items-center gap-10 ">
+          {/*  <SearchBar items={items} /> */}
           <FilterCategory
             list={list}
             setSelected={setFilterItem}
@@ -79,7 +80,7 @@ const AllItems = () => {
                     id={item.id}
                     imageUrl={item.image_url}
                     name={item.name}
-                    description={item.description}
+                    /*  description={item.description} */
                     category={item.category}
                     ownerId={item.ownerId}
                     firstButton={
