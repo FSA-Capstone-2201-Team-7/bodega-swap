@@ -70,54 +70,54 @@ function AddUser({ session }) {
 
   return (
     <div
-      className="mx-auto p-10 w-screen h-screen fixed top-0 left-0 bg-gray-300 bg-opacity-10 backdrop-blur-sm  "
+      className="z-50 mx-auto p-10 w-screen h-screen fixed top-0 left-0 bg-gray-300 bg-opacity-10 backdrop-blur-sm  "
       aria-live="polite"
     >
       {loading ? (
         "Saving ..."
       ) : (
-        <div>
-          <h3>Welcome! Let's Create Your Profile</h3>
-          <form
-            onSubmit={updateProfile}
-            className=" flex-col px-[30%] pt-[10%] "
-          >
-            <div className="form-widget">
-              <Avatar
-                url={avatarUrl}
-                size={150}
-                onUpload={(url) => {
-                  setAvatarUrl(url);
-                  updateProfile({ username, avatarUrl: url });
-                }}
-              />
-            </div>
-            <div className="py-5">Email: {session.user.email}</div>
-            <div className="flex-col ">
-              <div>
-                <label className="text-gray-900" htmlFor="username">
-                  Name
-                </label>
-              </div>
-              <input
-                className="border-purple-900 border py-1 w-full "
-                id="username"
-                type="text"
-                value={username || ""}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
-
+        <form
+          onSubmit={updateProfile}
+          className=" flex-col px-[10%] md-px[20%] lg:px-[30%] pt-[10%] "
+        >
+          <h3 className="text-center text-xl lg:text-3xl pb-5 text-indigo-700">
+            Welcome! Let's Create Your Profile
+          </h3>
+          <div className="form-widget">
+            <Avatar
+              url={avatarUrl}
+              size={150}
+              onUpload={(url) => {
+                setAvatarUrl(url);
+                updateProfile({ username, avatarUrl: url });
+              }}
+            />
+          </div>
+          <div className="py-5">Email: {session.user.email}</div>
+          <div className="flex-col ">
             <div>
-              <button
-                className="cursor-pointer mt-5 rounded-lg bg-purple-900 px-4 py-2 text-sm text-white w-full hover:bg-purple-700"
-                disabled={loading}
-              >
-                Continue
-              </button>
+              <label className="text-gray-900" htmlFor="username">
+                Name
+              </label>
             </div>
-          </form>
-        </div>
+            <input
+              className="border-gray-300 border py-1 w-full "
+              id="username"
+              type="text"
+              value={username || ""}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <button
+              className="cursor-pointer mt-5 rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white w-full hover:bg-indigo-600"
+              disabled={loading}
+            >
+              Continue
+            </button>
+          </div>
+        </form>
       )}
     </div>
   );

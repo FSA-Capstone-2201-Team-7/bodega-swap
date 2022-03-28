@@ -11,7 +11,7 @@ const NavBar = ({ session }) => {
   const navigate = useNavigate();
   // console.log(localStorage);
   return (
-    <header className="sticky top-0 flex justify-between bg-white p-5 shadow-md md:px-10 z-50 ">
+    <header className="sticky top-0 flex justify-between bg-white p-5 shadow-md md:px-10 z-40 ">
       <div className="flex">
         <Link to="/home">
           <h1 className="text-bold">BODEGA SWAP</h1>
