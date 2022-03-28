@@ -79,24 +79,23 @@ console.log('inbound', data)
   }, [user.id]);
 
   const handleActivate = async (swap) => {
-    if (swap.status === 'pending') {
+    if (swap.status === 'proposed') {
       const { data } = await supabase
         .from('swaps')
         .update({
-          status: 'active',
+          status: 'haggling',
         })
         .eq('id', swap.id);
-      // console.log(data);
+
       if (data) {
-       const {data: conversation } = await supabase.from('conversations').insert([
+      await supabase.from('conversations').insert([
           {
             sender_Id: user.id,
-            receiver_Id: swap.inbound_id
+            receiver_Id: swap.inbound_id,
+            swap_Id: swap.id
           },
         ]);
-        if(conversation) {
-          console.log('conversation', conversation)
-        }
+   
       }
     }
 
@@ -164,7 +163,7 @@ console.log('inbound', data)
                       imageUrl={swap.outbound_offer.image_url}
                       id={swap.outbound_offer.id}
                       firstButton={
-                        swap.status === 'active' ? (
+                        swap.status === 'proposed' ? (
                           <button
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                             onClick={() => handleActivate(swap)}
@@ -188,7 +187,7 @@ console.log('inbound', data)
                       imageUrl={swap.inbound_offer.image_url}
                       id={swap.inbound_offer.id}
                       firstButton={
-                        swap.status === 'active' ? (
+                        swap.status === 'proposed' ? (
                           <div className="flex">
                             <Button
                               color="lightBlue"
@@ -219,7 +218,6 @@ console.log('inbound', data)
                             >
                               REJECT MEETING
                             </Button>
-
                             <Popover placement="top" ref={buttonRef}>
                               <PopoverContainer>
                                 <PopoverHeader>Are you sure? </PopoverHeader>
@@ -260,7 +258,7 @@ console.log('inbound', data)
                   imageUrl={swap.inbound_offer.image_url}
                   id={swap.inbound_offer.id}
                   firstButton={
-                    swap.status === 'pending' ? (
+                    swap.status === 'proposed' ? (
                       <div>
                         <Button
                           color="lightBlue"

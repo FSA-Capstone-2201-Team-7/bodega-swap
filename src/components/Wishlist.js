@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 
 const Wishlist = () => {
   const [loading, setLoading] = useState(true);
   const [wishlist, setWishList] = useState(null);
+  const navigate = useNavigate()
   const user = supabase.auth.user();
 
   useEffect(() => {
@@ -74,14 +76,15 @@ const Wishlist = () => {
                 <p className="card-title">{item.items.name}</p>
               </div>
               <div className="card-actions justify-end">
-                <Link to="/createproposal" state={{ item }}>
-                  <button
-                    className="cursor-pointer rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white w-full hover:bg-indigo-500"
-                    type="button"
-                  >
-                    Haggle
-                  </button>
-                </Link>
+                <button
+                  className="cursor-pointer rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white w-full hover:bg-indigo-500"
+                  type="button"
+                  onClick={() =>
+                    navigate('/createproposal', { state: { item } })
+                  }
+                >
+                  Create Proposal
+                </button>
               </div>
               <button
                 type="button"

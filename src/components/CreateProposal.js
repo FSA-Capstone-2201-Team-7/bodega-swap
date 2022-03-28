@@ -3,38 +3,15 @@ import { supabase } from '../supabaseClient';
 import { useLocation, useNavigate } from 'react-router-dom';
 // import { useNavigate } from 'react-router';
 
-// styles to place in building
-
-// const styles = {
-//   card: {
-//     backgroundColor: 'rgba(128, 128, 128, 0.972)',
-//     //** keep to build out functionality */
-//     //#rgba(255, 255, 255, 0.972) => white
-//     borderRadius: 55,
-//     width: '20.5rem',
-//     height: '20.5rem',
-//   },
-//   cardImage: {
-//     objectFit: 'cover',
-//     borderRadius: 55,
-//     height: '80%',
-//   },
-//   containerHolder: {
-//     borderRadius: 100,
-//     backgroundColor: 'rgba(0, 0, 0, 0.959)',
-//     // ** keep to build out functionality
-//     //'rgba(128, 128, 128, 0.972)', => grey
-//   },
-// };
-
 const CreateProposal = ({ state }) => {
   const [loading, setLoading] = useState(true);
-  const [swap, setSwap] = useState(null);
-  const [userItems, setUserItems] = useState(null);
+  const [swap, setSwap] = useState([]);
+  const [userItems, setUserItems] = useState([]);
   const [defaultImage, setDefault] = useState([
     'http://dummyimage.com/140x100/ddd.png/dddddd/000000',
   ]);
-  const location = useLocation(null);
+
+  const location = useLocation();
   const navigate = useNavigate();
   const user = supabase.auth.user();
   const { item = '' } = location.state || {};
@@ -93,13 +70,9 @@ const CreateProposal = ({ state }) => {
           .select('*')
           .eq('ownerId', user.id);
 
-        if (error && status !== 406) {
-          throw error;
-        }
         if (data) {
           setUserItems(data);
         }
-        console.log(swap.id);
       } catch (err) {
         console.log(err);
       } finally {
@@ -107,7 +80,7 @@ const CreateProposal = ({ state }) => {
       }
     };
     getListings();
-  }, [user.id]);
+  }, [user.id, swap.id]);
 
   const handleSubmit = (image, item) => {
     setDefault([image, item]);
@@ -116,25 +89,25 @@ const CreateProposal = ({ state }) => {
   //creates the new swap after submitting propopsal
   const handleProposal = async (outbound) => {
     if (outbound) {
-     await supabase.from('swaps').insert([
+      await supabase.from('swaps').insert([
         {
           inbound_id: user.id,
-          status: 'pending',
+          status: 'proposed',
           outbound_id: item.ownerId,
           inbound_offer: item,
           outbound_offer: outbound,
         },
       ]);
-    }
-    navigate('/messages');
-  };
 
-  console.log(swap);
+      navigate('/messages');
+    }
+  };
 
   return loading ? (
     <div>Loading</div>
+  ) : swap[0] ? (
+    <div>you already have an open trade with this trader</div>
   ) : (
-    swap[0] ? (<div>you already have an open trade with this trader</div>):(
     <div>
       <div className="flex mb-4">
         <img src={item.image_url} alt="" className="w-1/2" />
@@ -167,7 +140,6 @@ const CreateProposal = ({ state }) => {
         })}
       </div>
     </div>
-    )
   );
 };
 

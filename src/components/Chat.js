@@ -10,21 +10,30 @@ const Chat = (props) => {
   const [input, setInput] = useState('');
   
 
+
   useEffect(() => {
     const getConversation = async () => {
       try {
-        setLoading(true);
+        setLoading(true)
+       
         const { data } = await supabase
           .from('conversations')
           .select(`id`)
           .eq('sender_Id', props.sender)
           .eq('receiver_Id', props.receiver);
-        if (data) {
-          setConversation(...data);
-        }
+          console.log('convo', data)
+          setConversation(...data)
+        if (!data[0]) {
+          const { data: reversed } = await supabase
+            .from('conversations')
+            .select(`id`)
+            .eq('sender_Id', props.receiver)
+            .eq('receiver_Id', props.sender);
+          setConversation(...reversed);
+        } 
       } catch (error) {
         console.error(error);
-      }
+      } 
     };
     getConversation();
   }, [props.sender, props.receiver]);
@@ -32,25 +41,24 @@ const Chat = (props) => {
 
   //here we implement realtime by applying any change made with messages 
   //to the database to be seen in realtime with .on() .subscribe()
-  useEffect(() => {
+ useEffect(() => {
     const getUserMessages = async () => {
       try {
+        if(conversationId) {
         const { data } = await supabase
           .from('messages')
           .select()
           .eq('conversations_ID', conversationId.id);
-
            setMessages(data);
         if (data) {
           supabase
             .from('messages')
             .on('INSERT', (message) => {
               setMessages([...messages, message.new]);
-              console.log('message received!', message.new);
             })
             .subscribe();
-           
         }
+      }
       } catch (error) {
         console.error(error);
       } finally {
@@ -91,6 +99,7 @@ const Chat = (props) => {
     const { value } = e.target;
     setInput(value);
   }
+
   return loading ? (
     <div>Loading....</div>
   ) : (
@@ -98,7 +107,7 @@ const Chat = (props) => {
       <div className="w-96 mr-5 ml-5 pb-5 pt-5">
         <div className="relative flex items-centerp-3 border-b border-gray-300">
           <span className="absolute w-3 h-3 bg-green-600 rounded-full right-14 top-3 text-white">
-            {' '}
+
           </span>
           <div>online?</div>
         </div>
