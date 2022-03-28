@@ -27,10 +27,7 @@ const Chat = (props) => {
             .select(`id`)
             .eq('sender_Id', props.receiver)
             .eq('receiver_Id', props.sender);
-         
           setConversation(...reversed);
-          
-          
         } 
         
       } catch (error) {
@@ -102,7 +99,6 @@ const Chat = (props) => {
     const { value } = e.target;
     setInput(value);
   }
-
 
   return loading ? (
     <div>Loading....</div>
