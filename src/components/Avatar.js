@@ -10,18 +10,17 @@ const Avatar = ({ url, size, onUpload }) => {
     if (url) downloadImage(url);
   }, [url]);
 
-  const downloadImage = async (path) => {
+  const downloadImage = (path) => {
     try {
-      const { data, error } = await supabase.storage
+      const { data, error } = supabase.storage
         .from("avatars")
-        .download(path);
+        .getPublicUrl(path);
       if (error) {
         throw error;
       }
-      const url = URL.createObjectURL(data);
-      setAvatarUrl(url);
+      setAvatarUrl(data.publicURL);
     } catch (error) {
-      console.log("Error downloading image: ", error.message);
+      console.error("Error downloading image: ", error.message);
     }
   };
 
@@ -55,7 +54,7 @@ const Avatar = ({ url, size, onUpload }) => {
   };
 
   return (
-    <div style={{ width: size }} aria-live="polite">
+    <div aria-live="polite">
       <img
         src={avatarUrl ? avatarUrl : `https://place-hold.it/${size}x${size}`}
         alt={avatarUrl ? "Avatar" : "No image"}
@@ -65,13 +64,13 @@ const Avatar = ({ url, size, onUpload }) => {
       {uploading ? (
         "Uploading..."
       ) : (
-        <div>
-          <button
-            className="mt-2 rounded-lg bg-purple-400 px-4 py-2 text-sm uppercase text-white"
+        <div className="block mt-2">
+          <label
+            className="cursor-pointer rounded-lg bg-indigo-500 px-4 py-2 text-sm uppercase text-white"
             htmlFor="single"
           >
             Upload an avatar
-          </button>
+          </label>
           <VisuallyHidden>
             <input
               type="file"

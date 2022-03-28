@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import { Link } from "react-router-dom";
 
 const Wishlist = () => {
   const [loading, setLoading] = useState(true);
@@ -12,9 +12,9 @@ const Wishlist = () => {
       try {
         setLoading(true);
         let { data, error, status } = await supabase
-          .from('wishlist_items')
-          .select(`*, items(*)`)
-          .eq('user_id', user.id);
+          .from("wishlist_items")
+          .select(`*, items(id, name, image_url, description, listed)`)
+          .eq("user_id", user.id);
 
         if (error && status !== 406) {
           throw error;
@@ -35,7 +35,7 @@ const Wishlist = () => {
     e.preventDefault();
     try {
       let { data, error, status } = await supabase
-        .from('wishlist_items')
+        .from("wishlist_items")
         .delete()
         .match({ item_id: id }, { user_id: user.id })
         .limit(1)
@@ -57,22 +57,29 @@ const Wishlist = () => {
     <div>Loading...</div>
   ) : wishlist.length ? (
     <div className="grid grid-cols-3  gap-10 ">
+      <h3 className="col-span-3">My Wishlist</h3>
       {wishlist.map((item, idx) => {
         return (
           <div key={idx} className="single-item-container">
-            <p>{item.items.name}</p>
-            <p>{item.items.description}</p>
             <Link to={`/items/${item.items.id}`}>
-              <img src={item.items.image_url} alt="" />
+              <img className="h-96 w-96" src={item.items.image_url} alt="" />
             </Link>
+            <p>{item.items.name}</p>
+
             <Link to="/haggle" state={{ item }}>
-              <button type="button">Haggle!---</button>
+              <button
+                className="cursor-pointer mt-5 rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white w-full hover:bg-indigo-500"
+                type="button"
+              >
+                Haggle
+              </button>
             </Link>
             <button
               type="button"
+              className="cursor-pointer mt-5 rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white w-full hover:bg-red-500"
               onClick={(e) => handleRemove(e, item.items.id)}
             >
-              \\\Remove From Wishlist
+              Remove From Wishlist
             </button>
           </div>
         );

@@ -25,7 +25,7 @@ function SignUp() {
 
   return (
     <div className="flex justify-center ">
-      <div className="w-2/4" aria-live="polite">
+      <div className="lg:w-2/4" aria-live="polite">
         <h1 className="text-2xl my-5">Bodega Swap</h1>
         {loading ? (
           "Logging in..."
@@ -73,7 +73,7 @@ function SignUp() {
               </div>
 
               <button
-                className=" cursor-pointer mt-5 rounded-lg bg-purple-900 px-4 py-2 text-sm text-white w-full hover:bg-purple-700"
+                className=" cursor-pointer mt-5 rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white w-full hover:bg-indigo-600"
                 aria-live="polite"
               >
                 Sign up

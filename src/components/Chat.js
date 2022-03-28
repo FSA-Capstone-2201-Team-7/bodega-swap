@@ -1,59 +1,148 @@
-import React from 'react';
-// const style = {
-//    journal-scroll::-webkit-scrollbar: {
-//         width: 6px;
-//         cursor: pointer;
-//     }
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import Message from './Message';
 
-//     #journal-scroll::-webkit-scrollbar-track {
-//         background-color: rgba(229, 231, 235, var(--bg-opacity));
-//         cursor: pointer;
-//     }
+const Chat = (props) => {
+  const [loading, setLoading] = useState(true);
+  const [messages, setMessages] = useState([]);
+  const [conversationId, setConversation] = useState([]);
+  const [input, setInput] = useState('');
+  
 
-//     #journal-scroll::-webkit-scrollbar-thumb {
-//         cursor: pointer;
-//         background-color: #a0aec0;
-//     }
-// }
+  useEffect(() => {
+    const getConversation = async () => {
+      try {
+        setLoading(true);
+        const { data } = await supabase
+          .from('conversations')
+          .select(`id`)
+          .eq('sender_Id', props.sender)
+          .eq('receiver_Id', props.receiver);
+        if (data) {
+          setConversation(...data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getConversation();
+  }, [props.sender, props.receiver]);
 
-const Chat = () => {
-  return (
-    <div className="bg-gray-300 h-screen flex justify-center rounded shadow-2xl">
-      <div className=" flex justify-center grid grid-cols-1 ">
-        <div className="w-96 bg-white rounded shadow-2xl">
-          <nav className=" h-10 bg-gray-900 rounded-tr rounded-tl flex justify-between items-center">
-            <div className="flex justify-center items-center">
-              {' '}
-              <span className="text-xl font-medium text-gray-300 ml-1">
-                USERNAMES?
-              </span>{' '}
-            </div>
-          </nav>
-          <div className="overflow-auto px-1 py-1">messages here</div>
+
+  //here we implement realtime by applying any change made with messages 
+  //to the database to be seen in realtime with .on() .subscribe()
+  useEffect(() => {
+    const getUserMessages = async () => {
+      try {
+        const { data } = await supabase
+          .from('messages')
+          .select()
+          .eq('conversations_ID', conversationId.id);
+
+           setMessages(data);
+        if (data) {
+          supabase
+            .from('messages')
+            .on('INSERT', (message) => {
+              setMessages([...messages, message.new]);
+              console.log('message received!', message.new);
+            })
+            .subscribe();
+           
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getUserMessages();
+  }, [conversationId, messages]);
+
+
+  const createMessage = async (e) => {
+     e.preventDefault();
+    try {
+      if (input) {
+        await supabase.from('messages').insert([
+          {
+            content: input,
+            sender_Id: props.sender,
+            conversations_ID: conversationId.id,
+          },
+        ]);
+
+        setInput('');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //will be used to develop infinite scroll properties
+  const fetchMessages = () => {
+    if(messages) {
+      return messages[messages.length -1]
+    }
+  }
+
+  const handleChange = (e) => {
+    const { value } = e.target;
+    setInput(value);
+  }
+  return loading ? (
+    <div>Loading....</div>
+  ) : (
+    <div className="container bg-base-100 border rounded ">
+      <div className="w-96 mr-5 ml-5 pb-5 pt-5">
+        <div className="relative flex items-centerp-3 border-b border-gray-300">
+          <span className="absolute w-3 h-3 bg-green-600 rounded-full right-14 top-3 text-white">
+            {' '}
+          </span>
+          <div>online?</div>
         </div>
-        <div className="bg-white">
-          <div className="relative ">
-            <div className="absolute top-48 ">
-              <input
-                type="text"
-                className="rounded-full w-96 pl-12 pr12  py-8 focus:outline-none h-auto placeholder-gray-100 bg-gray-900 text-white"
-                placeholder="Type a message..."
-              />
-
-              <div className=" w-96 rounded-full bg-blue-300 text-center items-center flex justify-center focus:outline-none hover:bg-gray-900 hover:text-white ">
-                <button
-                  className="rounded-full  text-center flex justify-center focus:outline-none hover:bg-gray-900 hover:text-white"
-                  onClick={() => console.log('message send')}
-                >
-                  Send
-                </button>
-              </div>
+      </div>
+      <div className="p:2 sm:p-6 justify-between h-screen bg-base-100 max-w-2xl rounded overflow-auto">
+        {messages ? (
+          <InfiniteScroll
+            dataLength={messages.length}
+            next={fetchMessages}
+            hasMore={true}
+            loader={<h4>......</h4>}
+          >
+            <div className="justify-items-center pt-5">
+              <ul className="space-y-12 grid grid-cols-1">
+                {messages &&
+                  messages?.map((message, i) => {
+                    return <Message key={message.id} message={message} />;
+                  })}
+              </ul>
             </div>
-          </div>
-        </div>
+          </InfiniteScroll>
+        ) : (
+          <div>Loading....</div>
+        )}
+      </div>
+      <div className="pb-5 pt-5 justify-center flex bg-base-100 w-full">
+        <form onSubmit={createMessage}>
+          <input
+            type="text"
+            value={input}
+            placeholder="Type here"
+            onChange={handleChange}
+            className="input input-ghost input-lg w-full max-w-xs"
+          />
+
+          <button type="submit" className="btn btn-active btn-ghost btn-lg">
+            Send
+          </button>
+        </form>
       </div>
     </div>
   );
 };
 
 export default Chat;
+
+

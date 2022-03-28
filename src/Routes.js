@@ -10,11 +10,10 @@ import {
   TradesAndMessages,
   CreateProposal,
   AllItems,
-  CreateListing,
+  CreateOrEditListing,
 } from "./components";
 import NavBar from "./components/NavBar";
 import Profile from "./components/MyAccount";
-
 import {
   Routes,
   Route,
@@ -40,13 +39,13 @@ const Routing = () => {
     });
   }, []);
   return (
-    <div className="relative min-h-screen">
+    <div className="flex-col flex h-screen  justify-between">
       <NavBar session={session} />
       {!session ? (
-        <main className="mx-auto max-w-7xl px-8 sm:px-16 pb-52">
+        <main className=" px-8 sm:px-16 pb-12">
           <Routes>
             <Route path="/" element={<Navigate to="/home" />} />
-            <Route exact path="/home" element={<Main />} />
+            <Route exact path="/home" element={<Main session={session} />} />
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/signup" element={<SignUp />} />
             <Route exact path="/items" element={<AllItems />} />
@@ -55,7 +54,7 @@ const Routing = () => {
           </Routes>
         </main>
       ) : (
-        <main className="pb-52">
+        <main className="px-8 sm:px-16 pb-12">
           <Routes>
             <Route path="/" element={<Navigate to="/home" />} />
             <Route exact path="/home" element={<Main />} />
@@ -80,7 +79,14 @@ const Routing = () => {
               path="/items/:id/OwnerProfile"
               element={<OwnerProfile />}
             />
-            <Route path="/createListing" element={<CreateListing />} />
+            <Route
+              path="/createListing"
+              element={<CreateOrEditListing mode="create" />}
+            />
+            <Route
+              path="/myAccount/editListing/:id"
+              element={<CreateOrEditListing mode="edit" />}
+            />
           </Routes>
         </main>
       )}

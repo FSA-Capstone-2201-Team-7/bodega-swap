@@ -21,11 +21,11 @@ const AllItems = () => {
         let { data, error, status } = await supabase
           .from("items")
           .select()
-          .not(
+          .neq(
             "ownerId",
-            "eq",
             user ? user.id : "11111111-1111-1111-1111-111111111111"
-          );
+          )
+          .neq("listed", false);
 
         if (error && status !== 406) {
           throw error;
@@ -66,8 +66,7 @@ const AllItems = () => {
       {loading ? (
         <p>Loading</p>
       ) : (
-        <div className="grid grid-cols-3 px-10 justify-items-center gap-10 ">
-          <SearchBar items={items} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-2 lg:px-10 justify-items-center gap-10 ">
           <FilterCategory
             list={list}
             setSelected={setFilterItem}
@@ -95,7 +94,7 @@ const AllItems = () => {
                       </Link>
                     }
                     secondButton={
-                      user ? (
+                      user && user.id !== item.ownerId ? (
                         <ToggleWishlistButton
                           userId={user.id}
                           itemId={item.id}

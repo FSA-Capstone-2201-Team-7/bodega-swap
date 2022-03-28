@@ -11,7 +11,7 @@ const NavBar = ({ session }) => {
   const navigate = useNavigate();
   // console.log(localStorage);
   return (
-    <header className="sticky top-0 flex justify-between bg-white p-5 shadow-md md:px-10 z-50 ">
+    <header className="sticky top-0 flex justify-between bg-white p-5 shadow-md md:px-10 z-40 ">
       <div className="flex">
         <Link to="/home">
           <h1 className="text-bold">BODEGA SWAP</h1>
@@ -23,9 +23,19 @@ const NavBar = ({ session }) => {
       </div>
 
       {!session ? (
-        <nav className="flex items-center justify-end space-x-4 text-gray-500">
-          <Link to="login">Login</Link>
-          <Link to="signup">SignUp</Link>
+        <nav className="flex items-center justify-end space-x-4 text-white">
+          <Link
+            className="py-1.5 px-3 hover:bg-indigo-500 bg-indigo-600 rounded-sm"
+            to="login"
+          >
+            Login
+          </Link>
+          <Link
+            className="text-gray-900 py-1.5 px-2.5 border rounded-sm hover:text-white hover:bg-indigo-200 border-indigo-500 hover:border-indigo-200 "
+            to="signup"
+          >
+            SignUp
+          </Link>
         </nav>
       ) : (
         <nav className=" flex items-center justify-end space-x-4 text-gray-500">
@@ -42,7 +52,8 @@ const NavBar = ({ session }) => {
             {" "}
             <button
               type="button"
-              className=" bg-gray-200 p-2 text-sm rounded-md"
+              className=" bg-indigo-500 hover:bg-indigo-400
+              p-2 text-sm rounded-md text-white"
             >
               List an item
             </button>

@@ -1,9 +1,9 @@
 import "./App.css";
 import Routing from "./Routes";
-// import 'bootstrap/dist/css/bootstrap.min.css';
+
 const App = () => {
   return (
-    <div>
+    <div className="bg-white">
       <Routing />
     </div>
   );

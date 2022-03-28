@@ -4,16 +4,23 @@ import Carousel, { CarouselItem } from './UseCarousel';
 
 import Card from './Card';
 
-
-const Main = ({ session }) => {
+const Main = () => {
   const [getImages, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const user = supabase.auth.user();
 
   useEffect(() => {
     const getItems = async () => {
       try {
         setLoading(true);
-        let { data, error, status } = await supabase.from('items').select();
+        let { data, error, status } = await supabase
+          .from('items')
+          .select(`name, description, ownerId, id, category, listed, image_url`)
+          .eq('listed', true)
+          .neq(
+            'ownerId',
+            user ? user.id : '11111111-1111-1111-1111-111111111111'
+          );
 
         if (error && status !== 406) {
           throw error;
@@ -63,7 +70,7 @@ const Main = ({ session }) => {
           })}
         </div>
         <div>Recently Added</div>
-        
+
         {/* {keep to use for eventual use on main page} */}
         {/* <Carousel>
           {getImages.map((image) => {
