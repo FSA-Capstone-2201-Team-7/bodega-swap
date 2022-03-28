@@ -3,28 +3,19 @@ import { supabase } from '../supabaseClient';
 import { useLocation } from 'react-router-dom';
 import Chat from './Chat';
 import Card from './Card';
+import HaggleInventory from './HaggleInventory';
 
 const HaggleView = ({ state }) => {
   const location = useLocation(null);
-  const [loading, setLoading] = useState(true);
-  const [yourInfo, setYourInfo] = useState(null);
-  const [theirInfo, setTheirInfo] = useState(null);
-  const user = supabase.auth.user();
   const { swap = '' } = location.state || {};
+  const [loading, setLoading] = useState(true);
+  const [yourInfo, setYourInfo] = useState({});
+  const [theirInfo, setTheirInfo] = useState({});
+  const [notUserId, setNotUserId] = useState('');
+  const [inventory, setInventory] = useState('');
+  const user = supabase.auth.user();
 
-  let theirObj;
-  let yourObj;
-  if (swap.outbound_id !== user.id) {
-    theirObj = [swap.outbound_id, swap.outbound_offer];
-    yourObj = [swap.inbound_offer];
-  } else {
-    theirObj = [swap.inbound_id, swap.inbound_offer];
-    yourObj = [swap.outbound_offer];
-  }
-  console.log(theirObj);
-
-  //1st id, second offer obj, thirdAvatarUrl
-
+  //here we get the users info and avatar and spread them into new object to render into haggle view
   useEffect(() => {
     const you = async () => {
       try {
@@ -37,16 +28,43 @@ const HaggleView = ({ state }) => {
           `
           )
           .eq('id', user.id);
-        setYourInfo([user.id, ...yourObj, ...data]);
+
+        if (swap.outbound_id !== user.id) {
+          setYourInfo({
+            ...swap.outbound_offer,
+            ...data[0],
+            userAccept: swap.outbound_accept,
+            inOrOut: 'outbound',
+          });
+          setNotUserId(swap.outbound_id);
+        } else {
+          setYourInfo({
+            ...swap.inbound_offer,
+            ...data[0],
+            userAccept: swap.inbound_accept,
+            inOrOut: 'inbound',
+          });
+
+          setNotUserId(swap.inbound_id);
+        }
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
     you();
-  }, []);
+  }, [
+    swap.outbound_id,
+    swap.inbound_id,
+    swap.inbound_offer,
+    swap.outbound_offer,
+    user.id,
+    swap.inbound_accept,
+    swap.outbound_accept,
+  ]);
 
-  console.log('yourinfo', yourInfo);
-
+  //here we grab the non-users infor and do the same thing
   useEffect(() => {
     const them = async () => {
       try {
@@ -56,12 +74,25 @@ const HaggleView = ({ state }) => {
           .select(
             `
           avatarUrl
-          
           `
           )
-          .eq('id', theirObj[0]);
-        // setTheirInfo(...data);
-        setTheirInfo([...theirObj, ...data]);
+          .eq('id', notUserId);
+
+        if (swap.outbound_id !== user.id) {
+          setTheirInfo({
+            ...swap.inbound_offer,
+            ...data[0],
+            notUserAccept: swap.inbound_accept,
+            inOrOut: 'inbound',
+          });
+        } else {
+          setTheirInfo({
+            ...swap.outbound_offer,
+            ...data[0],
+            notUserAccept: swap.outbound_accept,
+            inOrOut: 'outbound',
+          });
+        }
       } catch (error) {
         console.error(error);
       } finally {
@@ -69,132 +100,208 @@ const HaggleView = ({ state }) => {
       }
     };
     them();
-  }, []);
+  }, [
+    notUserId,
+    swap.inbound_offer,
+    swap.outbound_id,
+    swap.outbound_offer,
+    user.id,
+    swap.inbound_accept,
+    swap.outbound_accept,
+  ]);
 
+  // final settlement between users are set when both agree 
+  // the database is updated from 'active' to 'processing?'
+  //this is completed when both users hand off the trade 
+  // another method here may be to set it as complete and render a time
+  //limit for both the exchange items or repurcussion on there reputation status may happen
+  useEffect(() => {
+    const setAgreement = async () => {
+      try {
+        if (swap.inbound_accept === true && swap.outbound_accept === true) {
+          await supabase
+            .from('swaps')
+            .update({
+              status: 'complete',
+            })
+            .eq('id', swap.id);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    setAgreement();
+  }, [swap.id, swap.outbound_accept, swap.inbound_accept]);
 
- 
-
-  //  console.log('other guy', theirInfo);
-  //  console.log('you', yourInfo.avatarUrl)
+  //still working on this for realtime purposes
+  const handleAcceptance = async (check) => {
+    try {
+      if (check.inOrOut === 'inbound') {
+        const { data } = await supabase
+          .from('swaps')
+          .update({
+            inbound_accept: true,
+          })
+          .eq('id', swap.id);
+        if (data) {
+          supabase
+            .from('swaps')
+            .on('UPDATE', (payload) => {
+              setYourInfo({ ...yourInfo, userAccept: true });
+            })
+            .subscribe();
+        }
+      } else {
+        const { data } = await supabase
+          .from('swaps')
+          .update({
+            outbound_accept: true,
+          })
+          .eq('id', swap.id);
+        
+        if (data) {
+          supabase
+            .from('swaps')
+            .on('UPDATE', (payload) => {
+              setYourInfo({ ...yourInfo, userAccept: true });
+            })
+            .subscribe();
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return loading ? (
     <div>Loading....</div>
+  ) : swap.inbound_accept === true && swap.outbound_accept === true ? (
+    <div>in process</div>
   ) : (
     <div className="grid grid-cols-3 px-10 justify-items-center gap-10 mt-36">
       <div className="realtive justify-center">
-        <div>you </div>
         <div className="w-6/12 sm:w-2/12 px-4 grid place-items-center">
           <img
-            src="https://www.creative-tim.com/learning-lab/tailwind-starter-kit/img/team-4-470x470.png"
-            // src={yourInfo.avatarUrl}
+            //src="https://www.creative-tim.com/learning-lab/tailwind-starter-kit/img/team-4-470x470.png"
+            // we my need this for default
+            src={yourInfo.avatarUrl}
             alt="..."
             className="shadow rounded-full w-full  align-middle border-none ml-52"
           />
-          <button
-            type="button"
-            className="bg-blue-300 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full w-full ml-52"
-          >
-            Inventory
-          </button>
         </div>
-        <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-5">
-          <Card id={swap.inbound_offer.id} />
-          <div>nkfjsd</div>
-          <div>nkfjsd</div>
+        <div className="drawer">
+          <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+          <div className="drawer-content">
+            <div className="flex grid grid-cols-2">
+              <label
+                htmlFor="my-drawer"
+                className="btn btn-primary drawer-button "
+                onClick={() => setInventory(yourInfo.inOrOut)}
+              >
+                Open Inventory
+              </label>
+
+              {yourInfo.userAccept ? (
+                <div>
+                  <button className="btn loading btn-xs sm:btn-sm md:btn-md w-full">
+                    Waiting Response
+                  </button>
+                </div>
+              ) : (
+                <button
+                  className="btn btn-xs sm:btn-sm md:btn-md w-full"
+                  onClick={() => handleAcceptance(yourInfo)}
+                >
+                  Accept Terms
+                </button>
+              )}
+            </div>
+
+            <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
+              <Card id={yourInfo.id} imageUrl={yourInfo.image_url} />
+            </div>
+          </div>
+          <div className="drawer-side">
+            <label htmlFor="my-drawer" className="drawer-overlay"></label>
+
+            <ul className="menu p-4 overflow-y-auto w-full md:w-auto bg-base-100 text-base-content mr-12">
+              <label
+                htmlFor="my-drawer"
+                className="btn btn-primary drawer-button"
+                onClick={() => setInventory('')}
+              >
+                Close Inventory
+              </label>
+              <HaggleInventory user={user.id} />
+            </ul>
+          </div>
         </div>
       </div>
 
       <div className="relative">
-        <Chat />
+        <Chat receiver={notUserId} sender={user.id} />
       </div>
 
       <div className="realtive justify-center">
         <div className="w-6/12 sm:w-2/12 px-4 grid place-items-center">
           <img
-            src="https://www.creative-tim.com/learning-lab/tailwind-starter-kit/img/team-4-470x470.png"
-            // src={theirInfo.avatarUrl}
-
+            //src="https://www.creative-tim.com/learning-lab/tailwind-starter-kit/img/team-4-470x470.png"
+            // we may need this for default
+            src={theirInfo.avatarUrl}
             alt="..."
             className="shadow rounded-full w-full border-none ml-52"
           />
-          <button
-            type="button"
-            className="bg-blue-300 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full w-full ml-52"
-          >
-            Inventory
-          </button>
         </div>
-        <div className="bg-red-300 h-screen w-full">
-          <Card
-            imageUrl={swap.outbound_offer.image_url}
-            id={swap.outbound_offer.id}
-            name={swap.outbound_offer.name}
-          />
-          <div>nkfjsd</div>
-          <div>nkfjsd</div>
+        <div className="drawer drawer-end">
+          <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
+          <div className="drawer-content">
+            <div className="flex grid grid-cols-2">
+              {theirInfo.notUserAccept ? (
+                <div>
+                  <button className="btn loading btn-xs sm:btn-sm md:btn-md w-full">
+                    Waiting Response
+                  </button>
+                </div>
+              ) : (
+                <button
+                  className="btn btn-xs sm:btn-sm md:btn-md w-full text-black"
+                  disabled="disabled"
+                  onClick={() => handleAcceptance(theirInfo)}
+                >
+                  Accept Terms
+                </button>
+              )}
+              <label
+                htmlFor="my-drawer-4"
+                className="btn btn-primary drawer-button"
+                onClick={() => setInventory(theirInfo.inOrOut)}
+              >
+                Open Inventory
+              </label>
+            </div>
+
+            <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
+              <Card id={theirInfo.id} imageUrl={theirInfo.image_url} />
+            </div>
+          </div>
+          <div className="drawer-side">
+            <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
+
+            <ul className="menu p-4 overflow-y-auto w-full md:w-auto bg-base-100 text-base-content">
+              <label
+                htmlFor="my-drawer-4"
+                className="btn btn-primary drawer-button"
+                onClick={() => setInventory('')}
+              >
+                Close Inventory
+              </label>
+              <HaggleInventory user={notUserId} />
+            </ul>
+          </div>
         </div>
       </div>
-      {/* <div className="flex flex-wrap justify-center">
-        <div className="w-6/12 sm:w-2/12 px-4 rounded-full">
-          <img
-            src={yourInfo.avatarUrl}
-            //"https://www.creative-tim.com/learning-lab/tailwind-starter-kit/img/team-2-800x800.jpg"
-            alt="..."
-            className="shadow rounded-full max-w-full h-auto align-middle border-none"
-          />
-          </div>
-      </div> */}
     </div>
   );
 };
 
 export default HaggleView;
-
-// <div className="flex flex-cols-2 bg-blue-300 h-max"></div>
-//         </div>
-// {/*
-//   <div>
-//     <div className="rounded overflow-hidden shadow-lg">
-//       <div>Owner Item </div>
-//       <Card
-//         id={swap.inbound_offer.id}
-//         imageUrl={swap.inbound_offer.image_url}
-//       />
-//     </div>
-//     <div className="rounded overflow-hidden shadow-lg">
-//       <div>Haggler Item</div>
-//       <Card
-//         id={swap.outbound_offer.id}
-//         imageUrl={swap.outbound_offer.image_url}
-//       />
-//     </div>
-//   </div>
-//   <div className="haggleChat">Chat</div>
-//   <Chat /> */}
-
-//   <div className="HaggleprofileViews">Profiles</div>
-//   <div className="flex flex-wrap justify-center">
-//      <div className="w-6/12 sm:w-4/12 px-4">
-// <img src="https://www.creative-tim.com/learning-lab/tailwind-starter-kit/img/team-4-470x470.png" alt="..." className="shadow rounded-full max-w-full h-auto align-middle border-none" />
-// </div>
-// </div>
-
-//     <div className="flex flex-wrap justify-center">
-//       <div className="w-6/12 sm:w-2/12 px-4 rounded-full">
-//         <img
-//           src={yourInfo.avatarUrl}
-//           //"https://www.creative-tim.com/learning-lab/tailwind-starter-kit/img/team-2-800x800.jpg"
-//           alt="..."
-//           className="shadow rounded-full max-w-full h-auto align-middle border-none"
-//         />
-//       </div>
-//     </div>
-//     {/* <div className="w-6/12 sm:w-2/12 px-4">
-//       <img
-//         src={yourInfo.avatarUrl}
-//         //"https://www.creative-tim.com/learning-lab/tailwind-starter-kit/img/team-4-470x470.png"
-//         alt="..."
-//         className="shadow-lg rounded-full max-w-full h-auto align-middle border-none"
-//       />
-//     </div> */}
-//   </div>

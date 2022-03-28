@@ -3,7 +3,7 @@ import { supabase } from '../supabaseClient';
 import { useLocation, useNavigate } from 'react-router-dom';
 // import { useNavigate } from 'react-router';
 
-// styles to place in building 
+// styles to place in building
 
 // const styles = {
 //   card: {
@@ -59,36 +59,29 @@ const CreateProposal = ({ state }) => {
           .eq('inbound_id', user.id)
           .eq('outbound_id', item.ownerId);
         setSwap(data);
+        if (!data) {
+          const { data: reversed, error } = await supabase
+            .from('swaps')
+            .select(
+              `
+            inbound_id,
+            outbound_id,
+            id,
+            inbound_offer,
+            outbound_offer,
+            status
+            `
+            )
+            .eq('outbound_id', user.id)
+            .eq('inbound_id', item.ownerId);
+          setSwap(reversed);
+        }
       } catch (error) {
         console.error('try again', error);
       }
     };
     getAllSwaps();
   }, [user, item]);
-
-  //...next if there is no swap currently
-  //made between the two this creates it in the database
-
-  useEffect(() => {
-    const makeSwap = async () => {
-      try {
-        if (!swap.length) {
-          const { data: newSwap } = await supabase.from('swaps').insert([
-            {
-              inbound_id: user.id,
-              status: 'pending',
-              outbound_id: item.ownerId,
-              inbound_offer: item,
-            },
-          ]);
-          setSwap(newSwap);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    makeSwap();
-  }, [swap]);
 
   //this gets all the users items to render them into the view to pick from
   useEffect(() => {
@@ -117,33 +110,31 @@ const CreateProposal = ({ state }) => {
   }, [user.id]);
 
   const handleSubmit = (image, item) => {
-
     setDefault([image, item]);
   };
 
-  //updates the proposal on click
+  //creates the new swap after submitting propopsal
   const handleProposal = async (outbound) => {
- 
     if (outbound) {
-      const { data } = await supabase
-        .from('swaps')
-        .update({
+     await supabase.from('swaps').insert([
+        {
+          inbound_id: user.id,
           status: 'pending',
-          outbound_offer: outbound,
+          outbound_id: item.ownerId,
           inbound_offer: item,
-        })
-        .eq('id', swap[0].id);
-
-      setSwap(data);
-      
+          outbound_offer: outbound,
+        },
+      ]);
     }
-    navigate('/messages')
+    navigate('/messages');
   };
 
+  console.log(swap);
 
   return loading ? (
     <div>Loading</div>
   ) : (
+    swap[0] ? (<div>you already have an open trade with this trader</div>):(
     <div>
       <div className="flex mb-4">
         <img src={item.image_url} alt="" className="w-1/2" />
@@ -175,8 +166,8 @@ const CreateProposal = ({ state }) => {
           );
         })}
       </div>
-     
     </div>
+    )
   );
 };
 
