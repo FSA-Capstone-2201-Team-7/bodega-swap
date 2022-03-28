@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import Avatar from './Avatar';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import Avatar from "./Avatar";
+import { useNavigate } from "react-router-dom";
 
 const Account = ({ session }) => {
   const [loading, setLoading] = useState(true);
   const [profileData, setProfileData] = useState({
-    username: '',
-    avatarUrl: '',
-    avatarFileName: '',
+    username: "",
+    avatarUrl: "",
+    avatarFileName: "",
   });
 
   const navigate = useNavigate();
@@ -20,11 +20,11 @@ const Account = ({ session }) => {
         const user = supabase.auth.user();
 
         let { data, error, status } = await supabase
-          .from('users')
+          .from("users")
           .select(`username, avatarUrl, avatarFileName`)
           .limit(1)
           .single()
-          .eq('id', user.id);
+          .eq("id", user.id);
 
         if (error && status !== 406) {
           throw error;
@@ -52,7 +52,7 @@ const Account = ({ session }) => {
     try {
       setLoading(true);
       let fullUrl = supabase.storage
-        .from('avatars')
+        .from("avatars")
         .getPublicUrl(profileData.avatarFileName);
       const user = supabase.auth.user();
 
@@ -64,25 +64,25 @@ const Account = ({ session }) => {
         updatedAt: new Date(),
       };
 
-      let { data, error } = await supabase.from('users').upsert(updates);
+      let { data, error } = await supabase.from("users").upsert(updates);
 
       if (error) {
         throw error;
       }
 
-      if (data) alert('Profile Successfully Updated!');
+      if (data) alert("Profile Successfully Updated!");
     } catch (error) {
       alert(error.message);
     } finally {
       setLoading(false);
-      navigate('/myAccount');
+      navigate("/myAccount");
     }
   };
 
   return (
     <div className="mx-auto  p-10" aria-live="polite">
       {loading ? (
-        'Saving ...'
+        "Saving ..."
       ) : (
         <form onSubmit={handleSubmit} className=" flex-col px-[25%] ">
           <div className="form-widget">
@@ -91,7 +91,7 @@ const Account = ({ session }) => {
               size={150}
               onUpload={async (fileName) => {
                 await supabase.storage
-                  .from('avatars')
+                  .from("avatars")
                   .remove([profileData.avatarFileName]);
                 setProfileData({ ...profileData, avatarFileName: fileName });
               }}
@@ -105,7 +105,7 @@ const Account = ({ session }) => {
               </label>
             </div>
             <input
-              className="border-purple-900 border py-1 w-full "
+              className="border-gray-400 border py-1 w-full "
               id="username"
               type="text"
               value={profileData.username}
@@ -117,7 +117,7 @@ const Account = ({ session }) => {
 
           <div>
             <button
-              className="cursor-pointer mt-5 rounded-lg bg-purple-900 px-4 py-2 text-sm text-white w-full hover:bg-purple-700"
+              className="cursor-pointer mt-5 rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white w-full hover:bg-indigo-500"
               disabled={loading}
             >
               UPDATE PROFILE

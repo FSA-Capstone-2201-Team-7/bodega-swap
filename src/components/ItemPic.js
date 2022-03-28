@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '../supabaseClient';
-import VisuallyHidden from '@reach/visually-hidden';
+import { useEffect, useState } from "react";
+import { supabase } from "../supabaseClient";
+import VisuallyHidden from "@reach/visually-hidden";
 
 const ItemPic = ({ url, size, onUpload, mode }) => {
   const [itemPicUrl, setItemPicUrl] = useState(null);
@@ -18,14 +18,14 @@ weird, it is probably a result of coding for the particularities of supabase's s
   const downloadImage = (path) => {
     try {
       const { data, error } = supabase.storage
-        .from('item-pics')
+        .from("item-pics")
         .getPublicUrl(path);
       if (error) {
         throw error;
       }
       setItemPicUrl(data.publicURL);
     } catch (error) {
-      console.error('Error downloading image: ', error.message);
+      console.error("Error downloading image: ", error.message);
     }
   };
 
@@ -34,16 +34,16 @@ weird, it is probably a result of coding for the particularities of supabase's s
       setUploading(true);
 
       if (!event.target.files || event.target.files.length === 0) {
-        throw new Error('You must select an image to upload.');
+        throw new Error("You must select an image to upload.");
       }
 
       const file = event.target.files[0];
-      const fileExt = file.name.split('.').pop();
+      const fileExt = file.name.split(".").pop();
       const fileName = `${Math.random()}.${fileExt}`;
       const filePath = `${fileName}`;
 
       let { error: uploadError } = await supabase.storage
-        .from('item-pics')
+        .from("item-pics")
         .upload(filePath, file);
 
       if (uploadError) {
@@ -59,19 +59,19 @@ weird, it is probably a result of coding for the particularities of supabase's s
   };
 
   return (
-    <div style={{ width: size }} aria-live="polite">
+    <div aria-live="polite">
       <img
         src={itemPicUrl ? itemPicUrl : `https://place-hold.it/${size}x${size}`}
-        alt={itemPicUrl ? 'Item Picture' : 'No image'}
+        alt={itemPicUrl ? "Item Picture" : "No image"}
         className="avatar image"
         style={{ height: size, width: size }}
       />
       {uploading ? (
-        'Uploading...'
+        "Uploading..."
       ) : (
-        <div>
+        <div className="mt-2">
           <label
-            className="mt-2 rounded-lg bg-purple-400 px-4 py-2 text-sm uppercase text-white"
+            className="rounded-lg bg-indigo-500 hover:bg-indigo-400 px-4 py-1.5 text-sm uppercase text-white"
             htmlFor="single"
           >
             Upload a picture

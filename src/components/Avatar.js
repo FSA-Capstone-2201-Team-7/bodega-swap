@@ -66,7 +66,7 @@ const Avatar = ({ url, size, onUpload }) => {
       ) : (
         <div className="block mt-2">
           <label
-            className=" rounded-lg bg-indigo-500 px-4 py-2 text-sm uppercase text-white"
+            className="cursor-pointer rounded-lg bg-indigo-500 px-4 py-2 text-sm uppercase text-white"
             htmlFor="single"
           >
             Upload an avatar

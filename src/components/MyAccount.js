@@ -73,7 +73,7 @@ const Profile = () => {
             </div>
           </div>
           <Link to="/editProfile">
-            <button className="cursor-pointer mt-5 rounded-lg bg-purple-900 px-4 py-2 text-sm text-white w-full hover:bg-purple-700">
+            <button className="cursor-pointer mt-5 rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white w-full hover:bg-indigo-400">
               Edit Account
             </button>
           </Link>

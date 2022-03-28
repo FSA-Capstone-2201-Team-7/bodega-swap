@@ -52,7 +52,7 @@ const NavBar = ({ session }) => {
             {" "}
             <button
               type="button"
-              className=" bg-indigo-500
+              className=" bg-indigo-500 hover:bg-indigo-400
               p-2 text-sm rounded-md text-white"
             >
               List an item
