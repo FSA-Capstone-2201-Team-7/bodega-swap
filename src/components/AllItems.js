@@ -10,7 +10,6 @@ const AllItems = () => {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const [filterItem, setFilterItem] = useState("All");
-  const [searchItem, setSearchItem] = useState([]);
   const [list, setList] = useState([]);
   const user = supabase.auth.user();
 
@@ -67,7 +66,7 @@ const AllItems = () => {
         <p>Loading</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-2 lg:px-10 justify-items-center gap-10 ">
-          <SearchBar items={items} />
+          {/*  <SearchBar items={items} /> */}
           <FilterCategory
             list={list}
             setSelected={setFilterItem}
@@ -81,7 +80,7 @@ const AllItems = () => {
                     id={item.id}
                     imageUrl={item.image_url}
                     name={item.name}
-                    description={item.description}
+                    /*  description={item.description} */
                     category={item.category}
                     ownerId={item.ownerId}
                     firstButton={
