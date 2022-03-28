@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import { Link } from "react-router-dom";
 
 const MyListings = () => {
   const [loading, setLoading] = useState(true);
@@ -13,9 +13,9 @@ const MyListings = () => {
         setLoading(true);
         let { data, error, status } = await supabase
 
-          .from('items')
-          .select('*')
-          .eq('ownerId', user.id);
+          .from("items")
+          .select("*")
+          .eq("ownerId", user.id);
 
         if (error && status !== 406) {
           throw error;
@@ -44,7 +44,10 @@ const MyListings = () => {
                 <p>{item.name}</p>
                 <p>{item.description}</p>
                 <img className="h-96 w-96" src={item.image_url} alt="" />
-                <Link to={`/myAccount/editListing/${item.id}`}>
+                <Link
+                  className="cursor-pointer mt-5 rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white w-full hover:bg-indigo-400"
+                  to={`/myAccount/editListing/${item.id}`}
+                >
                   Edit Listing
                 </Link>
               </div>

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '../supabaseClient';
-import VisuallyHidden from '@reach/visually-hidden';
+import { useEffect, useState } from "react";
+import { supabase } from "../supabaseClient";
+import VisuallyHidden from "@reach/visually-hidden";
 
 const Avatar = ({ url, size, onUpload }) => {
   const [avatarUrl, setAvatarUrl] = useState(null);
@@ -13,14 +13,14 @@ const Avatar = ({ url, size, onUpload }) => {
   const downloadImage = (path) => {
     try {
       const { data, error } = supabase.storage
-        .from('avatars')
+        .from("avatars")
         .getPublicUrl(path);
       if (error) {
         throw error;
       }
       setAvatarUrl(data.publicURL);
     } catch (error) {
-      console.error('Error downloading image: ', error.message);
+      console.error("Error downloading image: ", error.message);
     }
   };
 
@@ -29,16 +29,16 @@ const Avatar = ({ url, size, onUpload }) => {
       setUploading(true);
 
       if (!event.target.files || event.target.files.length === 0) {
-        throw new Error('You must select an image to upload.');
+        throw new Error("You must select an image to upload.");
       }
 
       const file = event.target.files[0];
-      const fileExt = file.name.split('.').pop();
+      const fileExt = file.name.split(".").pop();
       const fileName = `${Math.random()}.${fileExt}`;
       const filePath = `${fileName}`;
 
       let { error: uploadError } = await supabase.storage
-        .from('avatars')
+        .from("avatars")
         .upload(filePath, file);
 
       if (uploadError) {
@@ -54,19 +54,19 @@ const Avatar = ({ url, size, onUpload }) => {
   };
 
   return (
-    <div style={{ width: size }} aria-live="polite">
+    <div aria-live="polite">
       <img
         src={avatarUrl ? avatarUrl : `https://place-hold.it/${size}x${size}`}
-        alt={avatarUrl ? 'Avatar' : 'No image'}
+        alt={avatarUrl ? "Avatar" : "No image"}
         className="avatar image"
         style={{ height: size, width: size }}
       />
       {uploading ? (
-        'Uploading...'
+        "Uploading..."
       ) : (
-        <div>
+        <div className="block mt-2">
           <label
-            className="mt-2 rounded-lg bg-purple-400 px-4 py-2 text-sm uppercase text-white"
+            className="cursor-pointer rounded-lg bg-indigo-500 px-4 py-2 text-sm uppercase text-white"
             htmlFor="single"
           >
             Upload an avatar
