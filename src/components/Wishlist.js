@@ -67,7 +67,7 @@ const Wishlist = () => {
               <Link to={`/items/${item.items.id}`}>
                 <img className="h-80 w-96" src={item.items.image_url} alt="" />
               </Link>
-              <div className="card-body flex flex-row justify-between">
+              <div className="card-body flex flex-row justify-between ">
                 <p className="card-title">{item.items.name}</p>
                 <Link to="/createproposal" state={{ item }}>
                   <button
