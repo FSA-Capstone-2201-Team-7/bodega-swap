@@ -70,7 +70,6 @@ const AllItems = () => {
         <p>Loading</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-2 lg:px-10 justify-items-center gap-10 ">
-          {/*  <SearchBar items={items} /> */}
           <FilterCategory
             list={list}
             setSelected={setFilterItem}
@@ -91,10 +90,9 @@ const AllItems = () => {
                       // <Link to="/createproposal" state={{ item }}>
                         <button
                           type="button"
-                          className="bg-blue-300 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full"
-                          onClick={() => navigate('/createproposal', { state: { item } }) }
-                        >
-                          <ForumIcon />
+                          className="bg-indigo-500 mb-2 hover:bg-indigo-400 text-white font-bold py-2 px-4 rounded-md"
+                          onClick={() => navigate('/createproposal', { state: { item } }) }>
+                          Propose Trade
                         </button>
                     
                     }
