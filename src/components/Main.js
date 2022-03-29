@@ -57,7 +57,7 @@ const Main = () => {
       </div>
       <div>
         <p className="text-2xl font-semibold mb-4 mt-6">Categories</p>
-        <div className="flex flex-no-wrap overflow-x-scroll scrolling-touch items-start mb-8">
+        <div className="flex h-80 flex-no-wrap overflow-x-scroll scrolling-touch items-start mb-8">
           {getImages.map((image) => {
             return (
               <div
