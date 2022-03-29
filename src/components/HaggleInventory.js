@@ -5,7 +5,7 @@ import Card from "./Card";
 const HaggleInventory  = (props) => {
   const [userItems, setUserItems] = useState([])
   const [loading, setLoading] = useState(true);
-  let { user, handleSwitch} = props;
+  let { user, swap} = props;
 
 
 
@@ -31,13 +31,17 @@ const HaggleInventory  = (props) => {
     getInventory()
   }, [user])
 
+const handleSwitch = () => {
+  
+}
+
   return loading ? (<div>Loading .....</div>) : (
     <div>
       {userItems.map((item) => {
         return (
           <div className="p-5" key={item.id}>
             <Card id={item.id} imageUrl={item.image_url} />
-            <button type="button" className="btn btn-wide w-full">
+            <button type="button" className="btn btn-wide w-full" onClick={() => handleSwitch}>
               Switch
             </button>
           </div>
