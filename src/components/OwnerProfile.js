@@ -40,41 +40,46 @@ const OwnerProfile = ({ state }) => {
       {loading ? (
         <p>Loading</p>
       ) : (
-        <div className="flex gap-10">
-          <div className="avatar-container">
+        <div className="flex flex-col md:flex-row p-5 my-2 gap-8 md:gap-12">
+          <div className="avatar-container flex items-center justify-center">
             <img
-              className="h-48 w-48 mask mask-squircle"
+              className="h-52 w-48 rounded-full"
               src={user.avatarUrl}
               alt=""
             />
           </div>
-          <div>
-            <h3>{user.username}</h3>
-            <h3>Gold</h3>
-            <h2>REP</h2>
+          <div className="flex flex-col items-center justify-center md:pr-16">
+            <h3 className="font-semibold text-3xl mb-2">{user.username}</h3>
             <div className="flex space-x-4">
               <div>
                 {" "}
-                <ThumbUpIcon className="h-8" />
-                <p>85%</p>
+                <ThumbDownIcon className="h-8 fill-yellow-400 stroke-yellow-500" />
+                <p>15%</p>
               </div>
               <div>
                 {" "}
-                <ThumbDownIcon className="h-8" />
-                <p>15%</p>
+                <ThumbUpIcon className="h-8 fill-yellow-400 stroke-yellow-500" />
+                <p>85%</p>
               </div>
             </div>
           </div>
-          <div>
-            <h3>Total Swaps</h3>
+          <div className="flex flex-col justify-center items-center">
+            <h3 className="font-semibold text-2xl mb-2">Total Swaps</h3>
             <div className="flex space-x-4">
               <div>
-                <p>Completed</p>
-                <p>87</p>
+                <div className="flex items-center ">
+                  <p className="text-xl pr-1">Completed </p>
+                  <div className="inline-flex w-4 h-4 bg-gray-400 rounded-full"></div>
+                </div>
+                <div className="flex justify-center">87</div>
               </div>
               <div>
-                <p>Active</p>
-                <p>12</p>
+                <div className="flex items-center ">
+                  <p className="text-lg pr-1">Active </p>
+                  <div className="inline-flex w-4 h-4 bg-green-500 rounded-full"></div>
+                </div>
+
+                <div className="flex justify-center">12</div>
               </div>
             </div>
           </div>

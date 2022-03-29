@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import Carousel, { CarouselItem } from './UseCarousel';
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import Carousel, { CarouselItem } from "./UseCarousel";
 
-import Card from './Card';
+import Card from "./Card";
 
 const Main = () => {
   const [getImages, setImages] = useState([]);
@@ -14,12 +14,12 @@ const Main = () => {
       try {
         setLoading(true);
         let { data, error, status } = await supabase
-          .from('items')
+          .from("items")
           .select(`name, description, ownerId, id, category, listed, image_url`)
-          .eq('listed', true)
+          .eq("listed", true)
           .neq(
-            'ownerId',
-            user ? user.id : '11111111-1111-1111-1111-111111111111'
+            "ownerId",
+            user ? user.id : "11111111-1111-1111-1111-111111111111"
           );
 
         if (error && status !== 406) {
@@ -42,22 +42,22 @@ const Main = () => {
   ) : (
     <div>
       <div>
-        <div className="flex grid bg-white border overflow-hidden">
+        <div className="mt-3 relative flex h-1/3 lg:h-2/3 bg-white border overflow-hidden">
           <img
-            src="https://pbs.twimg.com/media/ElK-sofWAAY8iE7?format=jpg&name=large"
+            src="https://images.unsplash.com/photo-1543372742-e08542e25f8b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bWVtcGhpcyUyMHRlbm5lc3NlZXxlbnwwfHwwfHw%3D&w=1000&q=80"
             alt=""
-            className="h-96 w-full object-cover saturate-200"
+            className="h-96 w-full object-cover backdrop-brightness-90"
           />
-          <div className="absolute inset-y-14 rounded-lg p-4 text-white text-7xl pl-20 pt-10">
-            <ul>The Largest</ul>
-            <ul>Community of</ul>
-            <ul>Swapping Enthusiasts</ul>
+          <div className="absolute inset-y-14 rounded-lg p-4 text-indigo-50 text-4xl md:text-5xl lg:text-7xl pl-20 pt-10">
+            <p>The Largest</p>
+            <p>Community of</p>
+            <p>Swapping Enthusiasts</p>
           </div>
         </div>
       </div>
       <div>
-        <div>Categories</div>
-        <div className="flex flex-no-wrap overflow-x-scroll scrolling-touch items-start mb-8">
+        <p className="text-2xl font-semibold mb-4 mt-6">Categories</p>
+        <div className="flex h-80 flex-no-wrap overflow-x-scroll scrolling-touch items-start mb-8">
           {getImages.map((image) => {
             return (
               <div
@@ -80,7 +80,7 @@ const Main = () => {
               </CarouselItem>
             );
           })}
-      
+
         </Carousel> */}
       </div>
     </div>

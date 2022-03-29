@@ -56,14 +56,14 @@ function SearchBar(props) {
     setWordEntered("");
   };
   return (
-    <div className="md:flex hidden ">
+    <div className="md:flex hidden md:justify-center">
       {loading ? (
         <p>loading</p>
       ) : (
-        <div className="flex flex-col ">
+        <div className="flex relative flex-col w-[80%] z-20">
           <div className="flex items-center rounded-full py-2 md:border-2 md:shadow-sm ">
             <input
-              className="flex-grow bg-transparent pl-5 text-sm text-gray-600 placeholder-gray-400 outline-none"
+              className="w-full bg-transparent pl-5 text-sm text-gray-600 placeholder-gray-400 outline-none"
               placeholder="Search"
               type="text"
               onChange={handleFilter}
@@ -72,25 +72,34 @@ function SearchBar(props) {
 
             <div className="">
               {filteredData.length === 0 ? (
-                <SearchIcon className="h-6 hidden md:inline-flex cursor-pointer md:mx-2" />
+                <SearchIcon className="h-6 hidden md:inline-flex cursor-pointer md:mx-2 pr-1" />
               ) : (
                 <XIcon
-                  className="h-6  hidden md:inline-flex cursor-pointer"
+                  className="h-6  hidden md:inline-flex cursor-pointer pr-2"
                   onClick={clearInput}
                 />
               )}
             </div>
-          </div>
-          <div className="shadow top-16 absolute z-10 bg-white mt-1 ">
-            {filteredData.slice(0, 10).map((item, key) => {
-              return (
-                <div className="mt-1 px-2  hover:bg-gray-200 ">
-                  <Link to={`/items/${item.id}`}>
-                    <p className="cursor-pointer">{item.name}</p>
-                  </Link>
-                </div>
-              );
-            })}
+            <div className="top-14 shadow absolute z-10 bg-white mt-1 pb-1 w-full  ">
+              {filteredData.slice(0, 10).map((item, key) => {
+                return (
+                  <div className="mt-1 px-3 py-1 lg:py-2 hover:bg-gray-200  ">
+                    <Link className="flex space-x-2" to={`/items/${item.id}`}>
+                      <img
+                        className="h-7 w-7 rounded-sm md:h-9 md:w-9 lg:w-11 lg:h-11"
+                        src={item.image_url}
+                        alt=""
+                      />
+                      <div>
+                        <p className=" align-middle	 cursor-pointer lg:text-lg">
+                          {item.name}
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       )}
