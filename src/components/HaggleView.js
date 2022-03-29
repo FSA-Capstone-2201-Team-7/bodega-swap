@@ -287,7 +287,9 @@ const HaggleView = ({ state }) => {
           <div className="drawer-side">
             <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
 
-            <ul className="menu p-4 overflow-y-auto w-full md:w-auto bg-base-100 text-base-content">
+
+            <ul className="menu p-4 overflow-y-auto w-full md:w-auto bg-base-100 text-base-content ml-12">
+
               <label
                 htmlFor="my-drawer-4"
                 className="btn btn-primary drawer-button"
