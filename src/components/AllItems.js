@@ -87,9 +87,9 @@ const AllItems = () => {
                       <Link to="/createproposal" state={{ item }}>
                         <button
                           type="button"
-                          className="bg-blue-300 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full"
+                          className="bg-indigo-500 mb-2 hover:bg-indigo-400 text-white font-bold py-2 px-4 rounded-md"
                         >
-                          <ForumIcon />
+                          Propose Trade
                         </button>
                       </Link>
                     }
