@@ -56,7 +56,7 @@ function SearchBar(props) {
     setWordEntered("");
   };
   return (
-    <div className="flex-grow">
+    <div className="md:flex hidden ">
       {loading ? (
         <p>loading</p>
       ) : (
@@ -72,7 +72,7 @@ function SearchBar(props) {
 
             <div className="">
               {filteredData.length === 0 ? (
-                <SearchIcon className="h-6  hidden md:inline-flex cursor-pointer md:mx-2" />
+                <SearchIcon className="h-6 hidden md:inline-flex cursor-pointer md:mx-2" />
               ) : (
                 <XIcon
                   className="h-6  hidden md:inline-flex cursor-pointer"

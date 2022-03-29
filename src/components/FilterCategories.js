@@ -35,7 +35,7 @@ const FilterCategory = (props) => {
       >
         <Menu.Items
           as="div"
-          className="origin-top-left absolute  right-[7%] mt-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+          className="origin-top-left absolute  right-[7%] mt-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
         >
           {list.map((el, i) => {
             return (
