@@ -72,7 +72,7 @@ const Card = (props) => {
       </Menu>
     </div>
   ) : (
-    <div className="card card-compact w-96 bg-base-100 shadow-xl">
+    <div className="rounded overflow-hidden shadow-lg">
       <Link to={`/items/${id}`}>
         <img className="h-80 w-96" src={imageUrl} alt="" />
       </Link>

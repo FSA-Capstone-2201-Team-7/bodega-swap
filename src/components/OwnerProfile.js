@@ -42,7 +42,11 @@ const OwnerProfile = ({ state }) => {
       ) : (
         <div className="flex gap-10">
           <div className="avatar-container">
-            <img src={user.avatarUrl} alt="" />
+            <img
+              className="h-48 w-48 mask mask-squircle"
+              src={user.avatarUrl}
+              alt=""
+            />
           </div>
           <div>
             <h3>{user.username}</h3>
