@@ -81,7 +81,7 @@ useEffect(() => {
             >
               {index + 1}
             </button>
-          );
+          )
         })}
         <button
           onClick={() => {

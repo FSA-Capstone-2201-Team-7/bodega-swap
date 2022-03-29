@@ -20,7 +20,11 @@ const Chat = (props) => {
           .from('conversations')
           .select(`id`)
           .eq('sender_Id', props.sender)
-          .eq('receiver_Id', props.receiver);
+
+          .eq('receiver_Id', props.receiver)
+          .eq('swap_Id', props.swap.id);
+
+
           console.log('convo', data)
           setConversation(...data)
         if (!data[0]) {
@@ -28,7 +32,10 @@ const Chat = (props) => {
             .from('conversations')
             .select(`id`)
             .eq('sender_Id', props.receiver)
-            .eq('receiver_Id', props.sender);
+
+            .eq('receiver_Id', props.sender)
+            .eq('swap_Id', props.swap.id);
+
           setConversation(...reversed);
         } 
       } catch (error) {
@@ -36,7 +43,7 @@ const Chat = (props) => {
       } 
     };
     getConversation();
-  }, [props.sender, props.receiver]);
+  }, [props.sender, props.receiver, props.swap.id]);
 
 
   //here we implement realtime by applying any change made with messages 

@@ -86,7 +86,7 @@ const AllItems = () => {
                     /*  description={item.description} */
                     category={item.category}
                     ownerId={item.ownerId}
-                    firstButton={
+                 firstButton={
                       // <Link to="/createproposal" state={{ item }}>
                         <button
                           type="button"

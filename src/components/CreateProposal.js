@@ -3,30 +3,6 @@ import { supabase } from '../supabaseClient';
 import { useLocation, useNavigate } from 'react-router-dom';
 // import { useNavigate } from 'react-router';
 
-// styles to place in building
-
-// const styles = {
-//   card: {
-//     backgroundColor: 'rgba(128, 128, 128, 0.972)',
-//     //** keep to build out functionality */
-//     //#rgba(255, 255, 255, 0.972) => white
-//     borderRadius: 55,
-//     width: '20.5rem',
-//     height: '20.5rem',
-//   },
-//   cardImage: {
-//     objectFit: 'cover',
-//     borderRadius: 55,
-//     height: '80%',
-//   },
-//   containerHolder: {
-//     borderRadius: 100,
-//     backgroundColor: 'rgba(0, 0, 0, 0.959)',
-//     // ** keep to build out functionality
-//     //'rgba(128, 128, 128, 0.972)', => grey
-//   },
-// };
-
 const CreateProposal = ({ state }) => {
   const [loading, setLoading] = useState(true);
   const [swap, setSwap] = useState([]);
@@ -34,7 +10,8 @@ const CreateProposal = ({ state }) => {
   const [defaultImage, setDefault] = useState([
     'http://dummyimage.com/140x100/ddd.png/dddddd/000000',
   ]);
-  const location = useLocation(null);
+
+  const location = useLocation();
   const navigate = useNavigate();
   const user = supabase.auth.user();
   const { item = '' } = location.state || {};
@@ -93,13 +70,10 @@ const CreateProposal = ({ state }) => {
           .select('*')
           .eq('ownerId', user.id);
 
-        if (error && status !== 406) {
-          throw error;
-        }
         if (data) {
           setUserItems(data);
         }
-        
+
       } catch (err) {
         console.log(err);
       } finally {
@@ -132,6 +106,7 @@ const CreateProposal = ({ state }) => {
   };
 
   
+
 
 
   return loading ? (
@@ -174,6 +149,7 @@ const CreateProposal = ({ state }) => {
 
   )
   
+
 
 };
 

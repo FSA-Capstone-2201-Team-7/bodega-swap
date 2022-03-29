@@ -3,7 +3,6 @@ import { supabase } from "../supabaseClient";
 import { useNavigate } from "react-router";
 
 export default function Auth() {
-
   const [loading, setLoading] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

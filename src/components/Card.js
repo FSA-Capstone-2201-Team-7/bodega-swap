@@ -86,9 +86,3 @@ const Card = (props) => {
 };
 export default Card;
 
-// <div className="px-6 py-4 pt-4 pb-2">
-//   <div className="font-bold text-xl mb-2">{name || null}</div>
-//   <p className="text-gray-700 text-base text-ellipsis overflow-hidden">
-//     {description || null}
-//   </p>
-// </div>;
