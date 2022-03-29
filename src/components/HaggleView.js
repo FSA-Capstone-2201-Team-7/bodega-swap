@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { useLocation } from 'react-router-dom';
-import Chat from './Chat';
-import Card from './Card';
-import HaggleInventory from './HaggleInventory';
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import { useLocation } from "react-router-dom";
+import Chat from "./Chat";
+import Card from "./Card";
+import HaggleInventory from "./HaggleInventory";
 
 const HaggleView = ({ state }) => {
   const location = useLocation(null);
-  const { swap = '' } = location.state || {};
+  const { swap = "" } = location.state || {};
   const [loading, setLoading] = useState(true);
   const [yourInfo, setYourInfo] = useState({});
   const [theirInfo, setTheirInfo] = useState({});
-  const [notUserId, setNotUserId] = useState('');
-  const [inventory, setInventory] = useState('');
+  const [notUserId, setNotUserId] = useState("");
+  const [inventory, setInventory] = useState("");
   const user = supabase.auth.user();
 
   //here we get the users info and avatar and spread them into new object to render into haggle view
@@ -21,20 +21,36 @@ const HaggleView = ({ state }) => {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from('users')
+          .from("users")
           .select(
             `
           avatarUrl
           `
           )
-          .eq('id', user.id);
+          .eq("id", user.id);
+
+        // o: can you see what is similar in this code block
+        // if (swap.outbound_id !== user.id) {
+        //   const inOrOut = 'inbound'
+        // } else {
+        //   const inOrOut = 'outBound'
+        // }
+
+        // setYourInfo({
+        //   ...swap.inbound_offer,
+        //   ...data[0],
+        //   userAccept: swap.inbound_accept,
+        //   inOrOut: inOrOut,
+        // });
+
+        // setNotUserId(swap.inbound_id);
 
         if (swap.outbound_id !== user.id) {
           setYourInfo({
             ...swap.outbound_offer,
             ...data[0],
             userAccept: swap.outbound_accept,
-            inOrOut: 'outbound',
+            inOrOut: "outbound",
           });
           setNotUserId(swap.outbound_id);
         } else {
@@ -42,7 +58,7 @@ const HaggleView = ({ state }) => {
             ...swap.inbound_offer,
             ...data[0],
             userAccept: swap.inbound_accept,
-            inOrOut: 'inbound',
+            inOrOut: "inbound",
           });
 
           setNotUserId(swap.inbound_id);
@@ -70,27 +86,27 @@ const HaggleView = ({ state }) => {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from('users')
+          .from("users")
           .select(
             `
           avatarUrl
           `
           )
-          .eq('id', notUserId);
+          .eq("id", notUserId);
 
         if (swap.outbound_id !== user.id) {
           setTheirInfo({
             ...swap.inbound_offer,
             ...data[0],
             notUserAccept: swap.inbound_accept,
-            inOrOut: 'inbound',
+            inOrOut: "inbound",
           });
         } else {
           setTheirInfo({
             ...swap.outbound_offer,
             ...data[0],
             notUserAccept: swap.outbound_accept,
-            inOrOut: 'outbound',
+            inOrOut: "outbound",
           });
         }
       } catch (error) {
@@ -110,9 +126,9 @@ const HaggleView = ({ state }) => {
     swap.outbound_accept,
   ]);
 
-  // final settlement between users are set when both agree 
+  // final settlement between users are set when both agree
   // the database is updated from 'active' to 'processing?'
-  //this is completed when both users hand off the trade 
+  //this is completed when both users hand off the trade
   // another method here may be to set it as complete and render a time
   //limit for both the exchange items or repurcussion on there reputation status may happen
   useEffect(() => {
@@ -120,11 +136,11 @@ const HaggleView = ({ state }) => {
       try {
         if (swap.inbound_accept === true && swap.outbound_accept === true) {
           await supabase
-            .from('swaps')
+            .from("swaps")
             .update({
-              status: 'complete',
+              status: "complete",
             })
-            .eq('id', swap.id);
+            .eq("id", swap.id);
         }
       } catch (error) {
         console.error(error);
@@ -136,33 +152,33 @@ const HaggleView = ({ state }) => {
   //still working on this for realtime purposes
   const handleAcceptance = async (check) => {
     try {
-      if (check.inOrOut === 'inbound') {
+      if (check.inOrOut === "inbound") {
         const { data } = await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             inbound_accept: true,
           })
-          .eq('id', swap.id);
+          .eq("id", swap.id);
         if (data) {
           supabase
-            .from('swaps')
-            .on('UPDATE', (payload) => {
+            .from("swaps")
+            .on("UPDATE", (payload) => {
               setYourInfo({ ...yourInfo, userAccept: true });
             })
             .subscribe();
         }
       } else {
         const { data } = await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             outbound_accept: true,
           })
-          .eq('id', swap.id);
-        
+          .eq("id", swap.id);
+
         if (data) {
           supabase
-            .from('swaps')
-            .on('UPDATE', (payload) => {
+            .from("swaps")
+            .on("UPDATE", (payload) => {
               setYourInfo({ ...yourInfo, userAccept: true });
             })
             .subscribe();
@@ -228,7 +244,7 @@ const HaggleView = ({ state }) => {
               <label
                 htmlFor="my-drawer"
                 className="btn btn-primary drawer-button"
-                onClick={() => setInventory('')}
+                onClick={() => setInventory("")}
               >
                 Close Inventory
               </label>
@@ -291,7 +307,7 @@ const HaggleView = ({ state }) => {
               <label
                 htmlFor="my-drawer-4"
                 className="btn btn-primary drawer-button"
-                onClick={() => setInventory('')}
+                onClick={() => setInventory("")}
               >
                 Close Inventory
               </label>

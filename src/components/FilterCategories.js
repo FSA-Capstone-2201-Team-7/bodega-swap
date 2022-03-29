@@ -7,6 +7,8 @@ const classNames = (...classes) => {
 };
 const FilterCategory = (props) => {
   const { list, setSelected, loading } = props;
+
+  // o: you are using this logic into a component or even higher order component
   return loading ? (
     <div>Loading...</div>
   ) : (

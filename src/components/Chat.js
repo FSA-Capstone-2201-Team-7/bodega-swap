@@ -80,6 +80,7 @@ const Chat = (props) => {
     }
   };
 
+  // o: is it possible to fetch more than just one message on infinite scroll?
   //will be used to develop infinite scroll properties
   const fetchMessages = () => {
     if(messages) {
@@ -91,6 +92,8 @@ const Chat = (props) => {
     const { value } = e.target;
     setInput(value);
   }
+
+  // o: this logic is a little hard to parse, consider outsourcing to sub-component
   return loading ? (
     <div>Loading....</div>
   ) : (

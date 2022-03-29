@@ -3,6 +3,7 @@ import { supabase } from '../supabaseClient';
 import { useLocation, useNavigate } from 'react-router-dom';
 // import { useNavigate } from 'react-router';
 
+// o: remove if not being used
 // styles to place in building
 
 // const styles = {

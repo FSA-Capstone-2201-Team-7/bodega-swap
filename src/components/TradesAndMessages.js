@@ -149,6 +149,7 @@ console.log('inbound', data)
     }
   };
 
+  // o: consider sub-components below
   return loading ? (
     <div>Loding...</div>
   ) : (

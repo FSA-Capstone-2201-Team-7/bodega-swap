@@ -11,6 +11,9 @@ const AllItems = () => {
   const [items, setItems] = useState([]);
   const [filterItem, setFilterItem] = useState('All');
   const [list, setList] = useState([]);
+
+  // o: are you sure you want to be loading user every time you render this
+  //  component?
   const user = supabase.auth.user();
 
   useEffect(() => {
@@ -26,6 +29,7 @@ const AllItems = () => {
           )
           .neq('listed', false);
 
+        // o: why the check for 406?
         if (error && status !== 406) {
           throw error;
         }
@@ -71,6 +75,10 @@ const AllItems = () => {
             setSelected={setFilterItem}
             loading={loading}
           />
+          {/* o: idx is not being used */}
+          {/* o: this logic is a little difficult to read, consider moving
+                sub-component
+          */}
           {items.map((item, idx) => {
             if (filterItem === "All" || item.category === filterItem) {
               return (
@@ -115,6 +123,7 @@ const AllItems = () => {
 
 export default AllItems;
 
+// o: remove if not used
 // {/* <Link to="/createproposal" state={{ item }}>
 //   <button
 //     type="button"

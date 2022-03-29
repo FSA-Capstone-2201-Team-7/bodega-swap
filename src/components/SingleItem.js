@@ -79,6 +79,8 @@ const SingleItem = () => {
 };
 
 export default SingleItem;
+
+// o: remove if not being used
 // {
 //   /* <p>{item.name}</p>
 //           <button

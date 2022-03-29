@@ -11,6 +11,8 @@ const App = () => {
 
 export default App;
 
+// o: this should go
+
 // import "./App.css";
 // import { useState, useEffect } from "react";
 // import { supabase } from "./supabaseClient";

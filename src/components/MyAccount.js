@@ -7,6 +7,9 @@ import { ThumbDownIcon, ThumbUpIcon } from "@heroicons/react/outline";
 const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+
+  // o: are you sure you want to be loading user every time this component
+  //  is rendered
   const User = supabase.auth.user();
   useEffect(() => {
     const getUser = async () => {

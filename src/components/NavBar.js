@@ -9,6 +9,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 const NavBar = ({ session }) => {
   const navigate = useNavigate();
+
+  // o: remove if not being used
   // console.log(localStorage);
   return (
     <header className="sticky top-0 flex justify-between bg-white p-5 shadow-md md:px-10 z-40 ">

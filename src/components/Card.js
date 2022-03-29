@@ -3,16 +3,19 @@ import { Link } from 'react-router-dom';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 import { Menu, Transition } from '@headlessui/react';
 
+// o: remove if not being used
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ');
 };
 
 const Card = (props) => {
+  // o: remove props not being used
   const { name, description, imageUrl, category, ownerId, id, firstButton, secondButton = "" } = props;
   const dropDownhandler = () => {
 
   }
 
+  // o: this logic is difficult to parse, consider moving parts into a sub-component
   return name || description ? (
     <div className="max-w-sm rounded overflow-hidden shadow-lg ">
       <button type="button" onClick={() => dropDownhandler()}>

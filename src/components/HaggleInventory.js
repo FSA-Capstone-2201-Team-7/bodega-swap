@@ -5,6 +5,8 @@ import Card from "./Card";
 const HaggleInventory  = (props) => {
   const [userItems, setUserItems] = useState([])
   const [loading, setLoading] = useState(true);
+
+  // o: remove if not being used
   let { user, handleSwitch} = props;
 
 

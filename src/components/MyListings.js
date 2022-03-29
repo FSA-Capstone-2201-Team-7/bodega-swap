@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 const MyListings = () => {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState(null);
+
+  // o: are you sure you want to be loading user every time this component
+  //  is rendered
   const user = supabase.auth.user();
 
   useEffect(() => {

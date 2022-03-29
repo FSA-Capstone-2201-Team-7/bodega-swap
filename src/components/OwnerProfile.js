@@ -33,6 +33,7 @@ const OwnerProfile = ({ state }) => {
       }
     };
     getUser();
+    // o: should there be a dependancy on item.ownerId?
   }, []);
 
   return (

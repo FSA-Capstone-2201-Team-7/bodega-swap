@@ -7,6 +7,9 @@ import Card from './Card';
 const Main = () => {
   const [getImages, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // o: are you sure you want to be loading user every time this component
+  //  is rendered
   const user = supabase.auth.user();
 
   useEffect(() => {
