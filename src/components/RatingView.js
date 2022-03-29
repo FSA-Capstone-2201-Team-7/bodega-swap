@@ -26,7 +26,7 @@ const RatingView = (props) => {
     e.preventDefault();
     const vote = e.target.name === 'up' ? 'upvote' : 'downvote';
     try {
-      await supabase.rpc(vote, { id: targetId });
+      await supabase.rpc(vote, { rate_id: targetId }, { user_id: user.id });
       /* upvote and downvote are functions that are written into our database on the backend. Depending on which one is called, a user's upvote or downvote tally will be incremented by 1 */
     } catch (error) {
       console.error(error);
