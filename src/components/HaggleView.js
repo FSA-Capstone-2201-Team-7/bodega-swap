@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Chat from './Chat';
 import Card from './Card';
 import HaggleInventory from './HaggleInventory';
+import AgreedView from './ArgreedView';
 
 const HaggleView = ({ state }) => {
   const location = useLocation(null);
@@ -176,7 +177,7 @@ const HaggleView = ({ state }) => {
   return loading ? (
     <div>Loading....</div>
   ) : swap.inbound_accept === true && swap.outbound_accept === true ? (
-    <div>in process</div>
+    <AgreedView />
   ) : (
     <div className="grid grid-cols-3 px-10 justify-items-center gap-10 mt-36">
       <div className="realtive justify-center">
@@ -239,7 +240,7 @@ const HaggleView = ({ state }) => {
       </div>
 
       <div className="relative">
-        <Chat receiver={notUserId} sender={user.id} />
+        <Chat receiver={notUserId} sender={user.id} swap={swap}/>
       </div>
 
       <div className="realtive justify-center">
