@@ -30,7 +30,7 @@ const TradesAndMessages = () => {
             inbound_accept,
             outbound_accept,
             inbound_confirm,
-              outbound_confirm
+           outbound_confirm
             `
           )
           .eq('inbound_id', user.id);
@@ -152,7 +152,7 @@ const TradesAndMessages = () => {
               return (
                 <div key={swap.id}>
                   {swap.inbound_confirm === true ? (
-                    <ConfirmationCard id={swap.inbound_offer.id} swap={swap} />
+                    <ConfirmationCard id={swap.inbound_offer.id} swap={swap} inOrOut='inbound' />
                   ) : (
                     <div className=" flex rounded overflow-hidden shadow-lg">
                       <Card
@@ -210,7 +210,11 @@ const TradesAndMessages = () => {
           return (
             <div key={swap.id}>
               {swap.outbound_confirm === true ? (
-                <ConfirmationCard id={swap.outbound_offer.id} swap={swap} />
+                <ConfirmationCard
+                  id={swap.outbound_offer.id}
+                  swap={swap}
+                  inOrOut="outbound"
+                />
               ) : (
                 <div className="flex rounded overflow-hidden shadow-lg">
                   <Card

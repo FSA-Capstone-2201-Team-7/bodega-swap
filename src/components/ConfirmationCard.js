@@ -3,14 +3,15 @@ import { useNavigate } from 'react-router-dom';
 
 
 const ConfirmationCard = (props) => {
-  const { swap } = props;
+  const { swap, inOrOut } = props;
   const navigate = useNavigate()
 
 
-
+console.log(inOrOut)
   return (
     <div>
       <div className="flex rounded overflow-hidden shadow-lg opacity-50">
+    
         <img className="h-80 w-96" src={swap.inbound_offer.image_url} alt="" />
         <img className="h-80 w-96" src={swap.outbound_offer.image_url} alt="" />
       </div>

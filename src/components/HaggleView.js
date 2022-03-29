@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Chat from './Chat';
 import Card from './Card';
 import HaggleInventory from './HaggleInventory';
 import AgreedButton from './AgreedButton';
+
 
 const HaggleView = ({ state }) => {
   const location = useLocation(null);
@@ -15,6 +16,7 @@ const HaggleView = ({ state }) => {
   const [notUserId, setNotUserId] = useState('');
   const [inventory, setInventory] = useState('');
   const user = supabase.auth.user();
+  const navigate = useNavigate()
 
   //here we get the users info and avatar and spread them into new object to render into haggle view
   useEffect(() => {
@@ -63,7 +65,7 @@ const HaggleView = ({ state }) => {
                 ...swap.outbound_offer,
                 ...data[0],
                 userAccept: update.new.inbound_accept,
-                inOrOut: 'outbound',
+                inOrOut: 'inbound',
               });
             })
             .subscribe();
@@ -183,8 +185,9 @@ const HaggleView = ({ state }) => {
     }
   };
   const handleConfimation = async (check) => {
+
     try {
-      if (check.inOrOut === 'inbound') {
+      if (check === 'inbound') {
         await supabase
           .from('swaps')
           .update({
@@ -202,9 +205,8 @@ const HaggleView = ({ state }) => {
     } catch (error) {
       console.error(error);
     }
-    //navigate?
+    navigate('/messages')
   };
-
   return loading ? (
     <div>Loading....</div>
   ) : (
@@ -259,6 +261,7 @@ const HaggleView = ({ state }) => {
                 info={yourInfo}
                 handleAcceptance={handleAcceptance}
                 swap={swap}
+                inOrOut={setYourInfo.inOrOut}
               />
             </div>
             <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
@@ -309,6 +312,7 @@ const HaggleView = ({ state }) => {
               >
                 Open Inventory
               </label>
+            
             </div>
             <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
               <Card id={theirInfo.id} imageUrl={theirInfo.image_url} />
