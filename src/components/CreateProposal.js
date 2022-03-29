@@ -73,6 +73,7 @@ const CreateProposal = ({ state }) => {
         if (data) {
           setUserItems(data);
         }
+
       } catch (err) {
         console.log(err);
       } finally {
@@ -89,10 +90,10 @@ const CreateProposal = ({ state }) => {
   //creates the new swap after submitting propopsal
   const handleProposal = async (outbound) => {
     if (outbound) {
-      await supabase.from('swaps').insert([
+     await supabase.from('swaps').insert([
         {
           inbound_id: user.id,
-          status: 'proposed',
+          status: 'pending',
           outbound_id: item.ownerId,
           inbound_offer: item,
           outbound_offer: outbound,
@@ -101,13 +102,17 @@ const CreateProposal = ({ state }) => {
 
       navigate('/messages');
     }
+    
   };
+
+  
+
+
 
   return loading ? (
     <div>Loading</div>
-  ) : swap[0] ? (
-    <div>you already have an open trade with this trader</div>
   ) : (
+    swap[0] ? (<div>you already have an open trade with this trader</div>):(
     <div>
       <div className="flex mb-4">
         <img src={item.image_url} alt="" className="w-1/2" />
@@ -140,7 +145,12 @@ const CreateProposal = ({ state }) => {
         })}
       </div>
     </div>
-  );
+    )
+
+  )
+  
+
+
 };
 
 export default CreateProposal;

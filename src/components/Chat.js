@@ -20,8 +20,10 @@ const Chat = (props) => {
           .from('conversations')
           .select(`id`)
           .eq('sender_Id', props.sender)
+
           .eq('receiver_Id', props.receiver)
           .eq('swap_Id', props.swap.id);
+
 
           console.log('convo', data)
           setConversation(...data)
@@ -30,8 +32,10 @@ const Chat = (props) => {
             .from('conversations')
             .select(`id`)
             .eq('sender_Id', props.receiver)
+
             .eq('receiver_Id', props.sender)
             .eq('swap_Id', props.swap.id);
+
           setConversation(...reversed);
         } 
       } catch (error) {

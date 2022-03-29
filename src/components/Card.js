@@ -72,13 +72,15 @@ const Card = (props) => {
       </Menu>
     </div>
   ) : (
-    <div className="max-w-sm rounded overflow-hidden shadow-lg ">
+    <div className="card card-compact w-96 bg-base-100 shadow-xl">
       <Link to={`/items/${id}`}>
-        <img className="h-96 w-96" src={imageUrl} alt="" />
-        <p>{name}</p>
+        <img className="h-80 w-96" src={imageUrl} alt="" />
       </Link>
-      {firstButton || null}
-      {secondButton || null}
+      <div className="card-body flex flex-row justify-between">
+        <p className="card-title">{name}</p>
+        <div className="items-start">{secondButton || null}</div>
+      </div>
+      <div className="card-actions justify-end pr-4">{firstButton || null}</div>
     </div>
   );
 };
