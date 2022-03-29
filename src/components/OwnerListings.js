@@ -36,7 +36,7 @@ function OwnerListings({ user }) {
         <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-10 mt-4 justify-items-center ">
           {items.map((item, idx) => {
             return (
-              <div key={idx} className="rounded overflow-hidden shadow-xl">
+              <div key={idx} className="w-96 rounded overflow-hidden shadow-xl">
                 <img className="h-96 w-96" src={item.image_url} alt="" />
                 <div className="card-body">
                   <p className="card-title">{item.name}</p>
