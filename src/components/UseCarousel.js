@@ -34,7 +34,6 @@ useEffect(() => {
     if(!paused) {
       updateIndex(activeIndex + 1);
     }
-    
   }, 1000)
   return () => {
     if(interval) {
