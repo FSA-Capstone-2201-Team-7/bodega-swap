@@ -1,12 +1,12 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "../supabaseClient";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
-import { ChatAltIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
-import PersonIcon from "@mui/icons-material/Person";
-import LogoutIcon from "@mui/icons-material/Logout";
-import SearchBar from "./SearchBar";
+import { ChatAltIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
+import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
+import SearchBar from './SearchBar';
 
 const NavBar = ({ session }) => {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const NavBar = ({ session }) => {
         <div>
           <nav className="md:hidden dropdown dropdown-end ">
             <label
-              tabindex="0"
+              tabIndex="0"
               className="btn m-1 bg-indigo-500 hover:bg-indigo-400 hover:border-indigo-400 border-violet-400 swap swap-rotate"
             >
               <input type="checkbox" />
@@ -54,7 +54,7 @@ const NavBar = ({ session }) => {
             </label>
 
             <ul
-              tabindex="0"
+              tabIndex="0"
               className="dropdown-content menu p-2 text-base leading-7 shadow bg-base-100 rounded-sm w-52 border-2 border-b-indigo-500"
             >
               <Link
@@ -105,7 +105,7 @@ const NavBar = ({ session }) => {
               <PersonIcon className="hover:scale-110 hover:text-indigo-500  hover:transition duration-300 ease-out" />
             </Link>
             <Link to="/createListing">
-              {" "}
+              {' '}
               <button
                 type="button"
                 className=" bg-indigo-500 hover:bg-indigo-400
