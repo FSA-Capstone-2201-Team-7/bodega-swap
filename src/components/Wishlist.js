@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { Link, useNavigate } from "react-router-dom";
 
-
 const Wishlist = () => {
   const [loading, setLoading] = useState(true);
   const [wishlist, setWishList] = useState(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const user = supabase.auth.user();
 
   useEffect(() => {
@@ -59,8 +58,8 @@ const Wishlist = () => {
     <div>Loading...</div>
   ) : wishlist.length ? (
     <div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-10 mt-4 justify-items-center ">
-        <h3 className="md:col-span-2 col-span-1 lg:col-span-3 text-2xl">
+      <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-10 mt-5 justify-items-center ">
+        <h3 className="md:col-span-2 col-span-1 lg:col-span-3 text-2xl ">
           My Wishlist
         </h3>
         {wishlist.map((item, idx) => {
@@ -69,29 +68,27 @@ const Wishlist = () => {
               <Link to={`/items/${item.items.id}`}>
                 <img className="h-80 w-96" src={item.items.image_url} alt="" />
               </Link>
-              <div className="card-body flex flex-row justify-between ">
-                <p className="card-title">{item.items.name}</p>
+              <div className="card-body flex flex-row justify-between pb-1 ">
+                <p className="card-title ">{item.items.name}</p>
               </div>
-              <div className="card-actions justify-end">
+              <div className="card-actions  justify-between mt-5 pb-3  px-6">
                 <button
-                  className="cursor-pointer rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white w-full hover:bg-indigo-500"
+                  type="button"
+                  className="cursor-pointer rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white hover:bg-red-500"
+                  onClick={(e) => handleRemove(e, item.items.id)}
+                >
+                  Remove From Wishlist
+                </button>
+                <button
+                  className="cursor-pointer rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white hover:bg-indigo-400"
                   type="button"
                   onClick={() =>
-                    navigate('/createproposal', { state: { item } })
+                    navigate("/createproposal", { state: { item } })
                   }
                 >
                   Create Proposal
                 </button>
-
               </div>
-
-              <button
-                type="button"
-                className="cursor-pointer rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white w-full hover:bg-red-500"
-                onClick={(e) => handleRemove(e, item.items.id)}
-              >
-                Remove From Wishlist
-              </button>
             </div>
           );
         })}
