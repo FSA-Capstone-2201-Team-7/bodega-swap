@@ -93,7 +93,7 @@ const CreateProposal = ({ state }) => {
      await supabase.from('swaps').insert([
         {
           inbound_id: user.id,
-          status: 'pending',
+          status: 'proposed',
           outbound_id: item.ownerId,
           inbound_offer: item,
           outbound_offer: outbound,
