@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 
 const Wishlist = () => {
   const [loading, setLoading] = useState(true);
   const [wishlist, setWishList] = useState(null);
+  const navigate = useNavigate()
   const user = supabase.auth.user();
 
   useEffect(() => {
@@ -63,29 +65,29 @@ const Wishlist = () => {
         </h3>
         {wishlist.map((item, idx) => {
           return (
-            <div
-              key={idx}
-              className=" max-w-sm card card-compact w-96 bg-base-100 shadow-xl"
-            >
+            <div key={idx} className="rounded overflow-hidden shadow-xl">
               <Link to={`/items/${item.items.id}`}>
                 <img className="h-80 w-96" src={item.items.image_url} alt="" />
               </Link>
-              <div className="card-body">
+              <div className="card-body flex flex-row justify-between ">
                 <p className="card-title">{item.items.name}</p>
               </div>
               <div className="card-actions justify-end">
-                <Link to="/createproposal" state={{ item }}>
-                  <button
-                    className="cursor-pointer rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white w-full hover:bg-indigo-500"
-                    type="button"
-                  >
-                    Haggle
-                  </button>
-                </Link>
+                <button
+                  className="cursor-pointer rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white w-full hover:bg-indigo-500"
+                  type="button"
+                  onClick={() =>
+                    navigate('/createproposal', { state: { item } })
+                  }
+                >
+                  Create Proposal
+                </button>
+
               </div>
+
               <button
                 type="button"
-                className="cursor-pointer mt-5 rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white w-full hover:bg-red-500"
+                className="cursor-pointer rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white w-full hover:bg-red-500"
                 onClick={(e) => handleRemove(e, item.items.id)}
               >
                 Remove From Wishlist
