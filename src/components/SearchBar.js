@@ -56,7 +56,7 @@ function SearchBar(props) {
     setWordEntered("");
   };
   return (
-    <div className="flex-grow">
+    <div className="flex-grow hidden ">
       {loading ? (
         <p>loading</p>
       ) : (
