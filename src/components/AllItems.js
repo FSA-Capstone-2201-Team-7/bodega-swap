@@ -1,17 +1,21 @@
+
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import ToggleWishlistButton from "./ToggleWishlistButton";
 import FilterCategory from "./FilterCategories";
 import Card from "./Card";
 import ForumIcon from "@mui/icons-material/Forum";
 import SearchBar from "./SearchBar";
+
 const AllItems = () => {
+
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
   const [filterItem, setFilterItem] = useState("All");
   const [list, setList] = useState([]);
   const user = supabase.auth.user();
+  const navigate =useNavigate()
 
   useEffect(() => {
     const getItems = async () => {
@@ -83,14 +87,14 @@ const AllItems = () => {
                     category={item.category}
                     ownerId={item.ownerId}
                     firstButton={
-                      <Link to="/createproposal" state={{ item }}>
+                      // <Link to="/createproposal" state={{ item }}>
                         <button
                           type="button"
                           className="bg-indigo-500 mb-2 hover:bg-indigo-400 text-white font-bold py-2 px-4 rounded-md"
-                        >
+                          onClick={() => navigate('/createproposal', { state: { item } }) }>
                           Propose Trade
                         </button>
-                      </Link>
+                    
                     }
                     secondButton={
                       user && user.id !== item.ownerId ? (
