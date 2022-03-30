@@ -10,7 +10,8 @@ const Chat = (props) => {
   const [input, setInput] = useState("");
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
-
+  const { TheirAvatarUrl, MyAvatarUrl } = props;
+  console.log("props", props);
   useEffect(() => {
     const getConversation = async () => {
       try {
@@ -110,12 +111,19 @@ const Chat = (props) => {
     <LoadingPage />
   ) : (
     <div className="container bg-base-100 border rounded ">
-      <div className="w-96 mr-5 ml-5 pb-5 pt-5">
-        <div className="relative flex items-center p-3 border-b border-gray-300">
-          <span className="absolute w-3 h-3 bg-green-600 rounded-full right-14 top-3 text-white"></span>
-          <div>online?</div>
+
+      <div className="relative flex items-center justify-between p-3 border-b border-gray-300 gap-x-4">
+        <div className="flex gap-2 items-center">
+          <img src={TheirAvatarUrl} alt="" className="h-8 w-8 rounded-full" />
+          <p className="font-semibold">name</p>
+        </div>
+        <div className="flex gap-2 items-center">
+          <div className="text-gray-600">online</div>
+          <span className="w-3 h-3 bg-green-600 rounded-full text-white "></span>
+
         </div>
       </div>
+
       <div className="p:2 sm:p-6 justify-between h-screen bg-base-100 max-w-2xl rounded overflow-auto">
         {messages ? (
           <InfiniteScroll id="chat" dataLength={messages.length}>
@@ -123,7 +131,14 @@ const Chat = (props) => {
               <ul className="space-y-12 grid grid-cols-1">
                 {messages &&
                   messages?.map((message, i) => {
-                    return <Message key={message.id} message={message} />;
+                    return (
+                      <Message
+                        key={message.id}
+                        TheirAvatarUrl={TheirAvatarUrl}
+                        MyAvatarUrl={MyAvatarUrl}
+                        message={message}
+                      />
+                    );
                   })}
               </ul>
             </div>
@@ -134,20 +149,19 @@ const Chat = (props) => {
         )}
       </div>
 
-      <div className="pb-5 pt-5 justify-center flex bg-base-100 w-full">
+      <div className="pb-5 pt-5 justify-center items-center flex bg-base-100 w-full">
         <form onSubmit={createMessage}>
           <input
             type="text"
             value={input}
-            placeholder="Type here"
+            placeholder="Type here..."
             onChange={handleChange}
             className="input input-ghost input-lg w-full max-w-xs"
           />
-
-          <button type="submit" className="btn btn-active btn-ghost btn-lg">
-            Send
-          </button>
         </form>
+        <button type="submit" className="btn btn-active btn-ghost btn-md">
+          Send
+        </button>
       </div>
     </div>
   );
