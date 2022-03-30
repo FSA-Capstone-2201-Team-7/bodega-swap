@@ -44,7 +44,11 @@ const OwnerProfile = ({ state }) => {
           <div className="avatar-container flex items-center justify-center">
             <img
               className="h-52 w-48 rounded-full"
-              src={user.avatarUrl}
+              src={
+                user.avatarUrl
+                  ? user.avatarUrl
+                  : 'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'
+              }
               alt=""
             />
           </div>
@@ -55,6 +59,7 @@ const OwnerProfile = ({ state }) => {
             <div className="flex space-x-4">
               <div>
                 {' '}
+
                 <ThumbDownIcon className="h-8" />
                 <p>
                   {Math.ceil(
@@ -71,6 +76,7 @@ const OwnerProfile = ({ state }) => {
                   )}
                   %
                 </p>
+
               </div>
             </div>
           </div>
