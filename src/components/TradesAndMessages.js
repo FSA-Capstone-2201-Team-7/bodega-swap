@@ -27,8 +27,8 @@ const TradesAndMessages = () => {
 
           .from('swaps')
           .select()
-          .eq('inbound_id', user.id);
-
+          .eq('inbound_id', user.id)
+          .neq('status', 'rated')
         setOutbound(data);
       } catch (error) {
         console.error("try again", error);
@@ -59,7 +59,8 @@ const TradesAndMessages = () => {
 
           .from('swaps')
           .select()
-          .eq('outbound_id', user.id);
+          .eq('outbound_id', user.id)
+          .neq('status', 'rated')
 
         setInbound(data);
       } catch (error) {
