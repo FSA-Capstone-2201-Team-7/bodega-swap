@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const AgreedButton = (props) => {
   const { info, handleAcceptance, swap } = props;
@@ -11,7 +11,7 @@ const AgreedButton = (props) => {
         </label>
       </div>
     ) : (
-      <button class="btn loading">Waiting...</button>
+      <button className="btn loading">Waiting...</button>
     )
   ) : (
     <button
