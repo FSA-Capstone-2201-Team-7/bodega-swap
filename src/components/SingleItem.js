@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { useParams, useNavigate } from 'react-router-dom';
-import ToggleWishlistButton from './ToggleWishlistButton';
-import Card from './Card';
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import { useParams, useNavigate } from "react-router-dom";
+import ToggleWishlistButton from "./ToggleWishlistButton";
+import Card from "./Card";
 
 const SingleItem = () => {
   const params = useParams();
@@ -19,10 +19,10 @@ const SingleItem = () => {
     try {
       setLoading(true);
       let { data, error, status } = await supabase
-        .from('items')
+        .from("items")
         .select(`*, users:ownerId(username, avatarUrl)`)
-        .eq('id', params.id)
-        .neq('listed', false);
+        .eq("id", params.id)
+        .neq("listed", false);
 
       if (error && status !== 406) {
         throw error;
@@ -35,7 +35,7 @@ const SingleItem = () => {
     } finally {
       setLoading(false);
     }
-    console.log('item', item);
+    console.log("item", item);
   };
 
   return (
@@ -55,19 +55,19 @@ const SingleItem = () => {
                 <button
                   className="pt-4 items-center  flex"
                   type="button"
-                  onClick={() => navigate('OwnerProfile', { state: { item } })}
+                  onClick={() => navigate("OwnerProfile", { state: { item } })}
                 >
                   <img
                     className="w-16 h-16 rounded-full"
                     src={
                       item.users.avatarUrl
                         ? item.users.avatarUrl
-                        : 'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'
+                        : "https://www.sibberhuuske.nl/wp-content/uploads/2016/10/default-avatar.png"
                     }
                     alt=""
                   />
                   <p className="pl-5 text-lg font-semibold">
-                    {' '}
+                    {" "}
                     {item.users.username}
                   </p>
                 </button>
@@ -93,7 +93,7 @@ const SingleItem = () => {
             <button
               type="button"
               className="bg-indigo-600 mb-2 hover:bg-indigo-500 text-white font-bold py-2 px-4 mt-2 rounded-md"
-              onClick={() => navigate('/createproposal', { state: { item } })}
+              onClick={() => navigate("/createproposal", { state: { item } })}
             >
               Propose Trade
             </button>
