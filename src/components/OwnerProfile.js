@@ -40,14 +40,15 @@ const OwnerProfile = ({ state }) => {
       {loading ? (
         <p>Loading</p>
       ) : (
-        <div className="flex gap-10">
-          <div className="avatar-container">
+        <div className="flex flex-col md:flex-row p-5 my-2 gap-8 md:gap-12">
+          <div className="avatar-container flex items-center justify-center">
             <img
-              className="h-48 w-48 mask mask-squircle"
+              className="h-52 w-48 rounded-full"
               src={user.avatarUrl}
               alt=""
             />
           </div>
+
           <div>
             <h3>{user.username}</h3>
             <h2>REP</h2>
@@ -78,6 +79,7 @@ const OwnerProfile = ({ state }) => {
             <div className="flex space-x-4">
               <div>
                 <p>{user.swaps_completed}</p>
+
               </div>
             </div>
           </div>

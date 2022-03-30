@@ -22,7 +22,7 @@ const NavBar = ({ session }) => {
           Closet
         </Link>
       </div>
-      <div>
+      <div className="flex-grow px-7">
         <SearchBar />
       </div>
 

@@ -74,7 +74,7 @@ const ToggleWishlistButton = (props) => {
       className="font-bold py-2 px-4 "
     >
       {onWishlist ? (
-        <HeartIcon className="h-7 fill-red-600 stroke-red-600" />
+        <HeartIcon className="h-7 fill-indigo-500 stroke-indigo-500" />
       ) : (
         <HeartIcon className="h-7 text-gray-500 " />
       )}
