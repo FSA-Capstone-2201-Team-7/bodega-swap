@@ -8,7 +8,7 @@ const Chat = (props) => {
   const [messages, setMessages] = useState([]);
   const [conversationId, setConversation] = useState([]);
   const [input, setInput] = useState('');
-  const [newMessage, setNewMessage] = useState('')
+  const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -53,39 +53,34 @@ const Chat = (props) => {
             .select()
             .eq('conversations_ID', conversationId.id);
           setMessages(data);
-         
-           supabase
-              .from('messages')
-              .on('INSERT', (message) => {
-                setNewMessage(message.new)
-                setMessages([...messages, message.new]);
-              })
-              .subscribe();
-         
-          
-      
-          
-         
+
+          supabase
+            .from('messages')
+            .on('INSERT', (message) => {
+              setNewMessage(message.new);
+              setMessages([...messages, message.new]);
+            })
+            .subscribe();
         }
       } catch (error) {
         console.error(error);
       } finally {
         setLoading(false);
       }
-    }; 
-  
+    };
+
     getUserMessages();
   }, [conversationId, messages]);
 
   useEffect(() => {
-    
     const scrollToBottom = () => {
       if (newMessage) {
         messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
       }
-  }
-    scrollToBottom()
-  }, [newMessage])
+      setNewMessage('');
+    };
+    scrollToBottom();
+  }, [newMessage]);
 
   const createMessage = async (e) => {
     e.preventDefault();
@@ -105,22 +100,11 @@ const Chat = (props) => {
       console.error(error);
     }
   };
- 
-  const fetchMessages = () => {
-    if (messages) {
-      
-      return messages[messages.length - 1];
-    }
-  };
 
   const handleChange = (e) => {
     const { value } = e.target;
     setInput(value);
-    
   };
-
-
-
 
   return loading ? (
     <div>Loading....</div>
@@ -134,26 +118,22 @@ const Chat = (props) => {
       </div>
       <div className="p:2 sm:p-6 justify-between h-screen bg-base-100 max-w-2xl rounded overflow-auto">
         {messages ? (
-          <InfiniteScroll
-            id="chat"
-            dataLength={messages.length}
-            next={fetchMessages}
-            hasMore={true}
-          >
+          <InfiniteScroll id="chat" dataLength={messages.length}>
             <div className="justify-items-center pt-5">
               <ul className="space-y-12 grid grid-cols-1">
                 {messages &&
                   messages?.map((message, i) => {
                     return <Message key={message.id} message={message} />;
                   })}
-                <div ref={messagesEndRef} />
               </ul>
             </div>
+            <div ref={messagesEndRef} />
           </InfiniteScroll>
         ) : (
           <div>Loading....</div>
         )}
       </div>
+
       <div className="pb-5 pt-5 justify-center flex bg-base-100 w-full">
         <form onSubmit={createMessage}>
           <input

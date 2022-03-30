@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
-import Carousel, { CarouselItem } from "./UseCarousel";
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import Carousel, { CarouselItem } from './UseCarousel';
 
-import Card from "./Card";
+import Card from './Card';
 
 const Main = () => {
   const [getImages, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [list, setList] = useState([]);
+  const [categoryList, setCategoryList] = useState(['All']);
   const user = supabase.auth.user();
 
   useEffect(() => {
@@ -14,12 +16,12 @@ const Main = () => {
       try {
         setLoading(true);
         let { data, error, status } = await supabase
-          .from("items")
+          .from('items')
           .select(`name, description, ownerId, id, category, listed, image_url`)
-          .eq("listed", true)
+          .eq('listed', true)
           .neq(
-            "ownerId",
-            user ? user.id : "11111111-1111-1111-1111-111111111111"
+            'ownerId',
+            user ? user.id : '11111111-1111-1111-1111-111111111111'
           );
 
         if (error && status !== 406) {
@@ -36,6 +38,49 @@ const Main = () => {
     };
     getItems();
   }, []);
+
+  useEffect(() => {
+    const filter = async () => {
+      try {
+        const set = Array.from(
+          new Set(
+            getImages.map((type) => {
+              return type.category;
+            })
+          )
+        );
+        setList(set);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    filter();
+  }, [getImages]);
+
+  useEffect(() => {
+    const catergories = () => {
+      try {
+        const check = [];
+        const image = [];
+        list.map((cat) => {
+          getImages.forEach((item) => {
+            if (cat === item.category) {
+              if (!check.includes(cat)) {
+                check.push(cat);
+                image.push([cat, item.image_url]);
+              }
+            }
+          });
+        });
+        setCategoryList(image)
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    catergories();
+  }, [list, getImages]);
+
+  console.log(categoryList);
 
   return loading ? (
     <div>loading...</div>
@@ -58,7 +103,24 @@ const Main = () => {
       <div>
         <p className="text-2xl font-semibold mb-4 mt-6">Categories</p>
         <div className="flex h-80 flex-no-wrap overflow-x-scroll scrolling-touch items-start mb-8">
-          {getImages.map((image) => {
+          {categoryList.map((image, i) => {
+            return (
+              <div
+                key={i}
+                className="flex-none mr-8 relative border rounded-lg"
+              >
+                <img
+                  src={image[1]}
+                  alt=""
+                  className="h-80 w-96 transition hover:opacity-25 transition-opacity duration-1000 ease-out"
+                />
+                <div className=" text-black-50 text-2xl font-semibold absolute inset-y-56 pt-10">
+                  {image[0]}
+                </div>
+              </div>
+            );
+          })}
+          {/* {getImages.map((image) => {
             return (
               <div
                 key={image.id}
@@ -67,7 +129,7 @@ const Main = () => {
                 <Card imageUrl={image.image_url} id={image.id} />
               </div>
             );
-          })}
+          })} */}
         </div>
         <div>Recently Added</div>
 
