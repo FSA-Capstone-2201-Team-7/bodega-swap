@@ -12,7 +12,7 @@ const TradesAndMessages = () => {
   const [loading, setLoading] = useState(true);
   const [getInbound, setInbound] = useState([]);
   const [getOutbound, setOutbound] = useState([]);
-  const [getConversationId, setConversationId] = useState('');
+  const [getConversationId, setConversationId] = useState("");
   const user = supabase.auth.user();
   const navigate = useNavigate();
 
@@ -22,11 +22,11 @@ const TradesAndMessages = () => {
         setLoading(true);
         const { data } = await supabase
 
-          .from('swaps')
+          .from("swaps")
           .select()
 
-          .eq('inbound_id', user.id)
-          .neq('status', 'rated')
+          .eq("inbound_id", user.id)
+          .neq("status", "rated");
 
         setOutbound(data);
       } catch (error) {
@@ -38,19 +38,17 @@ const TradesAndMessages = () => {
     getOutboundSwaps();
   }, [user.id]);
 
-
   useEffect(() => {
     const getInboundSwaps = async () => {
       try {
         setLoading(true);
         const { data } = await supabase
 
-          .from('swaps')
+          .from("swaps")
           .select()
 
-          .eq('outbound_id', user.id)
-          .neq('status', 'rated')
-
+          .eq("outbound_id", user.id)
+          .neq("status", "rated");
 
         setInbound(data);
       } catch (error) {
@@ -61,9 +59,6 @@ const TradesAndMessages = () => {
     };
     getInboundSwaps();
   }, [user.id]);
-
-
-
 
   const handleActivate = async (swap) => {
     if (swap.status === "proposed") {
@@ -90,39 +85,30 @@ const TradesAndMessages = () => {
 
   const handleRemoveOffer = async (swap) => {
     try {
-
       const { data } = await supabase
-        .from('conversations')
-        .select('id')
-        .eq('swap_Id', swap.id);
+        .from("conversations")
+        .select("id")
+        .eq("swap_Id", swap.id);
       setConversationId(...data);
       if (data) {
-         await supabase
-          .from('messages')
+        await supabase
+          .from("messages")
           .delete()
-          .eq( 'conversations_ID', getConversationId.id )
-          
-       
-            await supabase
-              .from('conversations')
-              .delete()
-              .eq('swap_Id', swap.id);
+          .eq("conversations_ID", getConversationId.id);
 
-            await supabase.from('swaps').delete().eq('id', swap.id);
+        await supabase.from("conversations").delete().eq("swap_Id", swap.id);
 
-          
-          await supabase.from('conversations').delete().eq('swap_Id', swap.id);
+        await supabase.from("swaps").delete().eq("id", swap.id);
 
-          await supabase.from('swaps').delete().eq('id', swap.id);
-            
-        
+        await supabase.from("conversations").delete().eq("swap_Id", swap.id);
+
+        await supabase.from("swaps").delete().eq("id", swap.id);
       }
-      setConversationId('');
-
+      setConversationId("");
     } catch (error) {
       console.error(error);
     }
-    navigate('/items')
+    navigate("/items");
   };
 
   // supabase
@@ -138,12 +124,12 @@ const TradesAndMessages = () => {
   //   })
   //   .subscribe();
 
-
   return loading ? (
     <LoadingPage />
   ) : (
-    <div className="flex grid grid-cols-2">
-      <div className="flex justify-center grid grid-cols pb-10 sm:px-5 gap-x-8 gap-y-16">
+    <div className=" grid md:grid-cols-2 grid-cols-1 mt-4">
+      <div className="justify-center grid grid-cols pb-10 sm:px-5 gap-x-8 gap-y-16">
+        <p className="font-semibold">In-Bound Offers</p>
         {getInbound.length > 0 ? (
           <div>
             {getInbound.map((swap) => {
@@ -208,6 +194,7 @@ const TradesAndMessages = () => {
       </div>
 
       <div className="flex justify-center grid grid-cols pb-10 sm:px-5 gap-x-8 gap-y-16">
+        <p className="font-semibold">Out-Bound Offers</p>
         {getOutbound.map((swap) => {
           return (
             <div key={swap.id}>
