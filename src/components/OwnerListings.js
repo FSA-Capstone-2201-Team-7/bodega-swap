@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
+import { Link } from "react-router-dom";
 
 function OwnerListings({ user }) {
   const [loading, setLoading] = useState(true);
@@ -37,7 +38,10 @@ function OwnerListings({ user }) {
           {items.map((item, idx) => {
             return (
               <div key={idx} className="w-96 rounded overflow-hidden shadow-xl">
-                <img className="h-96 w-96" src={item.image_url} alt="" />
+                <Link to={`/items/${item.id}`}>
+                  <img className="h-96 w-96" src={item.image_url} alt="" />
+                </Link>
+
                 <div className="card-body">
                   <p className="card-title">{item.name}</p>
                   <p>{item.description}</p>
