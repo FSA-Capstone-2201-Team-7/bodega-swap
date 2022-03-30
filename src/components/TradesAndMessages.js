@@ -19,20 +19,7 @@ const TradesAndMessages = () => {
         setLoading(true);
         const { data } = await supabase
           .from('swaps')
-          .select(
-            `
-            inbound_id,
-            outbound_id,
-            id,
-            inbound_offer,
-            status,
-            outbound_offer,
-            inbound_accept,
-            outbound_accept,
-            inbound_confirm,
-            outbound_confirm
-            `
-          )
+          .select()
           .eq('inbound_id', user.id);
         setOutbound(data);
       } catch (error) {
@@ -62,21 +49,7 @@ const TradesAndMessages = () => {
         setLoading(true);
         const { data } = await supabase
           .from('swaps')
-          .select(
-            `
-              inbound_id,
-              outbound_id,
-              id,
-              inbound_offer,
-              outbound_offer,
-              status,
-              outbound_accept,
-              inbound_accept,
-              inbound_confirm,
-              outbound_confirm
-              
-              `
-          )
+          .select()
           .eq('outbound_id', user.id);
         setInbound(data);
       } catch (error) {
