@@ -10,6 +10,7 @@ import AgreedButton from './AgreedButton';
 const HaggleView = ({ state }) => {
   const location = useLocation(null);
   const { swap = '' } = location.state || {};
+  const [thisSwap, setThisSwap] = useState([])
   const [loading, setLoading] = useState(true);
   const [yourInfo, setYourInfo] = useState({});
   const [theirInfo, setTheirInfo] = useState({});
@@ -71,6 +72,7 @@ const HaggleView = ({ state }) => {
             .subscribe();
           setNotUserId(swap.inbound_id);
         }
+        setThisSwap(swap)
       } catch (error) {
         console.error(error);
       } finally {
@@ -86,7 +88,10 @@ const HaggleView = ({ state }) => {
     user.id,
     swap.inbound_accept,
     swap.outbound_accept,
+    swap
   ]);
+
+  console.log('instatesswap', thisSwap)
 
   //here we grab the non-users infor and do the same thing
   useEffect(() => {
@@ -202,7 +207,6 @@ const HaggleView = ({ state }) => {
           })
           .eq('id', swap.id);
       }
-      
     } catch (error) {
       console.error(error);
     }
@@ -229,7 +233,7 @@ const HaggleView = ({ state }) => {
                 </p>
                 <div className="modal-action">
                   <label
-                    for="my-modal-5"
+                    htmlFor="my-modal-5"
                     className="btn"
                     onClick={() => handleConfimation(yourInfo.inOrOut)}
                   >
@@ -313,7 +317,6 @@ const HaggleView = ({ state }) => {
               >
                 Open Inventory
               </label>
-            
             </div>
             <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
               <Card id={theirInfo.id} imageUrl={theirInfo.image_url} />

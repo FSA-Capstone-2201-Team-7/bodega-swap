@@ -1,13 +1,31 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
 
 
 const ConfirmationCard = (props) => {
   const { swap, inOrOut } = props;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const checkCompleted = async () => {
+      try {
+        if (swap.inbound_confirm === true && swap.outbound_confirm === true) {
+          await supabase
+            .from('swaps')
+            .update({
+              status: 'complete',
+            })
+            .eq('id', swap.id);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    checkCompleted();
+  }, [swap]);
 
-console.log(swap.inbound_id)
+  
   return (
     <div>
       <div className="flex rounded overflow-hidden shadow-lg opacity-50">

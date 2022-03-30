@@ -1,17 +1,38 @@
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import Card from './Card';
 import ConfirmationCard from './ConfirmationCard';
 
-const TradesAndMessages = () => {
+const TradesAndMessages = ({ state }) => {
   const [loading, setLoading] = useState(true);
   const [getInbound, setInbound] = useState([]);
   const [getOutbound, setOutbound] = useState([]);
+  const location = useLocation();
   const user = supabase.auth.user();
   const navigate = useNavigate();
+
+  const { swap = '' } = location.state || {};
+
+  // useEffect(() => {
+  //   const checkCompleted = async () => {
+  //     try {
+  //       if (swap.inbound_confirm === true && swap.outbound_confirm === true) {
+  //         await supabase
+  //           .from('swaps')
+  //           .update({
+  //             status: 'complete',
+  //           })
+  //           .eq('id', swap.id);
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   checkCompleted();
+  // }, [swap]);
 
   useEffect(() => {
     const getInboundSwaps = async () => {
@@ -19,20 +40,7 @@ const TradesAndMessages = () => {
         setLoading(true);
         const { data } = await supabase
           .from('swaps')
-          .select(
-            `
-            inbound_id,
-            outbound_id,
-            id,
-            inbound_offer,
-            status,
-            outbound_offer,
-            inbound_accept,
-            outbound_accept,
-            inbound_confirm,
-            outbound_confirm
-            `
-          )
+          .select()
           .eq('inbound_id', user.id);
         setOutbound(data);
       } catch (error) {
@@ -62,21 +70,7 @@ const TradesAndMessages = () => {
         setLoading(true);
         const { data } = await supabase
           .from('swaps')
-          .select(
-            `
-              inbound_id,
-              outbound_id,
-              id,
-              inbound_offer,
-              outbound_offer,
-              status,
-              outbound_accept,
-              inbound_accept,
-              inbound_confirm,
-              outbound_confirm
-              
-              `
-          )
+          .select()
           .eq('outbound_id', user.id);
         setInbound(data);
       } catch (error) {
@@ -87,26 +81,6 @@ const TradesAndMessages = () => {
     };
     getOutboundSwaps();
   }, [user.id]);
-
-  // useEffect(() => {
-  //   const checkCompleted = async () => {
-  //     try {
-  //       // if (swap.outbound_confirm && .inbound_confirm) {
-  //       //   await supabase
-  //       //     .from('swaps')
-  //       //     .update({
-  //       //       status: 'complete',
-  //       //     })
-  //       //     .eq('id', .id);
-  //       }
-        
-  //     } catch (error) {
-  //       console.error(error)
-  //     }
-  //   }
-
-  // }, [])
-
 
   const handleActivate = async (swap) => {
     if (swap.status === 'proposed') {
@@ -172,7 +146,11 @@ const TradesAndMessages = () => {
               return (
                 <div key={swap.id}>
                   {swap.inbound_confirm === true ? (
-                    <ConfirmationCard id={swap.inbound_offer.id} swap={swap} inOrOut='inbound' />
+                    <ConfirmationCard
+                      id={swap.inbound_offer.id}
+                      swap={swap}
+                      inOrOut="inbound"
+                    />
                   ) : (
                     <div className=" flex rounded overflow-hidden shadow-lg">
                       <Card
