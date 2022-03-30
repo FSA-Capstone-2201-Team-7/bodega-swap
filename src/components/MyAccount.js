@@ -52,12 +52,23 @@ const Profile = () => {
               <div>
                 {" "}
                 <ThumbDownIcon className="h-8 fill-yellow-400 stroke-yellow-500" />
-                <p>15%</p>
+                <p>
+                  {" "}
+                  {Math.ceil(
+                    100 * (user.downvotes / (user.upvotes + user.downvotes))
+                  )}
+                </p>
               </div>
               <div>
                 {" "}
                 <ThumbUpIcon className="h-8 fill-yellow-400 stroke-yellow-500" />
-                <p>85%</p>
+                <p>
+                  {" "}
+                  {Math.ceil(
+                    100 * (user.upvotes / (user.upvotes + user.downvotes))
+                  )}
+                  %
+                </p>
               </div>
             </div>
           </div>
@@ -69,7 +80,9 @@ const Profile = () => {
                   <p className="text-xl pr-1">Completed </p>
                   <div className="inline-flex w-4 h-4 bg-gray-400 rounded-full"></div>
                 </div>
-                <div className="flex justify-center">87</div>
+                <div className="flex justify-center">
+                  {user.swaps_completed}
+                </div>
               </div>
               <div>
                 <div className="flex items-center ">
