@@ -4,15 +4,16 @@ const AgreedButton = (props) => {
   const { info, handleAcceptance, swap } = props;
 
   return info.userAccept ? (
-    swap.inbound_accept === true && swap.outbound_accept === true ? (
-      <div>
+    <div>
         <label htmlFor="my-modal-5" className="btn modal-button w-full">
           Mark Complete
         </label>
       </div>
-    ) : (
-      <button className="btn loading">Waiting...</button>
-    )
+    // swap.inbound_accept === true && swap.outbound_accept === true ? (
+      
+    // ) : (
+    //   <button className="btn loading">Waiting...</button>
+    // )
   ) : (
     <button
       className="btn btn-xs sm:btn-sm md:btn-md w-full"

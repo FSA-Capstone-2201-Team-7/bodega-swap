@@ -1,38 +1,22 @@
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import Card from './Card';
 import ConfirmationCard from './ConfirmationCard';
+import DeleteSwap from './DeleteSwap';
 
-const TradesAndMessages = ({ state }) => {
+const TradesAndMessages = () => {
   const [loading, setLoading] = useState(true);
   const [getInbound, setInbound] = useState([]);
   const [getOutbound, setOutbound] = useState([]);
-  const location = useLocation();
+  const [getConversationId, setConversationId] = useState('');
   const user = supabase.auth.user();
   const navigate = useNavigate();
 
-  const { swap = '' } = location.state || {};
 
-  // useEffect(() => {
-  //   const checkCompleted = async () => {
-  //     try {
-  //       if (swap.inbound_confirm === true && swap.outbound_confirm === true) {
-  //         await supabase
-  //           .from('swaps')
-  //           .update({
-  //             status: 'complete',
-  //           })
-  //           .eq('id', swap.id);
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   checkCompleted();
-  // }, [swap]);
+
 
   useEffect(() => {
     const getInboundSwaps = async () => {
@@ -81,6 +65,17 @@ const TradesAndMessages = ({ state }) => {
     };
     getOutboundSwaps();
   }, [user.id]);
+   supabase
+     .from('swaps')
+     .on('DELETE', (deleted) => {
+       const render = getInbound.filter((active) => {
+         if (active.id !== deleted.old.id) {
+           return active;
+         }
+       });
+       setInbound(render);
+     })
+     .subscribe();
 
   const handleActivate = async (swap) => {
     if (swap.status === 'proposed') {
@@ -104,36 +99,36 @@ const TradesAndMessages = ({ state }) => {
 
     navigate('/haggle', { state: { swap } });
   };
-  console.log(getInbound);
 
   const handleRemoveOffer = async (swap) => {
     try {
-      await supabase.from('swaps').delete().eq('id', swap.id);
-
-      const render = getOutbound.filter((active) => {
-        if (active.id !== swap.id) {
-          return active;
-        }
-      });
-      setOutbound(render);
+       const { data } = await supabase
+         .from('conversations')
+         .select('id')
+         .eq('swap_Id', swap.id);
+         setConversationId(...data);
+       if(data) {
+         const { data } = await supabase
+           .from('messages')
+           .delete()
+           .match({conversations_ID: getConversationId.id});
+           
+          const {data: deleteConvo} = await supabase
+               .from('conversations')
+               .delete()
+               .eq('swap_Id', swap.id);
+               console.log('third, data', deleteConvo);
+               if (deleteConvo) {
+                 await supabase.from('swaps').delete().eq('id', swap.id)
+               }
+       }
+      
     } catch (error) {
       console.error(error);
     }
   };
-  const handleRemoveProposal = async (swap) => {
-    try {
-      await supabase.from('swaps').delete().eq('id', swap.id);
 
-      const render = getInbound.filter((active) => {
-        if (active.id !== swap.id) {
-          return active;
-        }
-      });
-      setInbound(render);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
 
   return loading ? (
     <div>Loding...</div>
@@ -185,7 +180,7 @@ const TradesAndMessages = ({ state }) => {
                             <button
                               type="button"
                               className="hover:bg-blue-700 bg-red-500 text-white font-bold py-2 px-4 rounded-full"
-                              onClick={() => handleRemoveProposal(swap)}
+                              onClick={() => handleRemoveOffer(swap)}
                             >
                               Remove Offer
                             </button>

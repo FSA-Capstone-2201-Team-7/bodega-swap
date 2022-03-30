@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import { useLocation, useNavigate } from 'react-router-dom';
 // import { useNavigate } from 'react-router';
 
 const CreateProposal = ({ state }) => {
@@ -8,13 +8,13 @@ const CreateProposal = ({ state }) => {
   const [swap, setSwap] = useState([]);
   const [userItems, setUserItems] = useState([]);
   const [defaultImage, setDefault] = useState([
-    "http://dummyimage.com/140x100/ddd.png/dddddd/000000",
+    'http://dummyimage.com/140x100/ddd.png/dddddd/000000',
   ]);
 
   const location = useLocation();
   const navigate = useNavigate();
   const user = supabase.auth.user();
-  const { item = "" } = location.state || {};
+  const { item = '' } = location.state || {};
 
   //this first checks if any swaps are currently made between two users
   useEffect(() => {
@@ -22,39 +22,21 @@ const CreateProposal = ({ state }) => {
       try {
         setLoading(true);
         const { data, error } = await supabase
-          .from("swaps")
-          .select(
-            `
-            inbound_id,
-            outbound_id,
-            id,
-            inbound_offer,
-            outbound_offer,
-            status
-            `
-          )
-          .eq("inbound_id", user.id)
-          .eq("outbound_id", item.ownerId);
+          .from('swaps')
+          .select()
+          .eq('inbound_id', user.id)
+          .eq('outbound_id', item.ownerId);
         setSwap(data);
         if (!data) {
           const { data: reversed, error } = await supabase
-            .from("swaps")
-            .select(
-              `
-            inbound_id,
-            outbound_id,
-            id,
-            inbound_offer,
-            outbound_offer,
-            status
-            `
-            )
-            .eq("outbound_id", user.id)
-            .eq("inbound_id", item.ownerId);
+            .from('swaps')
+            .select()
+            .eq('outbound_id', user.id)
+            .eq('inbound_id', item.ownerId);
           setSwap(reversed);
         }
       } catch (error) {
-        console.error("try again", error);
+        console.error('try again', error);
       }
     };
     getAllSwaps();
@@ -66,9 +48,9 @@ const CreateProposal = ({ state }) => {
       try {
         setLoading(true);
         let { data, error, status } = await supabase
-          .from("items")
-          .select("*")
-          .eq("ownerId", user.id);
+          .from('items')
+          .select('*')
+          .eq('ownerId', user.id);
 
         if (data) {
           setUserItems(data);
@@ -89,7 +71,7 @@ const CreateProposal = ({ state }) => {
   //creates the new swap after submitting propopsal
   const handleProposal = async (outbound) => {
     if (outbound) {
-      await supabase.from("swaps").insert([
+      await supabase.from('swaps').insert([
         {
           inbound_id: user.id,
 
@@ -101,7 +83,7 @@ const CreateProposal = ({ state }) => {
         },
       ]);
 
-      navigate("/messages");
+      navigate('/messages');
     }
   };
 
@@ -118,7 +100,7 @@ const CreateProposal = ({ state }) => {
           onClick={() => handleProposal(defaultImage[1])}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
         >
-          {" "}
+          {' '}
           Submit Proposal
         </button>
         <img src={defaultImage[0]} alt="" className="w-80 h-80" />
@@ -132,7 +114,7 @@ const CreateProposal = ({ state }) => {
             >
               <img src={item.image_url} alt="" className="w-80 h-80" />
               <div className=" flex justify-end">
-                {" "}
+                {' '}
                 <button
                   type="button"
                   onClick={() => handleSubmit(item.image_url, item)}

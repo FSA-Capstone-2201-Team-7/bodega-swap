@@ -168,6 +168,9 @@ const HaggleView = ({ state }) => {
 
   //still working on this for realtime purposes
   const handleAcceptance = async (check) => {
+    console.log('acceptance', check)
+    console.log(yourInfo)
+    console.log(theirInfo)
     try {
       if (check.inOrOut === 'inbound') {
         await supabase
@@ -176,6 +179,7 @@ const HaggleView = ({ state }) => {
             inbound_accept: true,
           })
           .eq('id', swap.id);
+          setYourInfo(yourInfo);
       } else {
         await supabase
           .from('swaps')
@@ -183,12 +187,16 @@ const HaggleView = ({ state }) => {
             outbound_accept: true,
           })
           .eq('id', swap.id);
+          setYourInfo(yourInfo);
       }
-      setYourInfo(...yourInfo);
+      
     } catch (error) {
       console.error(error);
     }
   };
+
+
+  
   const handleConfimation = async (check) => {
 
     try {
@@ -266,7 +274,7 @@ const HaggleView = ({ state }) => {
                 info={yourInfo}
                 handleAcceptance={handleAcceptance}
                 swap={swap}
-                inOrOut={setYourInfo.inOrOut}
+                inOrOut={yourInfo.inOrOut}
               />
             </div>
             <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">

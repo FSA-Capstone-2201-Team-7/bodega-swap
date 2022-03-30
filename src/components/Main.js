@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import Carousel, { CarouselItem } from './UseCarousel';
+// import Carousel, { CarouselItem } from './UseCarousel';
 
-import Card from './Card';
+// import Card from './Card';
 
 const Main = () => {
   const [getImages, setImages] = useState([]);
