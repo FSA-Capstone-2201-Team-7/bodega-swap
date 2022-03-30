@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import Carousel, { CarouselItem } from "./UseCarousel";
 import LoadingPage from "./LoadingPage";
 import Card from "./Card";
 import StepBar from "./StepBar";
+
 const Main = () => {
   const [getImages, setImages] = useState([]);
   const [loading, setLoading] = useState(true);

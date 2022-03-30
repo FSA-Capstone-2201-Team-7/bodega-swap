@@ -1,4 +1,5 @@
 /* eslint-disable array-callback-return */
+
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { useNavigate } from "react-router-dom";
@@ -6,34 +7,28 @@ import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import Card from "./Card";
 import ConfirmationCard from "./ConfirmationCard";
 import LoadingPage from "./LoadingPage";
+
 const TradesAndMessages = () => {
   const [loading, setLoading] = useState(true);
   const [getInbound, setInbound] = useState([]);
   const [getOutbound, setOutbound] = useState([]);
+  const [getConversationId, setConversationId] = useState('');
   const user = supabase.auth.user();
   const navigate = useNavigate();
+
+
+
 
   useEffect(() => {
     const getInboundSwaps = async () => {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from("swaps")
-          .select(
-            `
-            inbound_id,
-            outbound_id,
-            id,
-            inbound_offer,
-            status,
-            outbound_offer,
-            inbound_accept,
-            outbound_accept,
-            inbound_confirm,
-            outbound_confirm
-            `
-          )
-          .eq("inbound_id", user.id);
+
+          .from('swaps')
+          .select()
+          .eq('inbound_id', user.id);
+
         setOutbound(data);
       } catch (error) {
         console.error("try again", error);
@@ -61,23 +56,11 @@ const TradesAndMessages = () => {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from("swaps")
-          .select(
-            `
-              inbound_id,
-              outbound_id,
-              id,
-              inbound_offer,
-              outbound_offer,
-              status,
-              outbound_accept,
-              inbound_accept,
-              inbound_confirm,
-              outbound_confirm
 
-              `
-          )
-          .eq("outbound_id", user.id);
+          .from('swaps')
+          .select()
+          .eq('outbound_id', user.id);
+
         setInbound(data);
       } catch (error) {
         console.error("try again", error);
@@ -88,24 +71,18 @@ const TradesAndMessages = () => {
     getOutboundSwaps();
   }, [user.id]);
 
-  // useEffect(() => {
-  //   const checkCompleted = async () => {
-  //     try {
-  //       // if (swap.outbound_confirm && .inbound_confirm) {
-  //       //   await supabase
-  //       //     .from('swaps')
-  //       //     .update({
-  //       //       status: 'complete',
-  //       //     })
-  //       //     .eq('id', .id);
-  //       }
+   supabase
+     .from('swaps')
+     .on('DELETE', (deleted) => {
+       const render = getInbound.filter((active) => {
+         if (active.id !== deleted.old.id) {
+           return active;
+         }
+       });
+       setInbound(render);
+     })
+     .subscribe();
 
-  //     } catch (error) {
-  //       console.error(error)
-  //     }
-  //   }
-
-  // }, [])
 
   const handleActivate = async (swap) => {
     if (swap.status === "proposed") {
@@ -129,36 +106,37 @@ const TradesAndMessages = () => {
 
     navigate("/haggle", { state: { swap } });
   };
-  console.log(getInbound);
 
   const handleRemoveOffer = async (swap) => {
     try {
-      await supabase.from("swaps").delete().eq("id", swap.id);
 
-      const render = getOutbound.filter((active) => {
-        if (active.id !== swap.id) {
-          return active;
-        }
-      });
-      setOutbound(render);
+       const { data } = await supabase
+         .from('conversations')
+         .select('id')
+         .eq('swap_Id', swap.id);
+         setConversationId(...data);
+       if(data) {
+         const { data } = await supabase
+           .from('messages')
+           .delete()
+           .match({conversations_ID: getConversationId.id});
+           
+          const {data: deleteConvo} = await supabase
+               .from('conversations')
+               .delete()
+               .eq('swap_Id', swap.id);
+               console.log('third, data', deleteConvo);
+               if (deleteConvo) {
+                 await supabase.from('swaps').delete().eq('id', swap.id)
+               }
+       }
+      
+
     } catch (error) {
       console.error(error);
     }
   };
-  const handleRemoveProposal = async (swap) => {
-    try {
-      await supabase.from("swaps").delete().eq("id", swap.id);
 
-      const render = getInbound.filter((active) => {
-        if (active.id !== swap.id) {
-          return active;
-        }
-      });
-      setInbound(render);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return loading ? (
     <LoadingPage />
@@ -210,7 +188,7 @@ const TradesAndMessages = () => {
                             <button
                               type="button"
                               className="hover:bg-blue-700 bg-red-500 text-white font-bold py-2 px-4 rounded-full"
-                              onClick={() => handleRemoveProposal(swap)}
+                              onClick={() => handleRemoveOffer(swap)}
                             >
                               Remove Offer
                             </button>

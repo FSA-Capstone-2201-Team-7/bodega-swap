@@ -9,7 +9,10 @@ import LoadingPage from "./LoadingPage";
 
 const HaggleView = ({ state }) => {
   const location = useLocation(null);
-  const { swap = "" } = location.state || {};
+
+  const { swap = '' } = location.state || {};
+  const [thisSwap, setThisSwap] = useState([])
+
   const [loading, setLoading] = useState(true);
   const [yourInfo, setYourInfo] = useState({});
   const [theirInfo, setTheirInfo] = useState({});
@@ -71,6 +74,7 @@ const HaggleView = ({ state }) => {
             .subscribe();
           setNotUserId(swap.inbound_id);
         }
+        setThisSwap(swap)
       } catch (error) {
         console.error(error);
       } finally {
@@ -86,7 +90,10 @@ const HaggleView = ({ state }) => {
     user.id,
     swap.inbound_accept,
     swap.outbound_accept,
+    swap
   ]);
+
+  console.log('instatesswap', thisSwap)
 
   //here we grab the non-users infor and do the same thing
   useEffect(() => {
@@ -163,6 +170,9 @@ const HaggleView = ({ state }) => {
 
   //still working on this for realtime purposes
   const handleAcceptance = async (check) => {
+    console.log('acceptance', check)
+    console.log(yourInfo)
+    console.log(theirInfo)
     try {
       if (check.inOrOut === "inbound") {
         await supabase
@@ -170,20 +180,29 @@ const HaggleView = ({ state }) => {
           .update({
             inbound_accept: true,
           })
-          .eq("id", swap.id);
+
+          .eq('id', swap.id);
+          setYourInfo(yourInfo);
+
       } else {
         await supabase
           .from("swaps")
           .update({
             outbound_accept: true,
           })
-          .eq("id", swap.id);
+
+          .eq('id', swap.id);
+          setYourInfo(yourInfo);
+
       }
-      setYourInfo(...yourInfo);
+      
     } catch (error) {
       console.error(error);
     }
   };
+
+
+  
   const handleConfimation = async (check) => {
     try {
       if (check === "inbound") {
@@ -227,7 +246,7 @@ const HaggleView = ({ state }) => {
                 </p>
                 <div className="modal-action">
                   <label
-                    for="my-modal-5"
+                    htmlFor="my-modal-5"
                     className="btn"
                     onClick={() => handleConfimation(yourInfo.inOrOut)}
                   >
@@ -260,7 +279,7 @@ const HaggleView = ({ state }) => {
                 info={yourInfo}
                 handleAcceptance={handleAcceptance}
                 swap={swap}
-                inOrOut={setYourInfo.inOrOut}
+                inOrOut={yourInfo.inOrOut}
               />
             </div>
             <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
