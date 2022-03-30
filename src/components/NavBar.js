@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -9,7 +9,13 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import SearchBar from "./SearchBar";
 
 const NavBar = ({ session }) => {
+  const [navMenuOpen, setNavMenuOpen] = useState(null)
   const navigate = useNavigate();
+
+  const handleNavToggle = () => {
+    setNavMenuOpen(!navMenuOpen)
+  }
+
   // console.log(localStorage);
   return (
     <header className="sticky top-0 flex justify-between bg-white p-5 shadow-md md:px-10 z-40 ">
@@ -51,51 +57,53 @@ const NavBar = ({ session }) => {
               tabIndex="0"
               className="btn m-1 bg-indigo-500 hover:bg-indigo-400 hover:border-indigo-400 border-violet-400 swap swap-rotate"
             >
-              <input type="checkbox" />
-              <MenuIcon className="h-6 swap-off" />
-              <XIcon className="h-6 swap-on" />
+                <input type="checkbox" />{ navMenuOpen ?
+                  <XIcon className="h-6 swap-on" onClick={handleNavToggle}/> :
+                  <MenuIcon className="h-6 swap-off" onClick={handleNavToggle} />
+                }
             </label>
+              { navMenuOpen ? 
+                <ul
+                  tabIndex="0"
+                  className="dropdown-content menu p-2 text-base leading-7 shadow bg-base-100 rounded-sm w-52 border-2 border-b-indigo-500"
+                >
+                  <Link
+                    className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
+                    to="/myAccount"
+                  >
+                    My Account
+                  </Link>
+                  <Link
+                    className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
+                    to="/wishlist"
+                  >
+                    My Wishlist
+                  </Link>
+                  <Link
+                    className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
+                    to="/messages"
+                  >
+                    My Trades
+                  </Link>
 
-            <ul
-              tabIndex="0"
-              className="dropdown-content menu p-2 text-base leading-7 shadow bg-base-100 rounded-sm w-52 border-2 border-b-indigo-500"
-            >
-              <Link
-                className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
-                to="/myAccount"
-              >
-                My Account
-              </Link>
-              <Link
-                className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
-                to="/wishlist"
-              >
-                My Wishlist
-              </Link>
-              <Link
-                className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
-                to="/messages"
-              >
-                My Trades
-              </Link>
-
-              <Link
-                className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
-                to="/createListing"
-              >
-                List an item
-              </Link>
-              <Link
-                className="hover:text-indigo-500  hover:transition duration-300 ease-out"
-                to="/"
-                onClick={async () => {
-                  await supabase.auth.signOut();
-                  navigate(`/home`);
-                }}
-              >
-                Logout
-              </Link>
-            </ul>
+                  <Link
+                    className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
+                    to="/createListing"
+                  >
+                    List an item
+                  </Link>
+                  <Link
+                    className="hover:text-indigo-500  hover:transition duration-300 ease-out"
+                    to="/"
+                    onClick={async () => {
+                      await supabase.auth.signOut();
+                      navigate(`/home`);
+                    }}
+                  >
+                    Logout
+                  </Link>
+                </ul>
+             : <></> }
           </nav>
           <nav className="hidden md:flex md:items-center md:justify-end md:space-x-4 text-gray-500">
             <Link to="/wishlist">

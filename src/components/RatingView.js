@@ -36,7 +36,7 @@ const RatingView = () => {
       console.error(error);
     } finally {
       /* the supabase mini-ORM does not yet have a good way to update multiple tables at once,
-      so here we had to nest a secondary database query in order to both register the vote and change the inbound/outbound_rated status on the swap in question */
+      so here we had to nest a secondary database query in order to both register the vote and change the inbound/outbound_rated status on the swap in question. MIGHT be able to modify the upvote/downvote function to do this */
       try {
         const userRole =
           user.id === swap.inbound_id ? 'inbound_rated' : 'outbound_rated';
