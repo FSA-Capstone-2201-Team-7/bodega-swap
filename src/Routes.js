@@ -40,7 +40,7 @@ const Routing = () => {
     });
   }, []);
   return (
-    <div className="flex-col flex justify-between">
+    <div className="flex-col flex h-screen justify-between">
       <NavBar session={session} />
       {!session ? (
         <main className=" px-8 sm:px-16 pb-12">
