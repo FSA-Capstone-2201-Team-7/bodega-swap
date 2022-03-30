@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { Link } from "react-router-dom";
-
+import LoadingPage from "./LoadingPage";
 function OwnerListings({ user }) {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
@@ -32,7 +32,7 @@ function OwnerListings({ user }) {
   return (
     <div>
       {loading ? (
-        <p>Loading</p>
+        <LoadingPage />
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-10 mt-4 justify-items-center ">
           {items.map((item, idx) => {

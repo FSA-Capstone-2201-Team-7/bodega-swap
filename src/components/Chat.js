@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { supabase } from '../supabaseClient';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import Message from './Message';
-
+import React, { useState, useEffect, useRef } from "react";
+import { supabase } from "../supabaseClient";
+import InfiniteScroll from "react-infinite-scroll-component";
+import Message from "./Message";
+import LoadingPage from "./LoadingPage";
 const Chat = (props) => {
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
   const [conversationId, setConversation] = useState([]);
-  const [input, setInput] = useState('');
-  const [newMessage, setNewMessage] = useState('');
+  const [input, setInput] = useState("");
+  const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -17,21 +17,21 @@ const Chat = (props) => {
         setLoading(true);
 
         const { data } = await supabase
-          .from('conversations')
+          .from("conversations")
           .select(`id`)
-          .eq('sender_Id', props.sender)
+          .eq("sender_Id", props.sender)
 
-          .eq('receiver_Id', props.receiver)
-          .eq('swap_Id', props.swap.id);
+          .eq("receiver_Id", props.receiver)
+          .eq("swap_Id", props.swap.id);
 
         setConversation(...data);
         if (!data[0]) {
           const { data: reversed } = await supabase
-            .from('conversations')
+            .from("conversations")
             .select(`id`)
-            .eq('sender_Id', props.receiver)
-            .eq('receiver_Id', props.sender)
-            .eq('swap_Id', props.swap.id);
+            .eq("sender_Id", props.receiver)
+            .eq("receiver_Id", props.sender)
+            .eq("swap_Id", props.swap.id);
 
           setConversation(...reversed);
         }
@@ -49,14 +49,14 @@ const Chat = (props) => {
       try {
         if (conversationId) {
           const { data } = await supabase
-            .from('messages')
+            .from("messages")
             .select()
-            .eq('conversations_ID', conversationId.id);
+            .eq("conversations_ID", conversationId.id);
           setMessages(data);
 
           supabase
-            .from('messages')
-            .on('INSERT', (message) => {
+            .from("messages")
+            .on("INSERT", (message) => {
               setNewMessage(message.new);
               setMessages([...messages, message.new]);
             })
@@ -75,9 +75,9 @@ const Chat = (props) => {
   useEffect(() => {
     const scrollToBottom = () => {
       if (newMessage) {
-        messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
       }
-      setNewMessage('');
+      setNewMessage("");
     };
     scrollToBottom();
   }, [newMessage]);
@@ -86,7 +86,7 @@ const Chat = (props) => {
     e.preventDefault();
     try {
       if (input) {
-        await supabase.from('messages').insert([
+        await supabase.from("messages").insert([
           {
             content: input,
             sender_Id: props.sender,
@@ -94,7 +94,7 @@ const Chat = (props) => {
           },
         ]);
 
-        setInput('');
+        setInput("");
       }
     } catch (error) {
       console.error(error);
@@ -107,7 +107,7 @@ const Chat = (props) => {
   };
 
   return loading ? (
-    <div>Loading....</div>
+    <LoadingPage />
   ) : (
     <div className="container bg-base-100 border rounded ">
       <div className="w-96 mr-5 ml-5 pb-5 pt-5">

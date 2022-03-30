@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import Carousel, { CarouselItem } from './UseCarousel';
-
-import Card from './Card';
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import Carousel, { CarouselItem } from "./UseCarousel";
+import LoadingPage from "./LoadingPage";
+import Card from "./Card";
 
 const Main = () => {
   const [getImages, setImages] = useState([]);
@@ -17,14 +17,14 @@ const Main = () => {
       try {
         setLoading(true);
         let { data, error, status } = await supabase
-          .from('items')
+          .from("items")
           .select(
             `name, description, ownerId, id, category, listed, image_url, created_at`
           )
-          .eq('listed', true)
+          .eq("listed", true)
           .neq(
-            'ownerId',
-            user ? user.id : '11111111-1111-1111-1111-111111111111'
+            "ownerId",
+            user ? user.id : "11111111-1111-1111-1111-111111111111"
           );
 
         if (error && status !== 406) {
@@ -75,7 +75,7 @@ const Main = () => {
             }
           });
         });
-        setCategoryList(image)
+        setCategoryList(image);
       } catch (error) {
         console.error(error);
       }
@@ -84,9 +84,9 @@ const Main = () => {
   }, [list, getImages]);
 
   const recentlyadded = getImages.slice(Math.max(getImages.length - 5, 1));
-  
+
   return loading ? (
-    <div>loading...</div>
+    <LoadingPage />
   ) : (
     <div>
       <div>

@@ -3,7 +3,7 @@ import { supabase } from "../supabaseClient";
 import { useParams, useNavigate } from "react-router-dom";
 import ToggleWishlistButton from "./ToggleWishlistButton";
 import Card from "./Card";
-
+import LoadingPage from "./LoadingPage";
 const SingleItem = () => {
   const params = useParams();
   const [loading, setLoading] = useState(true);
@@ -41,7 +41,7 @@ const SingleItem = () => {
   return (
     <div>
       {loading ? (
-        <p>Loading</p>
+        <LoadingPage />
       ) : !item ? (
         <div>This item is not currently listed, or no longer exists.</div>
       ) : (
