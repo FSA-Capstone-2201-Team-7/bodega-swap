@@ -63,6 +63,7 @@ const OwnerProfile = ({ state }) => {
                   {Math.ceil(
                     100 * (user.downvotes / (user.upvotes + user.downvotes))
                   )}
+                  %
                 </p>
               </div>
               <div>

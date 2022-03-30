@@ -36,7 +36,7 @@ const Profile = () => {
   return (
     <div>
       {loading ? (
-       <LoadingPage/>
+        <LoadingPage />
       ) : (
         <div className="flex flex-col md:flex-row p-5 my-2 gap-8 md:gap-12">
           <div className="avatar-container flex items-center justify-center">
@@ -62,6 +62,7 @@ const Profile = () => {
                   {Math.ceil(
                     100 * (user.downvotes / (user.upvotes + user.downvotes))
                   )}
+                  %
                 </p>
               </div>
               <div>
