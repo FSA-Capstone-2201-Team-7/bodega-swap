@@ -4,6 +4,7 @@ import Carousel, { CarouselItem } from "./UseCarousel";
 import LoadingPage from "./LoadingPage";
 import Card from "./Card";
 import StepBar from "./StepBar";
+import { useNavigate } from "react-router-dom";
 
 const Main = () => {
   const [getImages, setImages] = useState([]);
@@ -11,6 +12,7 @@ const Main = () => {
   const [list, setList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   // const [recentlyadded, setRecentlyAdded] = useState([])
+  const navigate = useNavigate()
   const user = supabase.auth.user();
 
   useEffect(() => {
@@ -112,11 +114,14 @@ const Main = () => {
                 key={i}
                 className="flex-none mr-8 relative border rounded-lg shadow-md shadow-indigo-400/50"
               >
-                <img
-                  src={image[1]}
-                  alt=""
-                  className="h-80 w-96 rounded-t-lg  hover:opacity-60 transition-opacity duration-1000 ease-out"
-                />
+  
+                <button type="button" onClick={() => navigate('/items', {state: {image}})}>
+                  <img
+                    src={image[1]}
+                    alt=""
+                    className="h-80 w-96 rounded-t-lg  hover:opacity-60 transition-opacity duration-1000 ease-out"
+                  />
+                </button>
                 <div className="flex bg-white justify-center text-gray-700 text-xl font-semibold pt-1">
                   {image[0]}
                 </div>
