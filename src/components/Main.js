@@ -3,7 +3,7 @@ import { supabase } from "../supabaseClient";
 import Carousel, { CarouselItem } from "./UseCarousel";
 import LoadingPage from "./LoadingPage";
 import Card from "./Card";
-
+import StepBar from "./StepBar";
 const Main = () => {
   const [getImages, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -136,7 +136,7 @@ const Main = () => {
             );
           })} */}
         </div>
-        <div>Recently Added</div>
+        <div className="text-2xl font-semibold mb-4 mt-6">Recently Added</div>
         <div className="flex bg-red-300">
           <div className=" ml-56 h-80 w-96">
             <img src={recentlyadded[0].image_url} alt="" />
@@ -155,7 +155,7 @@ const Main = () => {
           </div>
         </div>
       </div>
-
+      <StepBar />
       {/* <Carousel>
           {getImages.map((image) => {
             return (
