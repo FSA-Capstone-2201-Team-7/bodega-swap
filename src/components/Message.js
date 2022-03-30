@@ -26,8 +26,10 @@ const Message = ({ message, TheirAvatarUrl, MyAvatarUrl }) => {
         )}
       </div>
       <div
+
         className={`px-3 py-1 rounded-2xl flex ${
           isFromUser() ? " bg-indigo-500 text-white" : " bg-white shadow-lg"
+
         }`}
       >
         {message.content}

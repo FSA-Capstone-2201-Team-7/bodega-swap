@@ -32,15 +32,17 @@ const HaggleView = ({ state }) => {
           .from('users')
           .select(
             `
-          avatarUrl
+          avatarUrl,
+          username
           `
           )
           .eq('id', user.id);
-
+          console.log('dta with username', ...data)
         if (swap.outbound_id !== user.id) {
           setYourInfo({
             ...swap.outbound_offer,
             ...data[0],
+            ...data[1],
             userAccept: swap.outbound_accept,
             inOrOut: 'outbound',
           });
@@ -50,6 +52,7 @@ const HaggleView = ({ state }) => {
               setYourInfo({
                 ...swap.outbound_offer,
                 ...data[0],
+                ...data[1],
                 userAccept: update.new.outbound_accept,
                 inOrOut: 'outbound',
               });
@@ -60,6 +63,7 @@ const HaggleView = ({ state }) => {
           setYourInfo({
             ...swap.inbound_offer,
             ...data[0],
+            ...data[1],
             userAccept: swap.inbound_accept,
             inOrOut: 'inbound',
           });
@@ -69,6 +73,7 @@ const HaggleView = ({ state }) => {
               setYourInfo({
                 ...swap.outbound_offer,
                 ...data[0],
+                ...data[1],
                 userAccept: update.new.inbound_accept,
                 inOrOut: 'inbound',
               });
@@ -95,7 +100,6 @@ const HaggleView = ({ state }) => {
     swap,
   ]);
 
-
   //here we grab the non-users infor and do the same thing
   useEffect(() => {
     const them = async () => {
@@ -105,7 +109,10 @@ const HaggleView = ({ state }) => {
           .from('users')
           .select(
             `
-          avatarUrl, username
+
+          avatarUrl,
+          username
+
           `
           )
           .eq('id', notUserId);
@@ -114,6 +121,7 @@ const HaggleView = ({ state }) => {
           setTheirInfo({
             ...swap.inbound_offer,
             ...data[0],
+            ...data[1],
             userAccept: swap.inbound_accept,
             userConfirm: swap.inbound_confirm,
             inOrOut: 'inbound',
@@ -122,6 +130,7 @@ const HaggleView = ({ state }) => {
           setTheirInfo({
             ...swap.outbound_offer,
             ...data[0],
+            ...data[1],
             userAccept: swap.outbound_accept,
             userConfirm: swap.outbound_confirm,
             inOrOut: 'outbound',
