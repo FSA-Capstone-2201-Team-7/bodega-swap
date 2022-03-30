@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useLocation } from "react-router-dom";
 import ToggleWishlistButton from "./ToggleWishlistButton";
 import FilterCategory from "./FilterCategories";
 import Card from "./Card";
@@ -8,13 +8,15 @@ import ForumIcon from "@mui/icons-material/Forum";
 import SearchBar from "./SearchBar";
 import LoadingPage from "./LoadingPage";
 
-const AllItems = () => {
+const AllItems = ({state}) => {
   const [loading, setLoading] = useState(true);
   const [items, setItems] = useState([]);
-  const [filterItem, setFilterItem] = useState("All");
+  const [filterItem, setFilterItem] = useState('All');
   const [list, setList] = useState([]);
   const user = supabase.auth.user();
   const navigate = useNavigate();
+  const location = useLocation()
+  const { image = '' } = location.state || {};
 
   useEffect(() => {
     const getItems = async () => {
@@ -63,6 +65,22 @@ const AllItems = () => {
     };
     filter();
   }, [items]);
+  console.log(filterItem)
+  useEffect(() => {
+    const categoryFromMain = () => {
+      try {
+        if(image[0]) {
+          setFilterItem(image[0])
+        }
+        
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    categoryFromMain()
+  }, [image])
+
+  
   return (
     <div>
       {loading ? (
