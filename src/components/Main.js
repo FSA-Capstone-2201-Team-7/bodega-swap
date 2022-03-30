@@ -105,7 +105,8 @@ const Main = () => {
       </div>
       <div>
         <p className="text-2xl font-semibold mb-4 mt-6">Categories</p>
-        <div className="flex h-80 flex-no-wrap overflow-x-scroll scrolling-touch items-start mb-8">
+
+        <div className="flex h-80 flex-no-wrap overflow-x-scroll scrollbar-hide  scrolling-touch items-start mb-8">
           {categoryList.map((image, i) => {
             return (
               <div
@@ -124,6 +125,7 @@ const Main = () => {
             );
           })}
           {/* {getImages.map((image) => {
+
             return (
               <div
                 key={image.id}

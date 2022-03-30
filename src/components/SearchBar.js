@@ -83,7 +83,7 @@ function SearchBar(props) {
             <div className="top-14 shadow absolute z-10 bg-white mt-1 pb-1 w-full  ">
               {filteredData.slice(0, 10).map((item, key) => {
                 return (
-                  <div className="mt-1 px-3 py-1 lg:py-2 hover:bg-gray-200  ">
+                  <div className="mt-1 px-3 py-1 lg:py-2 hover:bg-gray-100 duration-100 ">
                     <Link className="flex space-x-2" to={`/items/${item.id}`}>
                       <img
                         className="h-7 w-7 rounded-sm md:h-9 md:w-9 lg:w-11 lg:h-11"

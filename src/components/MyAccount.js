@@ -56,19 +56,24 @@ const Profile = () => {
             <h2>REP</h2>
             <div className="flex space-x-4">
               <div>
-                {' '}
 
-                <ThumbDownIcon className="h-8" />
+                {" "}
+                <ThumbDownIcon className="h-8 fill-yellow-400 stroke-yellow-500" />
                 <p>
+                  {" "}
+
                   {Math.ceil(
                     100 * (user.downvotes / (user.upvotes + user.downvotes))
                   )}
                 </p>
               </div>
               <div>
-                {' '}
-                <ThumbUpIcon className="h-8" />
+
+                {" "}
+                <ThumbUpIcon className="h-8 fill-yellow-400 stroke-yellow-500" />
                 <p>
+                  {" "}
+
                   {Math.ceil(
                     100 * (user.upvotes / (user.upvotes + user.downvotes))
                   )}
@@ -82,14 +87,28 @@ const Profile = () => {
             <h3>Total Swaps Completed</h3>
             <div className="flex space-x-4">
               <div>
-                <p>{user.swaps_completed}</p>
+
+                <div className="flex items-center ">
+                  <p className="text-xl pr-1">Completed </p>
+                  <div className="inline-flex w-4 h-4 bg-gray-400 rounded-full"></div>
+                </div>
+                <div className="flex justify-center">
+                  {user.swaps_completed}
+                </div>
+              </div>
+              <div>
+                <div className="flex items-center ">
+                  <p className="text-lg pr-1">Active </p>
+                  <div className="inline-flex w-4 h-4 bg-green-500 rounded-full"></div>
+                </div>
+
 
               </div>
             </div>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center justify-center">
             <Link to="/editProfile">
-              <button className="cursor-pointer mt-5 rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white w-full hover:bg-indigo-400">
+              <button className="cursor-pointer rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white w-full hover:bg-indigo-400">
                 Edit Account
               </button>
             </Link>

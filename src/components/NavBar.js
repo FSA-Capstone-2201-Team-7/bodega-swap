@@ -1,25 +1,28 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "../supabaseClient";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-import { ChatAltIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
-import PersonIcon from '@mui/icons-material/Person';
-import LogoutIcon from '@mui/icons-material/Logout';
-import SearchBar from './SearchBar';
+import { ChatAltIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import PersonIcon from "@mui/icons-material/Person";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SearchBar from "./SearchBar";
 
 const NavBar = ({ session }) => {
   const navigate = useNavigate();
   // console.log(localStorage);
   return (
     <header className="sticky top-0 flex justify-between bg-white p-5 shadow-md md:px-10 z-40 ">
-      <div className="flex">
+      <div className="flex items-center">
         <Link to="/home">
-          <h1 className="text-bold">BODEGA SWAP</h1>
+          <h1 className="text-bold text-2xl">BODEGA SWAP</h1>
         </Link>
 
-        <Link className="text-gray-500 pl-5" to="/items">
-          Closet
+        <Link
+          className=" font-normal text-gray-500 pl-5 hover:text-indigo-500  hover:scale-105 duration-300 ease-out"
+          to="/items"
+        >
+          Explore
         </Link>
       </div>
       <div className="flex-grow px-7">
@@ -42,7 +45,7 @@ const NavBar = ({ session }) => {
           </Link>
         </nav>
       ) : (
-        <div>
+        <div className="flex items-center">
           <nav className="md:hidden dropdown dropdown-end ">
             <label
               tabIndex="0"
@@ -105,7 +108,7 @@ const NavBar = ({ session }) => {
               <PersonIcon className="hover:scale-110 hover:text-indigo-500  hover:transition duration-300 ease-out" />
             </Link>
             <Link to="/createListing">
-              {' '}
+              {" "}
               <button
                 type="button"
                 className=" bg-indigo-500 hover:bg-indigo-400
