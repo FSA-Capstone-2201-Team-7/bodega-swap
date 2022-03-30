@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-// import Carousel, { CarouselItem } from './UseCarousel';
 
-// import Card from './Card';
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import Carousel, { CarouselItem } from "./UseCarousel";
+import LoadingPage from "./LoadingPage";
+import Card from "./Card";
+import StepBar from "./StepBar";
 
 const Main = () => {
   const [getImages, setImages] = useState([]);
@@ -17,14 +19,14 @@ const Main = () => {
       try {
         setLoading(true);
         let { data, error, status } = await supabase
-          .from('items')
+          .from("items")
           .select(
             `name, description, ownerId, id, category, listed, image_url, created_at`
           )
-          .eq('listed', true)
+          .eq("listed", true)
           .neq(
-            'ownerId',
-            user ? user.id : '11111111-1111-1111-1111-111111111111'
+            "ownerId",
+            user ? user.id : "11111111-1111-1111-1111-111111111111"
           );
 
         if (error && status !== 406) {
@@ -75,7 +77,7 @@ const Main = () => {
             }
           });
         });
-        setCategoryList(image)
+        setCategoryList(image);
       } catch (error) {
         console.error(error);
       }
@@ -84,9 +86,9 @@ const Main = () => {
   }, [list, getImages]);
 
   const recentlyadded = getImages.slice(Math.max(getImages.length - 5, 1));
-  
+
   return loading ? (
-    <div>loading...</div>
+    <LoadingPage />
   ) : (
     <div>
       <div>
@@ -136,7 +138,7 @@ const Main = () => {
             );
           })} */}
         </div>
-        <div>Recently Added</div>
+        <div className="text-2xl font-semibold mb-4 mt-6">Recently Added</div>
         <div className="flex bg-red-300">
           <div className=" ml-56 h-80 w-96">
             <img src={recentlyadded[0].image_url} alt="" />
@@ -155,7 +157,7 @@ const Main = () => {
           </div>
         </div>
       </div>
-
+      <StepBar />
       {/* <Carousel>
           {getImages.map((image) => {
             return (

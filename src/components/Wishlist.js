@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { Link, useNavigate } from "react-router-dom";
-
+import LoadingPage from "./LoadingPage";
 const Wishlist = () => {
   const [loading, setLoading] = useState(true);
   const [wishlist, setWishList] = useState(null);
@@ -55,7 +55,7 @@ const Wishlist = () => {
   };
 
   return loading ? (
-    <div>Loading...</div>
+    <LoadingPage />
   ) : wishlist.length ? (
     <div>
       <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-10 mt-5 justify-items-center ">

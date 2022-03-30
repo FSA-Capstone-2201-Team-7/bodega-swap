@@ -6,6 +6,7 @@ import FilterCategory from "./FilterCategories";
 import Card from "./Card";
 import ForumIcon from "@mui/icons-material/Forum";
 import SearchBar from "./SearchBar";
+import LoadingPage from "./LoadingPage";
 
 const AllItems = () => {
   const [loading, setLoading] = useState(true);
@@ -65,7 +66,7 @@ const AllItems = () => {
   return (
     <div>
       {loading ? (
-        <p>Loading</p>
+        <LoadingPage />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-2 lg:px-10 justify-items-center gap-10 ">
           <FilterCategory

@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { useLocation, useNavigate } from 'react-router-dom';
-import Chat from './Chat';
-import Card from './Card';
-import HaggleInventory from './HaggleInventory';
-import AgreedButton from './AgreedButton';
-
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import { useLocation, useNavigate } from "react-router-dom";
+import Chat from "./Chat";
+import Card from "./Card";
+import HaggleInventory from "./HaggleInventory";
+import AgreedButton from "./AgreedButton";
+import LoadingPage from "./LoadingPage";
 
 const HaggleView = ({ state }) => {
   const location = useLocation(null);
+
   const { swap = '' } = location.state || {};
   const [thisSwap, setThisSwap] = useState([])
+
   const [loading, setLoading] = useState(true);
   const [yourInfo, setYourInfo] = useState({});
   const [theirInfo, setTheirInfo] = useState({});
-  const [notUserId, setNotUserId] = useState('');
-  const [inventory, setInventory] = useState('');
+  const [notUserId, setNotUserId] = useState("");
+  const [inventory, setInventory] = useState("");
   const user = supabase.auth.user();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   //here we get the users info and avatar and spread them into new object to render into haggle view
   useEffect(() => {
@@ -25,29 +27,29 @@ const HaggleView = ({ state }) => {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from('users')
+          .from("users")
           .select(
             `
           avatarUrl
           `
           )
-          .eq('id', user.id);
+          .eq("id", user.id);
 
         if (swap.outbound_id !== user.id) {
           setYourInfo({
             ...swap.outbound_offer,
             ...data[0],
             userAccept: swap.outbound_accept,
-            inOrOut: 'outbound',
+            inOrOut: "outbound",
           });
           supabase
-            .from('swaps')
-            .on('UPDATE', (update) => {
+            .from("swaps")
+            .on("UPDATE", (update) => {
               setYourInfo({
                 ...swap.outbound_offer,
                 ...data[0],
                 userAccept: update.new.outbound_accept,
-                inOrOut: 'outbound',
+                inOrOut: "outbound",
               });
             })
             .subscribe();
@@ -57,16 +59,16 @@ const HaggleView = ({ state }) => {
             ...swap.inbound_offer,
             ...data[0],
             userAccept: swap.inbound_accept,
-            inOrOut: 'inbound',
+            inOrOut: "inbound",
           });
           supabase
-            .from('swaps')
-            .on('UPDATE', (update) => {
+            .from("swaps")
+            .on("UPDATE", (update) => {
               setYourInfo({
                 ...swap.outbound_offer,
                 ...data[0],
                 userAccept: update.new.inbound_accept,
-                inOrOut: 'inbound',
+                inOrOut: "inbound",
               });
             })
             .subscribe();
@@ -99,13 +101,13 @@ const HaggleView = ({ state }) => {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from('users')
+          .from("users")
           .select(
             `
           avatarUrl
           `
           )
-          .eq('id', notUserId);
+          .eq("id", notUserId);
 
         if (swap.outbound_id !== user.id) {
           setTheirInfo({
@@ -113,7 +115,7 @@ const HaggleView = ({ state }) => {
             ...data[0],
             userAccept: swap.inbound_accept,
             userConfirm: swap.inbound_confirm,
-            inOrOut: 'inbound',
+            inOrOut: "inbound",
           });
         } else {
           setTheirInfo({
@@ -121,7 +123,7 @@ const HaggleView = ({ state }) => {
             ...data[0],
             userAccept: swap.outbound_accept,
             userConfirm: swap.outbound_confirm,
-            inOrOut: 'outbound',
+            inOrOut: "outbound",
           });
         }
       } catch (error) {
@@ -153,11 +155,11 @@ const HaggleView = ({ state }) => {
       try {
         if (swap.inbound_accept === true && swap.outbound_accept === true) {
           await supabase
-            .from('swaps')
+            .from("swaps")
             .update({
-              status: 'agreed',
+              status: "agreed",
             })
-            .eq('id', swap.id);
+            .eq("id", swap.id);
         }
       } catch (error) {
         console.error(error);
@@ -172,22 +174,26 @@ const HaggleView = ({ state }) => {
     console.log(yourInfo)
     console.log(theirInfo)
     try {
-      if (check.inOrOut === 'inbound') {
+      if (check.inOrOut === "inbound") {
         await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             inbound_accept: true,
           })
+
           .eq('id', swap.id);
           setYourInfo(yourInfo);
+
       } else {
         await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             outbound_accept: true,
           })
+
           .eq('id', swap.id);
           setYourInfo(yourInfo);
+
       }
       
     } catch (error) {
@@ -198,30 +204,29 @@ const HaggleView = ({ state }) => {
 
   
   const handleConfimation = async (check) => {
-
     try {
-      if (check === 'inbound') {
+      if (check === "inbound") {
         await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             inbound_confirm: true,
           })
-          .eq('id', swap.id);
+          .eq("id", swap.id);
       } else {
         await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             outbound_confirm: true,
           })
-          .eq('id', swap.id);
+          .eq("id", swap.id);
       }
     } catch (error) {
       console.error(error);
     }
-    navigate('/messages', {state: {swap}})
+    navigate("/messages", { state: { swap } });
   };
   return loading ? (
-    <div>Loading....</div>
+    <LoadingPage />
   ) : (
     <div className="grid grid-cols-3 px-10 justify-items-center gap-10 mt-36">
       <div className="realtive justify-center">
@@ -288,7 +293,7 @@ const HaggleView = ({ state }) => {
               <label
                 htmlFor="my-drawer"
                 className="btn btn-primary drawer-button"
-                onClick={() => setInventory('')}
+                onClick={() => setInventory("")}
               >
                 Close Inventory
               </label>
@@ -337,7 +342,7 @@ const HaggleView = ({ state }) => {
               <label
                 htmlFor="my-drawer-4"
                 className="btn btn-primary drawer-button"
-                onClick={() => setInventory('')}
+                onClick={() => setInventory("")}
               >
                 Close Inventory
               </label>

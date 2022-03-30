@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const AgreedButton = (props) => {
   const { info, handleAcceptance, swap } = props;
@@ -9,11 +9,13 @@ const AgreedButton = (props) => {
           Mark Complete
         </label>
       </div>
+
     // swap.inbound_accept === true && swap.outbound_accept === true ? (
       
     // ) : (
     //   <button className="btn loading">Waiting...</button>
     // )
+
   ) : (
     <button
       className="btn btn-xs sm:btn-sm md:btn-md w-full"
