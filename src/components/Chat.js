@@ -111,7 +111,7 @@ const Chat = (props) => {
   ) : (
     <div className="container bg-base-100 border rounded ">
       <div className="w-96 mr-5 ml-5 pb-5 pt-5">
-        <div className="relative flex items-centerp-3 border-b border-gray-300">
+        <div className="relative flex items-center p-3 border-b border-gray-300">
           <span className="absolute w-3 h-3 bg-green-600 rounded-full right-14 top-3 text-white"></span>
           <div>online?</div>
         </div>

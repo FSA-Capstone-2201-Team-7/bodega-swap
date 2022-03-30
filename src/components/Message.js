@@ -19,7 +19,7 @@ const Message = ({message})=> {
         className={`p-5 rounded-2xl ${
           isFromUser()
             ? 'rounded-tr-none bg-blue-500'
-            : 'rounded-tl-none bg-white'
+            : 'rounded-tl-none bg-red-500'
         }`}
       >
         {message.content}
