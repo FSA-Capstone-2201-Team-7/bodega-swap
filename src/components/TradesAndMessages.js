@@ -15,11 +15,8 @@ const TradesAndMessages = () => {
   const user = supabase.auth.user();
   const navigate = useNavigate();
 
-
-
-
   useEffect(() => {
-    const getInboundSwaps = async () => {
+    const getOutboundSwaps = async () => {
       try {
         setLoading(true);
         const { data } = await supabase
@@ -33,23 +30,13 @@ const TradesAndMessages = () => {
         setLoading(false);
       }
     };
-    getInboundSwaps();
+    getOutboundSwaps();
   }, [user.id]);
-
-  supabase
-    .from('swaps')
-    .on('DELETE', (deleted) => {
-      const render = getOutbound.filter((active) => {
-        if (active.id !== deleted.old.id) {
-          return active;
-        }
-      });
-      setOutbound(render);
-    })
-    .subscribe();
+    
+ 
 
   useEffect(() => {
-    const getOutboundSwaps = async () => {
+    const getInboundSwaps = async () => {
       try {
         setLoading(true);
         const { data } = await supabase
@@ -63,19 +50,9 @@ const TradesAndMessages = () => {
         setLoading(false);
       }
     };
-    getOutboundSwaps();
+    getInboundSwaps();
   }, [user.id]);
-   supabase
-     .from('swaps')
-     .on('DELETE', (deleted) => {
-       const render = getInbound.filter((active) => {
-         if (active.id !== deleted.old.id) {
-           return active;
-         }
-       });
-       setInbound(render);
-     })
-     .subscribe();
+
 
   const handleActivate = async (swap) => {
     if (swap.status === 'proposed') {
@@ -102,33 +79,63 @@ const TradesAndMessages = () => {
 
   const handleRemoveOffer = async (swap) => {
     try {
-       const { data } = await supabase
-         .from('conversations')
-         .select('id')
-         .eq('swap_Id', swap.id);
-         setConversationId(...data);
-       if(data) {
-         const { data } = await supabase
-           .from('messages')
-           .delete()
-           .match({conversations_ID: getConversationId.id});
-           
-          const {data: deleteConvo} = await supabase
-               .from('conversations')
-               .delete()
-               .eq('swap_Id', swap.id);
-               console.log('third, data', deleteConvo);
-               if (deleteConvo) {
-                 await supabase.from('swaps').delete().eq('id', swap.id)
-               }
-       }
-      
+      const { data } = await supabase
+        .from('conversations')
+        .select('id')
+        .eq('swap_Id', swap.id);
+      setConversationId(...data);
+      if (data) {
+         await supabase
+          .from('messages')
+          .delete()
+          .eq( 'conversations_ID', getConversationId.id )
+          
+       
+            await supabase
+              .from('conversations')
+              .delete()
+              .eq('swap_Id', swap.id);
+
+            await supabase.from('swaps').delete().eq('id', swap.id);
+
+          
+          await supabase.from('conversations').delete().eq('swap_Id', swap.id);
+
+          await supabase.from('swaps').delete().eq('id', swap.id);
+            
+        
+      }
+      setConversationId('');
     } catch (error) {
       console.error(error);
     }
+    navigate('/items')
   };
 
+  // supabase
+  //   .from('swaps')
+  //   .on('DELETE', (deleted) => {
+  //     const render = getOutbound.filter((active) => {
+  //       if (active.id !== deleted.old.id) {
+  //         return active;
+  //       }
+  //     });
 
+  //     setOutbound([...render]);
+  //   })
+  //   .subscribe();
+
+  // supabase
+  //   .from('swaps')
+  //   .on('DELETE', (deleted) => {
+  //     const render = getInbound.filter((active) => {
+  //       if (active.id !== deleted.old.id) {
+  //         return active;
+  //       }
+  //     });
+  //     setInbound([...render])
+  //   })
+  //   .subscribe();
 
   return loading ? (
     <div>Loding...</div>
