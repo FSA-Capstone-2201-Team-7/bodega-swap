@@ -151,7 +151,7 @@ const HaggleView = ({ state }) => {
   useEffect(() => {
     const setAgreement = async () => {
       try {
-        if (swap.inbound_accept === true && swap.outbound_accept === true) {
+        if (swap.inbound_accept && swap.outbound_accept) {
           await supabase
             .from('swaps')
             .update({
@@ -166,6 +166,7 @@ const HaggleView = ({ state }) => {
     setAgreement();
   }, [swap.id, swap.outbound_accept, swap.inbound_accept]);
 
+
   //still working on this for realtime purposes
   const handleAcceptance = async (check) => {
     try {
@@ -176,19 +177,19 @@ const HaggleView = ({ state }) => {
             inbound_accept: true,
           })
           .eq('id', swap.id);
-        setYourInfo(yourInfo);
-      } else {
+        
+      } 
+      
+      if (check.inOrOut === 'outbound') {
         await supabase
           .from('swaps')
           .update({
             outbound_accept: true,
           })
-
           .eq('id', swap.id);
-        setYourInfo([...yourInfo, { userAccept: true }]);
       }
-
       setYourInfo([...yourInfo, { userAccept: true }]);
+      setTheirInfo([...theirInfo])
       supabase
         .from('swaps')
         .on('UPDATE', (button) => {
@@ -196,6 +197,7 @@ const HaggleView = ({ state }) => {
           console.log('updated', button.new);
         })
         .subscribe();
+      
     } catch (error) {
       console.error(error);
     }
@@ -300,19 +302,6 @@ const HaggleView = ({ state }) => {
                   Accept Terms
                 </button>
               )}
-              {/* {swap.inbound_accept === true && swap.outbound_accept === true ? (
-            <label htmlFor="my-modal-5" className="btn modal-button w-full">
-              Mark Complete
-            </label>
-            ) : (yourInfo.userAccept ? (
-            <button className="btn loading">Waiting...</button>) : (
-            <button
-              className="btn btn-xs sm:btn-sm md:btn-md w-full"
-              onClick={() => handleAcceptance(yourInfo)}
-            >
-              Accept Terms
-            </button>
-            ))} */}
               {/* <AgreedButton
                 info={yourInfo}
                 handleAcceptance={handleAcceptance}
