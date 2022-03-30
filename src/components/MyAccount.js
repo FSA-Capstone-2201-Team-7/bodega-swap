@@ -81,9 +81,9 @@ const Profile = () => {
               </div>
             </div>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center justify-center">
             <Link to="/editProfile">
-              <button className="cursor-pointer mt-5 rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white w-full hover:bg-indigo-400">
+              <button className="cursor-pointer rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white w-full hover:bg-indigo-400">
                 Edit Account
               </button>
             </Link>
