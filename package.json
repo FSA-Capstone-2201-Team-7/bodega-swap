@@ -28,6 +28,7 @@
     "react-scripts": "5.0.0",
     "react-swipeable": "^6.2.1",
     "tailwind-scrollbar-hide": "^1.1.7",
+    "tw-elements": "^1.0.0-alpha12",
     "web-vitals": "^0.2.4",
     "workbox-background-sync": "^5.1.4",
     "workbox-broadcast-update": "^5.1.4",

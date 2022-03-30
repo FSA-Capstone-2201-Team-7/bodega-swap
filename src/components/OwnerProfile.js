@@ -3,7 +3,7 @@ import { supabase } from "../supabaseClient";
 import { Link, useLocation } from "react-router-dom";
 import OwnerListings from "./OwnerListings";
 import { ThumbDownIcon, ThumbUpIcon } from "@heroicons/react/outline";
-
+import LoadingPage from "./LoadingPage";
 const OwnerProfile = ({ state }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
@@ -38,7 +38,7 @@ const OwnerProfile = ({ state }) => {
   return (
     <div>
       {loading ? (
-        <p>Loading</p>
+        <LoadingPage />
       ) : (
         <div className="flex flex-col md:flex-row p-5 my-2 gap-8 md:gap-12">
           <div className="avatar-container flex items-center justify-center">

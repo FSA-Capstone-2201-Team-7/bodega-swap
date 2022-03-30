@@ -1,11 +1,11 @@
 /* eslint-disable array-callback-return */
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router-dom';
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import Card from './Card';
-import ConfirmationCard from './ConfirmationCard';
-
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import { useNavigate } from "react-router-dom";
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
+import Card from "./Card";
+import ConfirmationCard from "./ConfirmationCard";
+import LoadingPage from "./LoadingPage";
 const TradesAndMessages = () => {
   const [loading, setLoading] = useState(true);
   const [getInbound, setInbound] = useState([]);
@@ -18,7 +18,7 @@ const TradesAndMessages = () => {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from('swaps')
+          .from("swaps")
           .select(
             `
             inbound_id,
@@ -33,10 +33,10 @@ const TradesAndMessages = () => {
             outbound_confirm
             `
           )
-          .eq('inbound_id', user.id);
+          .eq("inbound_id", user.id);
         setOutbound(data);
       } catch (error) {
-        console.error('try again', error);
+        console.error("try again", error);
       } finally {
         setLoading(false);
       }
@@ -45,8 +45,8 @@ const TradesAndMessages = () => {
   }, [user.id]);
 
   supabase
-    .from('swaps')
-    .on('DELETE', (deleted) => {
+    .from("swaps")
+    .on("DELETE", (deleted) => {
       const render = getOutbound.filter((active) => {
         if (active.id !== deleted.old.id) {
           return active;
@@ -61,7 +61,7 @@ const TradesAndMessages = () => {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from('swaps')
+          .from("swaps")
           .select(
             `
               inbound_id,
@@ -74,13 +74,13 @@ const TradesAndMessages = () => {
               inbound_accept,
               inbound_confirm,
               outbound_confirm
-              
+
               `
           )
-          .eq('outbound_id', user.id);
+          .eq("outbound_id", user.id);
         setInbound(data);
       } catch (error) {
-        console.error('try again', error);
+        console.error("try again", error);
       } finally {
         setLoading(false);
       }
@@ -99,7 +99,7 @@ const TradesAndMessages = () => {
   //       //     })
   //       //     .eq('id', .id);
   //       }
-        
+
   //     } catch (error) {
   //       console.error(error)
   //     }
@@ -107,18 +107,17 @@ const TradesAndMessages = () => {
 
   // }, [])
 
-
   const handleActivate = async (swap) => {
-    if (swap.status === 'proposed') {
+    if (swap.status === "proposed") {
       const { data } = await supabase
-        .from('swaps')
+        .from("swaps")
         .update({
-          status: 'haggling',
+          status: "haggling",
         })
-        .eq('id', swap.id);
+        .eq("id", swap.id);
 
       if (data) {
-        await supabase.from('conversations').insert([
+        await supabase.from("conversations").insert([
           {
             sender_Id: user.id,
             receiver_Id: swap.inbound_id,
@@ -128,13 +127,13 @@ const TradesAndMessages = () => {
       }
     }
 
-    navigate('/haggle', { state: { swap } });
+    navigate("/haggle", { state: { swap } });
   };
   console.log(getInbound);
 
   const handleRemoveOffer = async (swap) => {
     try {
-      await supabase.from('swaps').delete().eq('id', swap.id);
+      await supabase.from("swaps").delete().eq("id", swap.id);
 
       const render = getOutbound.filter((active) => {
         if (active.id !== swap.id) {
@@ -148,7 +147,7 @@ const TradesAndMessages = () => {
   };
   const handleRemoveProposal = async (swap) => {
     try {
-      await supabase.from('swaps').delete().eq('id', swap.id);
+      await supabase.from("swaps").delete().eq("id", swap.id);
 
       const render = getInbound.filter((active) => {
         if (active.id !== swap.id) {
@@ -162,7 +161,7 @@ const TradesAndMessages = () => {
   };
 
   return loading ? (
-    <div>Loding...</div>
+    <LoadingPage />
   ) : (
     <div className="flex grid grid-cols-2">
       <div className="flex justify-center grid grid-cols pb-10 sm:px-5 gap-x-8 gap-y-16">
@@ -172,14 +171,18 @@ const TradesAndMessages = () => {
               return (
                 <div key={swap.id}>
                   {swap.inbound_confirm === true ? (
-                    <ConfirmationCard id={swap.inbound_offer.id} swap={swap} inOrOut='inbound' />
+                    <ConfirmationCard
+                      id={swap.inbound_offer.id}
+                      swap={swap}
+                      inOrOut="inbound"
+                    />
                   ) : (
                     <div className=" flex rounded overflow-hidden shadow-lg">
                       <Card
                         imageUrl={swap.outbound_offer.image_url}
                         id={swap.outbound_offer.id}
                         firstButton={
-                          swap.status === 'proposed' ? (
+                          swap.status === "proposed" ? (
                             <div className="flex">
                               <button
                                 className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
@@ -221,7 +224,7 @@ const TradesAndMessages = () => {
             })}
           </div>
         ) : (
-          'no current trades'
+          "no current trades"
         )}
       </div>
 
@@ -241,13 +244,13 @@ const TradesAndMessages = () => {
                     imageUrl={swap.inbound_offer.image_url}
                     id={swap.inbound_offer.id}
                     firstButton={
-                      swap.status === 'proposed' ? (
+                      swap.status === "proposed" ? (
                         <button className="btn loading">Waiting...</button>
                       ) : (
                         <button
                           className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                           onClick={() =>
-                            navigate('/haggle', { state: { swap } })
+                            navigate("/haggle", { state: { swap } })
                           }
                         >
                           Haggle!
