@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/outline';
 
-const RatingView = ({ state }) => {
+const RatingView = () => {
   const [rated, setRated] = useState(false);
   const [targetId, setTargetId] = useState(null);
   const user = supabase.auth.user();
@@ -21,14 +21,17 @@ const RatingView = ({ state }) => {
       setTargetId(swap.inbound_id);
       setRated(swap.outbound_rated);
     }
+    console.log(swap);
   }, []);
 
-  const handleRating = async (e) => {
+  const handleRating = async (e, type) => {
     e.preventDefault();
-    const vote = e.target.name === 'up' ? 'upvote' : 'downvote';
+    const vote = type === 'up' ? 'upvote' : 'downvote';
     try {
-      await supabase.rpc(vote, { rate_id: targetId });
-      /* upvote and downvote are functions that are written into our database on the backend. Depending on which one is called, a user's upvote or downvote tally will be incremented by 1 */
+      console.log(targetId);
+      let {error} = await supabase.rpc([vote], {target_id: targetId, user_id: user.id})
+      /* upvote and downvote are functions that are written into our database on the backend. Depending on which one is called, a target user's upvote or downvote tally will be incremented by 1, AND the logged in user's swaps_completed will be incremented */
+      if (error) throw error;
     } catch (error) {
       console.error(error);
     } finally {
@@ -67,10 +70,10 @@ const RatingView = ({ state }) => {
     <div>Thanks for rating!</div>
   ) : (
     <div>
-      <button onClick={handleRating} type="button" name="down">
+      <button onClick={(e) => handleRating(e, 'down')} type="button">
         <ThumbDownIcon className="h-8" />
       </button>
-      <button onClick={handleRating} type="button" name="up">
+      <button onClick={(e) => handleRating(e, 'up')} type="button">
         <ThumbUpIcon className="h-8" />
       </button>
       <p>
