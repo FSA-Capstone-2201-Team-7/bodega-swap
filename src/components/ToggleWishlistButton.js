@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { HeartIcon } from "@heroicons/react/outline";
+import LoadingPage from "./LoadingPage";
+
 const ToggleWishlistButton = (props) => {
   const [onWishlist, setOnWishlist] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -66,7 +68,7 @@ const ToggleWishlistButton = (props) => {
   };
 
   return loading ? (
-    <div>Loading...</div>
+    <LoadingPage />
   ) : (
     <button
       type="button"

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { SearchIcon, XIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
 import { supabase } from "../supabaseClient";
-
+import LoadingPage from "./LoadingPage";
 function SearchBar(props) {
   const [loading, setLoading] = useState(true);
 
@@ -58,7 +58,7 @@ function SearchBar(props) {
   return (
     <div className="md:flex hidden md:justify-center">
       {loading ? (
-        <p>loading</p>
+        <LoadingPage />
       ) : (
         <div className="flex relative flex-col w-[80%] z-20">
           <div className="flex items-center rounded-full py-2 md:border-2 md:shadow-sm ">

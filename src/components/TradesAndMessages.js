@@ -1,11 +1,12 @@
 /* eslint-disable array-callback-return */
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router-dom';
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import Card from './Card';
-import ConfirmationCard from './ConfirmationCard';
 
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import { useNavigate } from "react-router-dom";
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
+import Card from "./Card";
+import ConfirmationCard from "./ConfirmationCard";
+import LoadingPage from "./LoadingPage";
 
 const TradesAndMessages = () => {
   const [loading, setLoading] = useState(true);
@@ -23,12 +24,14 @@ const TradesAndMessages = () => {
       try {
         setLoading(true);
         const { data } = await supabase
+
           .from('swaps')
           .select()
           .eq('inbound_id', user.id);
+
         setOutbound(data);
       } catch (error) {
-        console.error('try again', error);
+        console.error("try again", error);
       } finally {
         setLoading(false);
       }
@@ -37,8 +40,8 @@ const TradesAndMessages = () => {
   }, [user.id]);
 
   supabase
-    .from('swaps')
-    .on('DELETE', (deleted) => {
+    .from("swaps")
+    .on("DELETE", (deleted) => {
       const render = getOutbound.filter((active) => {
         if (active.id !== deleted.old.id) {
           return active;
@@ -53,18 +56,21 @@ const TradesAndMessages = () => {
       try {
         setLoading(true);
         const { data } = await supabase
+
           .from('swaps')
           .select()
           .eq('outbound_id', user.id);
+
         setInbound(data);
       } catch (error) {
-        console.error('try again', error);
+        console.error("try again", error);
       } finally {
         setLoading(false);
       }
     };
     getOutboundSwaps();
   }, [user.id]);
+
    supabase
      .from('swaps')
      .on('DELETE', (deleted) => {
@@ -77,17 +83,18 @@ const TradesAndMessages = () => {
      })
      .subscribe();
 
+
   const handleActivate = async (swap) => {
-    if (swap.status === 'proposed') {
+    if (swap.status === "proposed") {
       const { data } = await supabase
-        .from('swaps')
+        .from("swaps")
         .update({
-          status: 'haggling',
+          status: "haggling",
         })
-        .eq('id', swap.id);
+        .eq("id", swap.id);
 
       if (data) {
-        await supabase.from('conversations').insert([
+        await supabase.from("conversations").insert([
           {
             sender_Id: user.id,
             receiver_Id: swap.inbound_id,
@@ -97,11 +104,12 @@ const TradesAndMessages = () => {
       }
     }
 
-    navigate('/haggle', { state: { swap } });
+    navigate("/haggle", { state: { swap } });
   };
 
   const handleRemoveOffer = async (swap) => {
     try {
+
        const { data } = await supabase
          .from('conversations')
          .select('id')
@@ -123,15 +131,15 @@ const TradesAndMessages = () => {
                }
        }
       
+
     } catch (error) {
       console.error(error);
     }
   };
 
 
-
   return loading ? (
-    <div>Loding...</div>
+    <LoadingPage />
   ) : (
     <div className="flex grid grid-cols-2">
       <div className="flex justify-center grid grid-cols pb-10 sm:px-5 gap-x-8 gap-y-16">
@@ -152,7 +160,7 @@ const TradesAndMessages = () => {
                         imageUrl={swap.outbound_offer.image_url}
                         id={swap.outbound_offer.id}
                         firstButton={
-                          swap.status === 'proposed' ? (
+                          swap.status === "proposed" ? (
                             <div className="flex">
                               <button
                                 className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
@@ -194,7 +202,7 @@ const TradesAndMessages = () => {
             })}
           </div>
         ) : (
-          'no current trades'
+          "no current trades"
         )}
       </div>
 
@@ -214,13 +222,13 @@ const TradesAndMessages = () => {
                     imageUrl={swap.inbound_offer.image_url}
                     id={swap.inbound_offer.id}
                     firstButton={
-                      swap.status === 'proposed' ? (
+                      swap.status === "proposed" ? (
                         <button className="btn loading">Waiting...</button>
                       ) : (
                         <button
                           className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                           onClick={() =>
-                            navigate('/haggle', { state: { swap } })
+                            navigate("/haggle", { state: { swap } })
                           }
                         >
                           Haggle!
