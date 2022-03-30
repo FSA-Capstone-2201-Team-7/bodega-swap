@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/outline';
 
-const RatingView = (props) => {
+const RatingView = ({ state }) => {
   const [rated, setRated] = useState(false);
   const [targetId, setTargetId] = useState(null);
   const user = supabase.auth.user();
-  const swap = props.swap;
   const navigate = useNavigate();
+  const location = useLocation();
+  const { swap = '' } = location.state || {};
 
   useEffect(() => {
     //determine whether the current user is the sender or receiver of the original proposal,
@@ -26,7 +27,7 @@ const RatingView = (props) => {
     e.preventDefault();
     const vote = e.target.name === 'up' ? 'upvote' : 'downvote';
     try {
-      await supabase.rpc(vote, { rate_id: targetId }, { user_id: user.id });
+      await supabase.rpc(vote, { rate_id: targetId });
       /* upvote and downvote are functions that are written into our database on the backend. Depending on which one is called, a user's upvote or downvote tally will be incremented by 1 */
     } catch (error) {
       console.error(error);
@@ -36,11 +37,23 @@ const RatingView = (props) => {
       try {
         const userRole =
           user.id === swap.inbound_id ? 'inbound_rated' : 'outbound_rated';
-        let { error } = await supabase
+        let { data, error } = await supabase
           .from('swaps')
           .update({ [userRole]: true })
-          .eq('id', swap.id);
+          .eq('id', swap.id)
+          .limit(1)
+          .single();
+
         if (error) throw error;
+
+        if (data.inbound_rated && data.outbound_rated) {
+          await supabase
+            .from('swaps')
+            .update({
+              status: 'rated',
+            })
+            .eq('id', data.id);
+        }
       } catch (error) {
         console.error(error);
       } finally {

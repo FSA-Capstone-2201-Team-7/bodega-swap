@@ -30,7 +30,7 @@ const TradesAndMessages = () => {
             inbound_accept,
             outbound_accept,
             inbound_confirm,
-           outbound_confirm
+            outbound_confirm
             `
           )
           .eq('inbound_id', user.id);
@@ -87,6 +87,26 @@ const TradesAndMessages = () => {
     };
     getOutboundSwaps();
   }, [user.id]);
+
+  // useEffect(() => {
+  //   const checkCompleted = async () => {
+  //     try {
+  //       // if (swap.outbound_confirm && .inbound_confirm) {
+  //       //   await supabase
+  //       //     .from('swaps')
+  //       //     .update({
+  //       //       status: 'complete',
+  //       //     })
+  //       //     .eq('id', .id);
+  //       }
+        
+  //     } catch (error) {
+  //       console.error(error)
+  //     }
+  //   }
+
+  // }, [])
+
 
   const handleActivate = async (swap) => {
     if (swap.status === 'proposed') {
@@ -222,7 +242,7 @@ const TradesAndMessages = () => {
                     id={swap.inbound_offer.id}
                     firstButton={
                       swap.status === 'proposed' ? (
-                        <button class="btn loading">Waiting...</button>
+                        <button className="btn loading">Waiting...</button>
                       ) : (
                         <button
                           className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
