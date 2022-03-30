@@ -180,8 +180,6 @@ const HaggleView = ({ state }) => {
   //still working on this for realtime purposes
   const handleAcceptance = async (check) => {
     console.log("acceptance", check);
-    console.log(yourInfo);
-    console.log(theirInfo);
 
     try {
       if (check.inOrOut === "inbound") {

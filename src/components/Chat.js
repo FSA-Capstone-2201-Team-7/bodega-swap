@@ -11,7 +11,7 @@ const Chat = (props) => {
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
   const { TheirAvatarUrl, MyAvatarUrl, MyUserName, TheirUserName } = props;
-  console.log("props", props);
+
   useEffect(() => {
     const getConversation = async () => {
       try {

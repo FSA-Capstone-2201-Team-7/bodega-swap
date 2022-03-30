@@ -35,7 +35,6 @@ const SingleItem = () => {
     } finally {
       setLoading(false);
     }
-    console.log("item", item);
   };
 
   return (
