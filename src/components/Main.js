@@ -136,25 +136,41 @@ const Main = () => {
           })} */}
         </div>
         <div className="text-2xl font-semibold mb-4 mt-6">Recently Added</div>
-        <section className="grid p-6 overflow-hidden  grid-cols-8  w-full ">
-          <div className=" ">
+        <section className="grid p-6 overflow-hidden grid-cols-8 gap-4  w-full ">
+          <div className="col-span-3">
             <img
-              className="object-cover"
+              className="h-80 w-96"
               src={recentlyadded[0].image_url}
               alt=""
             />
           </div>
-          <div className="">
-            <img src={recentlyadded[1].image_url} alt="" />
+          <div className="col-span-2">
+            <img
+              className="h-80 w-96"
+              src={recentlyadded[1].image_url}
+              alt=""
+            />
           </div>
-          <div className="h-80 w-96 ml-56">
-            <img src={recentlyadded[2].image_url} alt="" />
+          <div className="col-span-2">
+            <img
+              className="h-80 w-96"
+              src={recentlyadded[2].image_url}
+              alt=""
+            />
           </div>
-          <div className="h-80 w-96">
-            <img src={recentlyadded[3].image_url} alt="" />
+          <div className="col-span-2">
+            <img
+              className="h-80 w-96"
+              src={recentlyadded[3].image_url}
+              alt=""
+            />
           </div>
-          <div className="h-80 w-96">
-            <img src={recentlyadded[4].image_url} alt="" />
+          <div className="col-span-2">
+            <img
+              className="h-80 w-96"
+              src={recentlyadded[4].image_url}
+              alt=""
+            />
           </div>
         </section>
       </div>
