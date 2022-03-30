@@ -10,7 +10,9 @@ import LoadingPage from './LoadingPage';
 const HaggleView = ({ state }) => {
   const location = useLocation(null);
 
+
   const { swap = '' } = location.state || {};
+
   const [thisSwap, setThisSwap] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -93,6 +95,7 @@ const HaggleView = ({ state }) => {
     swap,
   ]);
 
+
   //here we grab the non-users infor and do the same thing
   useEffect(() => {
     const them = async () => {
@@ -102,7 +105,7 @@ const HaggleView = ({ state }) => {
           .from('users')
           .select(
             `
-          avatarUrl
+          avatarUrl, username
           `
           )
           .eq('id', notUserId);
@@ -169,6 +172,11 @@ const HaggleView = ({ state }) => {
 
   //still working on this for realtime purposes
   const handleAcceptance = async (check) => {
+
+    console.log("acceptance", check);
+    console.log(yourInfo);
+    console.log(theirInfo);
+
     try {
       if (check.inOrOut === 'inbound') {
         await supabase
@@ -176,16 +184,19 @@ const HaggleView = ({ state }) => {
           .update({
             inbound_accept: true,
           })
+
           .eq('id', swap.id);
         
       } 
       
       if (check.inOrOut === 'outbound') {
+
         await supabase
           .from('swaps')
           .update({
             outbound_accept: true,
           })
+
           .eq('id', swap.id);
       }
       setYourInfo([...yourInfo, { userAccept: true }]);
@@ -198,6 +209,7 @@ const HaggleView = ({ state }) => {
         })
         .subscribe();
       
+
     } catch (error) {
       console.error(error);
     }
@@ -236,7 +248,7 @@ const HaggleView = ({ state }) => {
   return loading ? (
     <LoadingPage />
   ) : (
-    <div className="grid grid-cols-3 px-10 justify-items-center gap-10 mt-36">
+    <div className="grid grid-cols-3 px-10 justify-items-center gap-10 mt-20">
       <div className="realtive justify-center">
         <div>
           <input type="checkbox" id="my-modal-5" className="modal-toggle" />
@@ -265,11 +277,11 @@ const HaggleView = ({ state }) => {
             </div>
           </div>
         </div>
-        <div className="w-6/12 sm:w-2/12 px-4 grid place-items-center">
+        <div className="px-4 grid justify-center">
           <img
             src={yourInfo.avatarUrl}
             alt="..."
-            className="shadow rounded-full w-full  align-middle border-none ml-52"
+            className="shadow h-48 w-48 rounded-full"
           />
         </div>
         <div className="drawer">
@@ -309,7 +321,7 @@ const HaggleView = ({ state }) => {
                 inOrOut={yourInfo.inOrOut}
               /> */}
             </div>
-            <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
+            <div className="bg-indigo-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
               <Card id={yourInfo.id} imageUrl={yourInfo.image_url} />
             </div>
           </div>
@@ -330,14 +342,20 @@ const HaggleView = ({ state }) => {
         </div>
       </div>
       <div className="relative">
-        <Chat receiver={notUserId} sender={user.id} swap={swap} />
+        <Chat
+          MyAvatarUrl={yourInfo.avatarUrl}
+          TheirAvatarUrl={theirInfo.avatarUrl}
+          receiver={notUserId}
+          sender={user.id}
+          swap={swap}
+        />
       </div>
       <div className="realtive justify-center">
-        <div className="w-6/12 sm:w-2/12 px-4 grid place-items-center">
+        <div className="px-4 grid justify-center">
           <img
             src={theirInfo.avatarUrl}
             alt="..."
-            className="shadow rounded-full w-full border-none ml-52"
+            className="shadow h-48 w-48 rounded-full border-none"
           />
         </div>
         <div className="drawer drawer-end">
@@ -358,7 +376,7 @@ const HaggleView = ({ state }) => {
                 Open Inventory
               </label>
             </div>
-            <div className="bg-red-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
+            <div className="bg-gray-100 w-full grid grid-rows-1 justify-center pt-16 pb-16">
               <Card id={theirInfo.id} imageUrl={theirInfo.image_url} />
             </div>
           </div>
