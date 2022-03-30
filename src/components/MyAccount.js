@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { Link } from 'react-router-dom';
-import MyListings from './MyListings';
-import { ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/outline';
+import { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import { Link } from "react-router-dom";
+import MyListings from "./MyListings";
+import { ThumbDownIcon, ThumbUpIcon } from "@heroicons/react/outline";
 
 const Profile = () => {
   const [loading, setLoading] = useState(true);
@@ -13,9 +13,9 @@ const Profile = () => {
       try {
         setLoading(true);
         let { data, error, status } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', User.id)
+          .from("users")
+          .select("*")
+          .eq("id", User.id)
           .single();
 
         if (error && status !== 406) {
@@ -45,7 +45,7 @@ const Profile = () => {
               src={
                 user.avatarUrl
                   ? user.avatarUrl
-                  : 'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'
+                  : "https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"
               }
               alt=""
             />
@@ -53,33 +53,27 @@ const Profile = () => {
 
           <div>
             <h3>{user.username}</h3>
-            <h2>REP</h2>
             <div className="flex space-x-4">
               <div>
-
                 {" "}
                 <ThumbDownIcon className="h-8 fill-yellow-400 stroke-yellow-500" />
                 <p>
                   {" "}
-
                   {Math.ceil(
                     100 * (user.downvotes / (user.upvotes + user.downvotes))
                   )}
                 </p>
               </div>
               <div>
-
                 {" "}
                 <ThumbUpIcon className="h-8 fill-yellow-400 stroke-yellow-500" />
                 <p>
                   {" "}
-
                   {Math.ceil(
                     100 * (user.upvotes / (user.upvotes + user.downvotes))
                   )}
                   %
                 </p>
-
               </div>
             </div>
           </div>
@@ -87,7 +81,6 @@ const Profile = () => {
             <h3>Total Swaps Completed</h3>
             <div className="flex space-x-4">
               <div>
-
                 <div className="flex items-center ">
                   <p className="text-xl pr-1">Completed </p>
                   <div className="inline-flex w-4 h-4 bg-gray-400 rounded-full"></div>
@@ -101,8 +94,6 @@ const Profile = () => {
                   <p className="text-lg pr-1">Active </p>
                   <div className="inline-flex w-4 h-4 bg-green-500 rounded-full"></div>
                 </div>
-
-
               </div>
             </div>
           </div>
