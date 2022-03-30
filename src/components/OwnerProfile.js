@@ -52,38 +52,40 @@ const OwnerProfile = ({ state }) => {
               alt=""
             />
           </div>
-          <div className="flex flex-col items-center justify-center md:pr-16">
-            <h3 className="font-semibold text-3xl mb-2">{user.username}</h3>
+
+          <div>
+            <h3>{user.username}</h3>
+            <h2>REP</h2>
             <div className="flex space-x-4">
               <div>
                 {' '}
-                <ThumbDownIcon className="h-8 fill-yellow-400 stroke-yellow-500" />
-                <p>15%</p>
+
+                <ThumbDownIcon className="h-8" />
+                <p>
+                  {Math.ceil(
+                    100 * (user.downvotes / (user.upvotes + user.downvotes))
+                  )}
+                </p>
               </div>
               <div>
                 {' '}
-                <ThumbUpIcon className="h-8 fill-yellow-400 stroke-yellow-500" />
-                <p>85%</p>
+                <ThumbUpIcon className="h-8" />
+                <p>
+                  {Math.ceil(
+                    100 * (user.upvotes / (user.upvotes + user.downvotes))
+                  )}
+                  %
+                </p>
+
               </div>
             </div>
           </div>
-          <div className="flex flex-col justify-center items-center">
-            <h3 className="font-semibold text-2xl mb-2">Total Swaps</h3>
+          <div>
+            <h3>Total Swaps Completed</h3>
             <div className="flex space-x-4">
               <div>
-                <div className="flex items-center ">
-                  <p className="text-xl pr-1">Completed </p>
-                  <div className="inline-flex w-4 h-4 bg-gray-400 rounded-full"></div>
-                </div>
-                <div className="flex justify-center">87</div>
-              </div>
-              <div>
-                <div className="flex items-center ">
-                  <p className="text-lg pr-1">Active </p>
-                  <div className="inline-flex w-4 h-4 bg-green-500 rounded-full"></div>
-                </div>
+                <p>{user.swaps_completed}</p>
 
-                <div className="flex justify-center">12</div>
               </div>
             </div>
           </div>
