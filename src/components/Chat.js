@@ -10,7 +10,7 @@ const Chat = (props) => {
   const [input, setInput] = useState("");
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
-  const { TheirAvatarUrl, MyAvatarUrl } = props;
+  const { TheirAvatarUrl, MyAvatarUrl, MyUserName, TheirUserName } = props;
   console.log("props", props);
   useEffect(() => {
     const getConversation = async () => {
@@ -111,16 +111,14 @@ const Chat = (props) => {
     <LoadingPage />
   ) : (
     <div className="container bg-base-100 border rounded ">
-
       <div className="relative flex items-center justify-between p-3 border-b border-gray-300 gap-x-4">
         <div className="flex gap-2 items-center">
           <img src={TheirAvatarUrl} alt="" className="h-8 w-8 rounded-full" />
-          <p className="font-semibold">name</p>
+          <p className="font-semibold">{TheirUserName}</p>
         </div>
         <div className="flex gap-2 items-center">
           <div className="text-gray-600">online</div>
           <span className="w-3 h-3 bg-green-600 rounded-full text-white "></span>
-
         </div>
       </div>
 
