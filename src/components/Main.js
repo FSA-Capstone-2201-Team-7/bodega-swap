@@ -8,7 +8,8 @@ const Main = () => {
   const [getImages, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
-  const [categoryList, setCategoryList] = useState(['All']);
+  const [categoryList, setCategoryList] = useState([]);
+  // const [recentlyadded, setRecentlyAdded] = useState([])
   const user = supabase.auth.user();
 
   useEffect(() => {
@@ -17,7 +18,9 @@ const Main = () => {
         setLoading(true);
         let { data, error, status } = await supabase
           .from('items')
-          .select(`name, description, ownerId, id, category, listed, image_url`)
+          .select(
+            `name, description, ownerId, id, category, listed, image_url, created_at`
+          )
           .eq('listed', true)
           .neq(
             'ownerId',
@@ -80,8 +83,8 @@ const Main = () => {
     catergories();
   }, [list, getImages]);
 
-  console.log(categoryList);
-
+  const recentlyadded = getImages.slice(Math.max(getImages.length - 5, 1));
+  
   return loading ? (
     <div>loading...</div>
   ) : (
@@ -132,19 +135,34 @@ const Main = () => {
           })} */}
         </div>
         <div>Recently Added</div>
+        <div className="flex bg-red-300">
+          <div className=" ml-56 h-80 w-96">
+            <img src={recentlyadded[0].image_url} alt="" />
+          </div>
+          <div className="h-80 w-96">
+            <img src={recentlyadded[1].image_url} alt="" />
+          </div>
+          <div className="h-80 w-96 ml-56">
+            <img src={recentlyadded[2].image_url} alt="" />
+          </div>
+          <div className="h-80 w-96">
+            <img src={recentlyadded[3].image_url} alt="" />
+          </div>
+          <div className="h-80 w-96">
+            <img src={recentlyadded[4].image_url} alt="" />
+          </div>
+        </div>
+      </div>
 
-        {/* {keep to use for eventual use on main page} */}
-        {/* <Carousel>
+      {/* <Carousel>
           {getImages.map((image) => {
             return (
               <CarouselItem>
-                <Card imageUrl={image.image_url} id={image.id} />
+                <img src={image.image_url} alt="" id={image.id} />
               </CarouselItem>
             );
           })}
-
         </Carousel> */}
-      </div>
     </div>
   );
 };
