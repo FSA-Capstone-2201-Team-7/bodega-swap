@@ -1,21 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
+import { supabase } from '../supabaseClient';
 
 const AgreedButton = (props) => {
-  const { info, handleAcceptance, swap } = props;
 
-  return info.userAccept ? (
-    <div>
-        <label htmlFor="my-modal-5" className="btn modal-button w-full">
-          Mark Complete
-        </label>
-      </div>
+  const { info, handleAcceptance, swap, inOrOut } = props;
 
-    // swap.inbound_accept === true && swap.outbound_accept === true ? (
-      
-    // ) : (
-    //   <button className="btn loading">Waiting...</button>
-    // )
-
+ 
+  return swap.inbound_accept === true && swap.outbound_accept === true ? (
+    <label htmlFor="my-modal-5" className="btn modal-button w-full">
+      Mark Complete
+    </label>
+  ) : info.userAccept ? (
+    <button className="btn loading">Waiting...</button>
   ) : (
     <button
       className="btn btn-xs sm:btn-sm md:btn-md w-full"
@@ -24,6 +20,7 @@ const AgreedButton = (props) => {
       Accept Terms
     </button>
   );
+
 };
 
 export default AgreedButton;
