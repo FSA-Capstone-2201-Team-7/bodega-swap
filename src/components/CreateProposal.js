@@ -25,7 +25,8 @@ const CreateProposal = ({ state }) => {
           .from('swaps')
           .select()
           .eq('inbound_id', user.id)
-          .eq('outbound_id', item.ownerId);
+          .eq('outbound_id', item.ownerId)
+          .neq('status', 'rated')
         setSwap(data);
         if (!data) {
           const { data: reversed, error } = await supabase
