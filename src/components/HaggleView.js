@@ -202,10 +202,11 @@ const HaggleView = ({ state }) => {
           })
           .eq('id', swap.id);
       }
+      
     } catch (error) {
       console.error(error);
     }
-    navigate('/messages')
+    navigate('/messages', {state: {swap}})
   };
   return loading ? (
     <div>Loading....</div>
