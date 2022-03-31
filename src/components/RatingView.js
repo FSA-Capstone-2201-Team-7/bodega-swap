@@ -6,6 +6,10 @@ import { ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/outline';
 const RatingView = () => {
   const [rated, setRated] = useState(false);
   const [targetId, setTargetId] = useState(null);
+  const [exchange, setExchange] = useState({
+    myNewItem: null,
+    myOffer: null
+  })
   const user = supabase.auth.user();
   const navigate = useNavigate();
   const location = useLocation();
@@ -17,12 +21,20 @@ const RatingView = () => {
     if (user.id === swap.inbound_id) {
       setTargetId(swap.outbound_id);
       setRated(swap.inbound_rated);
+      setExchange({
+        myNewItem: swap.inbound_offer.id,
+        myOffer: swap.outbound_offer.id
+      })
     } else {
       setTargetId(swap.inbound_id);
       setRated(swap.outbound_rated);
+      setExchange({
+        myNewItem: swap.outbound_offer.id,
+        myOffer: swap.inbound_offer.id
+      })
     }
     console.log(swap);
-  }, []);
+  }, [user.id, swap]);
 
   const handleRating = async (e, type) => {
     e.preventDefault();
@@ -56,6 +68,10 @@ const RatingView = () => {
               status: 'rated',
             })
             .eq('id', data.id);
+          
+          let { error } = await supabase.rpc('swap', { user1: user.id, user2: targetId, item1: exchange.myOffer, item2: exchange.myNewItem })
+          
+          if (error) console.error(error)
         }
       } catch (error) {
         console.error(error);
