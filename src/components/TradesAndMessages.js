@@ -138,7 +138,7 @@ const TradesAndMessages = () => {
   ) : (
     <div className=" grid md:grid-cols-2 grid-cols-1 mt-4">
       <div className="justify-center grid grid-cols pb-10 sm:px-5 gap-x-8 gap-y-16">
-        <p className="font-semibold">In-Bound Offers</p>
+        <p className="font-semibold">Out-Bound Offers</p>
         {getInbound.length > 0 ? (
           <div>
             {getInbound.map((swap) => {
@@ -203,9 +203,11 @@ const TradesAndMessages = () => {
       </div>
 
       <div className="flex justify-center grid grid-cols pb-10 sm:px-5 gap-x-8 gap-y-16">
+
         <p className="font-semibold">Out-Bound Offers</p>
         {getOutbound.length > 0 ? ( 
           <div>
+
         {getOutbound.map((swap) => {
           return (
             <div key={swap.id}>

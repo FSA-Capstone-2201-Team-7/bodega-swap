@@ -45,7 +45,7 @@ const SingleItem = () => {
         <div>This item is not currently listed, or no longer exists.</div>
       ) : (
         <div className="flex-col flex gap-8 md:gap-20 lg:gap-28 xl:gap-36 md:flex-row mt-5 justify-center">
-          <div>
+          <div className="flex flex-col justify-center">
             <img className=" shadow  h-96 w-96 " src={item.image_url} alt="" />
 
             <div className="flex flex-col mt-5 pt-5 border-t-2">
@@ -78,7 +78,7 @@ const SingleItem = () => {
             </div>
           </div>
 
-          <div className="flex w-96 lg:w-1/3 xl:w-1/4 flex-col">
+          <div className="flex md:w-96 lg:w-1/3 xl:w-1/4 flex-col">
             <p className="text-3xl font-semibold mb-6">{item.name}</p>
             <p className="font-semibold text-lg mb-3">Desciption</p>
             <p>{item.description}</p>
