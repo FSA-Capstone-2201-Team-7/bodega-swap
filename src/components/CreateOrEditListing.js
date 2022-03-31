@@ -40,6 +40,7 @@ const CreateOrEditListing = (props) => {
             description: data.description,
             category: data.category,
             listed: data.listed,
+            itemPicUrl: data.image_url,
             itemPicName: data.image_name,
           });
         }
