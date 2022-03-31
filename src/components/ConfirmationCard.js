@@ -39,6 +39,7 @@ const ConfirmationCard = (props) => {
           onClick={() => navigate('/rating', { state: { swap } })}
         >
           Rate Your Swapmate!
+
         </button>
       ) : (
         <button className="btn rounded overflow-hidden shadow-lg w-full h-14 bg-gray-500 loading">
