@@ -113,8 +113,6 @@ const TradesAndMessages = () => {
                 return active;
               }
             });
-            console.log('renderout', renderOut)
-            console.log('getout', getOutbound)
             if(renderOut.length === getOutbound.length) {
               const renderIn = getInbound.filter((active) => {
                 if (active.id !== deleted.old.id) {
@@ -134,7 +132,6 @@ const TradesAndMessages = () => {
   };
 
 
- 
 
   return loading ? (
     <LoadingPage />
@@ -147,7 +144,7 @@ const TradesAndMessages = () => {
             {getInbound.map((swap) => {
               return (
                 <div key={swap.id}>
-                  {swap.inbound_confirm === true ? (
+                  {swap.outbound_confirm === true ? (
                     <ConfirmationCard
                       id={swap.inbound_offer.id}
                       swap={swap}
@@ -212,7 +209,7 @@ const TradesAndMessages = () => {
         {getOutbound.map((swap) => {
           return (
             <div key={swap.id}>
-              {swap.outbound_confirm === true ? (
+              {swap.inbound_confirm === true ? (
                 <ConfirmationCard
                   id={swap.outbound_offer.id}
                   swap={swap}

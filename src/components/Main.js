@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
-import Carousel, { CarouselItem } from "./UseCarousel";
 import LoadingPage from "./LoadingPage";
 import Card from "./Card";
 import StepBar from "./StepBar";
@@ -11,7 +10,6 @@ const Main = () => {
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
-  // const [recentlyadded, setRecentlyAdded] = useState([])
   const navigate = useNavigate()
   const user = supabase.auth.user();
 
@@ -130,17 +128,6 @@ const Main = () => {
               </div>
             );
           })}
-          {/* {getImages.map((image) => {
-
-            return (
-              <div
-                key={image.id}
-                className="flex-none mr-8 relative border rounded-lg"
-              >
-                <Card imageUrl={image.image_url} id={image.id} />
-              </div>
-            );
-          })} */}
         </div>
         <div className="text-2xl font-semibold mb-4 mt-6">Recently Added</div>
         <div class="flex-grow p-6 overflow-auto bg-gray-200">
@@ -159,7 +146,7 @@ const Main = () => {
         <div className="hero w-full">
           <div className="h-56"></div>
           <div class="hero-overlay bg-gray-200">
-            
+
           </div>
         </div>
       </div>
