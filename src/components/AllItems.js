@@ -65,7 +65,6 @@ const AllItems = ({state}) => {
     };
     filter();
   }, [items]);
-  console.log(filterItem)
   useEffect(() => {
     const categoryFromMain = () => {
       try {

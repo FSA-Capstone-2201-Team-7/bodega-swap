@@ -57,7 +57,7 @@ const CreateProposal = ({ state }) => {
           setUserItems(data);
         }
       } catch (err) {
-        console.log(err);
+        console.error(err);
       } finally {
         setLoading(false);
       }

@@ -33,14 +33,12 @@ const RatingView = () => {
         myOffer: swap.inbound_offer.id
       })
     }
-    console.log(swap);
   }, [user.id, swap]);
 
   const handleRating = async (e, type) => {
     e.preventDefault();
     const vote = type === 'up' ? 'upvote' : 'downvote';
     try {
-      console.log(targetId);
       let {error} = await supabase.rpc([vote], {target_id: targetId, user_id: user.id})
       /* upvote and downvote are functions that are written into our database on the backend. Depending on which one is called, a target user's upvote or downvote tally will be incremented by 1, AND the logged in user's swaps_completed will be incremented */
       if (error) throw error;
