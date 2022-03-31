@@ -143,126 +143,67 @@ const Main = () => {
           })} */}
         </div>
         <div className="text-2xl font-semibold mb-4 mt-6">Recently Added</div>
-        <section className="grid p-6 overflow-hidden grid-cols-8 gap-4  w-full ">
-          <div className="col-span-2">
-            <div className="hero w-96">
-              <div className="h-96">
-
-              </div>
-              {/* <img
-                className="h-full w-full"
-                src={recentlyadded[0].image_url}
-                alt=""
-              /> */}
-              <div class="hero-overlay bg-opacity-40" />
-            </div>
+        <div class="flex-grow p-6 overflow-auto bg-gray-200">
+          <div class="grid grid-cols-3 gap-6">
+            <div class="h-96 col-span-2 bg-white border border-gray-300"></div>
+            <div class="h-68 col-span-1 bg-white border border-gray-300"></div>
+            <div class="h-24 col-span-1 bg-white border border-gray-300"></div>
+            <div class="h-24 col-span-2 bg-white border border-gray-300"></div>
           </div>
-          <div className="col-span-2">
-            <div className="hero w-96">
-              <img
-                className="h-80 w-96"
-                src={recentlyadded[1].image_url}
-                alt=""
-              />
-              <div class="hero-overlay bg-opacity-60" />
-            </div>
-          </div>
-          <div className="col-span-2">
-            <div className="hero w-96">
-              <img
-                className="h-80 w-96"
-                src={recentlyadded[2].image_url}
-                alt=""
-              />
-              <div class="hero-overlay bg-opacity-60" />
-            </div>
-          </div>
-          <div className="col-span-2">
-            <div className="hero w-96">
-              <img
-                className="h-80 w-96"
-                src={recentlyadded[3].image_url}
-                alt=""
-              />
-              <div class="hero-overlay bg-opacity-60" />
-            </div>
-          </div>
-          <div className="col-span-2">
-            <div className="hero w-96">
-              <img
-                className="h-80 w-96"
-                src={recentlyadded[5].image_url}
-                alt=""
-              />
-              <div class="hero-overlay bg-opacity-60" />
-            </div>
-          </div>
-          {/* <div className="col-span-2">
-            <img
-              className="h-80 w-full"
-              src={recentlyadded[0].image_url}
-              alt=""
-            />
-          </div>
-          <div className="col-span-2">
-            <img
-              className="h-80 w-96"
-              src={recentlyadded[1].image_url}
-              alt=""
-            />
-          </div>
-          <div className="col-span-2">
-            <img
-              className="h-80 w-96"
-              src={recentlyadded[2].image_url}
-              alt=""
-            />
-          </div>
-          <div className="col-span-2">
-            <img
-              className="h-80 w-96"
-              src={recentlyadded[3].image_url}
-              alt=""
-            />
-          </div>
-          <div className="col-span-2">
-            <img
-              className="h-80 w-96"
-              src={recentlyadded[4].image_url}
-              alt=""
-            />
-          </div> */}
-        </section>
+        </div>
       </div>
       <StepBar />
+      <div className="text-2xl font-semibold mb-4 mt-6">Top Accounts</div>
 
-      {/* <Carousel>
-          {getImages.map((image) => {
-            return (
-              <CarouselItem>
-                <img src={image.image_url} alt="" id={image.id} />
-              </CarouselItem>
-            );
-          })}
-        </Carousel> */}
+      <div className="col-span-2">
+        <div className="hero w-full">
+          <div className="h-56"></div>
+          <div class="hero-overlay bg-gray-200">
+            
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default Main;
 
-//  <div className="hero w-96">
-//    <img className="h-full w-full" src={recentlyadded[0].image_url} alt="" />
-//    <div class="hero-overlay bg-opacity-60"></div>
-//    <div class="hero-content text-center text-neutral-content">
-//      <div class="max-w-md">
-//        <h1 class="mb-5 text-5xl font-bold">Hello there</h1>
-//        <p class="mb-5">
-//          Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-//          excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a
-//          id nisi.
-//        </p>
-//        <button class="btn btn-primary">Get Started</button>
-//      </div>
-//    </div>
-//  </div>;
+
+  //<section className="grid p-6 overflow-hidden grid-cols-8 gap-4  w-full ">
+    /* <div className="col-span-2">
+          //   <img
+          //     className="h-80 w-full"
+          //     src={recentlyadded[0].image_url}
+          //     alt=""
+          //   />
+          // </div>
+          // <div className="col-span-2">
+          //   <img
+          //     className="h-80 w-96"
+          //     src={recentlyadded[1].image_url}
+          //     alt=""
+          //   />
+          // </div>
+          // <div className="col-span-2">
+          //   <img
+          //     className="h-80 w-96"
+          //     src={recentlyadded[2].image_url}
+          //     alt=""
+          //   />
+          // </div>
+          // <div className="col-span-2">
+          //   <img
+          //     className="h-80 w-96"
+          //     src={recentlyadded[3].image_url}
+          //     alt=""
+          //   />
+          // </div>
+          // <div className="col-span-2">
+          //   <img
+          //     className="h-80 w-96"
+          //     src={recentlyadded[4].image_url}
+          //     alt=""
+          //   />
+          </div> */
+  //{/* </section>; */}

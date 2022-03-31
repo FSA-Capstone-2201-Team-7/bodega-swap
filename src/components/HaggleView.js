@@ -4,16 +4,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Chat from "./Chat";
 import Card from "./Card";
 import HaggleInventory from "./HaggleInventory";
-import AgreedButton from "./AgreedButton";
 import LoadingPage from "./LoadingPage";
 
 const HaggleView = ({ state }) => {
   const location = useLocation(null);
-
   const { swap = "" } = location.state || {};
-
   const [thisSwap, setThisSwap] = useState([]);
-
   const [loading, setLoading] = useState(true);
   const [yourInfo, setYourInfo] = useState({});
   const [theirInfo, setTheirInfo] = useState({});

@@ -1,21 +1,20 @@
 /* eslint-disable array-callback-return */
 
-import React, { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
-import { useNavigate } from "react-router-dom";
-import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
-import Card from "./Card";
-import ConfirmationCard from "./ConfirmationCard";
-import LoadingPage from "./LoadingPage";
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import { useNavigate } from 'react-router-dom';
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import Card from './Card';
+import ConfirmationCard from './ConfirmationCard';
+import LoadingPage from './LoadingPage';
+import NoCurrentTrades from './NoCurrentTrades';
 
 const TradesAndMessages = () => {
   const [loading, setLoading] = useState(true);
   const [getInbound, setInbound] = useState([]);
   const [getOutbound, setOutbound] = useState([]);
-  const [getConversationId, setConversationId] = useState("");
   const user = supabase.auth.user();
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const getOutboundSwaps = async () => {
@@ -23,14 +22,14 @@ const TradesAndMessages = () => {
         setLoading(true);
         const { data } = await supabase
 
-          .from("swaps")
+          .from('swaps')
           .select()
-          .eq("inbound_id", user.id)
-          .neq("status", "rated");
+          .eq('inbound_id', user.id)
+          .neq('status', 'rated');
 
         setOutbound(data);
       } catch (error) {
-        console.error("try again", error);
+        console.error('try again', error);
       } finally {
         setLoading(false);
       }
@@ -44,15 +43,15 @@ const TradesAndMessages = () => {
         setLoading(true);
         const { data } = await supabase
 
-          .from("swaps")
+          .from('swaps')
           .select()
 
-          .eq("outbound_id", user.id)
-          .neq("status", "rated");
+          .eq('outbound_id', user.id)
+          .neq('status', 'rated');
 
         setInbound(data);
       } catch (error) {
-        console.error("try again", error);
+        console.error('try again', error);
       } finally {
         setLoading(false);
       }
@@ -60,20 +59,17 @@ const TradesAndMessages = () => {
     getInboundSwaps();
   }, [user.id]);
 
-
-
-
   const handleActivate = async (swap) => {
-    if (swap.status === "proposed") {
+    if (swap.status === 'proposed') {
       const { data } = await supabase
-        .from("swaps")
+        .from('swaps')
         .update({
-          status: "haggling",
+          status: 'haggling',
         })
-        .eq("id", swap.id);
+        .eq('id', swap.id);
 
       if (data) {
-        await supabase.from("conversations").insert([
+        await supabase.from('conversations').insert([
           {
             sender_Id: user.id,
             receiver_Id: swap.inbound_id,
@@ -83,47 +79,62 @@ const TradesAndMessages = () => {
       }
     }
 
-    navigate("/haggle", { state: { swap } });
+    navigate('/haggle', { state: { swap } });
   };
 
   const handleRemoveOffer = async (swap) => {
     try {
       const { data } = await supabase
-        .from("conversations")
-        .select("id")
-        .eq("swap_Id", swap.id);
+        .from('conversations')
+        .select('id')
+        .eq('swap_Id', swap.id);
 
-  
-      if (data) {
+      if (data[0]) {
         await supabase
           .from('messages')
           .delete()
           .match({ conversations_ID: data[0].id });
+        await supabase.from('conversations').delete().eq('swap_Id', swap.id);
 
-          console.log('id', getConversationId.id);
-        await supabase.from("conversations").delete().eq("swap_Id", swap.id);
-
-        await supabase.from("swaps").delete().eq("id", swap.id);
+        await supabase.from('swaps').delete().eq('id', swap.id);
+      } else {
+        await supabase.from('swaps').delete().eq('id', swap.id);
       }
-      setConversationId("");
     } catch (error) {
       console.error(error);
+    } finally {
+      try {
+        supabase
+          .from('swaps')
+          .on('DELETE', (deleted) => {
+            console.log('deleted', deleted)
+            const renderOut = getOutbound.filter((active) => {
+              if (active.id !== deleted.old.id) {
+                return active;
+              }
+            });
+            console.log('renderout', renderOut)
+            console.log('getout', getOutbound)
+            if(renderOut.length === getOutbound.length) {
+              const renderIn = getInbound.filter((active) => {
+                if (active.id !== deleted.old.id) {
+                  return active;
+                }
+              });
+              setInbound([...renderIn])
+            }
+            setOutbound([...renderOut]);
+          })
+          .subscribe();
+      } catch (error) {
+        console.log(error);
+      } 
     }
-    navigate("/items");
+  
   };
 
-  // supabase
-  //   .from('swaps')
-  //   .on('DELETE', (deleted) => {
-  //     const render = getOutbound.filter((active) => {
-  //       if (active.id !== deleted.old.id) {
-  //         return active;
-  //       }
-  //     });
 
-  //     setOutbound([...render]);
-  //   })
-  //   .subscribe();
+ 
 
   return loading ? (
     <LoadingPage />
@@ -148,7 +159,7 @@ const TradesAndMessages = () => {
                         imageUrl={swap.outbound_offer.image_url}
                         id={swap.outbound_offer.id}
                         firstButton={
-                          swap.status === "proposed" ? (
+                          swap.status === 'proposed' ? (
                             <div className="flex">
                               <button
                                 className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
@@ -190,12 +201,14 @@ const TradesAndMessages = () => {
             })}
           </div>
         ) : (
-          "no current trades"
+        <NoCurrentTrades inbound="inbound" /> 
         )}
       </div>
 
       <div className="flex justify-center grid grid-cols pb-10 sm:px-5 gap-x-8 gap-y-16">
         <p className="font-semibold">Out-Bound Offers</p>
+        {getOutbound.length > 0 ? ( 
+          <div>
         {getOutbound.map((swap) => {
           return (
             <div key={swap.id}>
@@ -211,13 +224,13 @@ const TradesAndMessages = () => {
                     imageUrl={swap.inbound_offer.image_url}
                     id={swap.inbound_offer.id}
                     firstButton={
-                      swap.status === "proposed" ? (
+                      swap.status === 'proposed' ? (
                         <button className="btn loading">Waiting...</button>
                       ) : (
                         <button
                           className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
                           onClick={() =>
-                            navigate("/haggle", { state: { swap } })
+                            navigate('/haggle', { state: { swap } })
                           }
                         >
                           Haggle!
@@ -225,7 +238,6 @@ const TradesAndMessages = () => {
                       )
                     }
                   />
-
                   <SwapHorizIcon sx={{ fontSize: 125 }} className="mt-28" />
                   <Card
                     imageUrl={swap.outbound_offer.image_url}
@@ -247,6 +259,10 @@ const TradesAndMessages = () => {
             </div>
           );
         })}
+        </div>
+        ) : (
+          <NoCurrentTrades outbound="outbound" />
+        )}
       </div>
     </div>
   );
