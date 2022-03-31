@@ -189,7 +189,7 @@ const TradesAndMessages = () => {
             })}
           </div>
         ) : (
-          "no current trades"
+          "no current swaps"
         )}
       </div>
 

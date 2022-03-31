@@ -111,7 +111,7 @@ const AllItems = ({state}) => {
                           navigate("/createproposal", { state: { item } })
                         }
                       >
-                        Propose Trade
+                        Propose Swap
                       </button>
                     }
                     secondButton={

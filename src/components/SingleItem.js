@@ -80,7 +80,7 @@ const SingleItem = () => {
 
           <div className="flex md:w-96 lg:w-1/3 xl:w-1/4 flex-col">
             <p className="text-3xl font-semibold mb-6">{item.name}</p>
-            <p className="font-semibold text-lg mb-3">Desciption</p>
+            <p className="font-semibold text-lg mb-3">Description</p>
             <p>{item.description}</p>
             {user && user.id !== item.ownerId ? (
               <div className="flex justify-end my-2">
@@ -94,7 +94,7 @@ const SingleItem = () => {
               className="bg-indigo-600 mb-2 hover:bg-indigo-500 text-white font-bold py-2 px-4 mt-2 rounded-md"
               onClick={() => navigate("/createproposal", { state: { item } })}
             >
-              Propose Trade
+              Propose Swap
             </button>
           </div>
         </div>

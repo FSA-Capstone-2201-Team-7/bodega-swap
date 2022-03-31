@@ -83,7 +83,7 @@ const NavBar = ({ session }) => {
                   className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
                   to="/messages"
                 >
-                  My Trades
+                  My Swaps
                 </Link>
 
                 <Link

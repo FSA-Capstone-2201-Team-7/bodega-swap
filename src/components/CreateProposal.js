@@ -92,7 +92,7 @@ const CreateProposal = ({ state }) => {
   return loading ? (
     <LoadingPage />
   ) : swap[0] ? (
-    <div>you already have an open trade with this trader</div>
+    <div>you already have an open swap with this swapper</div>
   ) : (
     <div>
       <div className="flex my-8 justify-center">
