@@ -256,13 +256,11 @@ const HaggleView = ({ state }) => {
             <div className="modal-box w-11/12 max-w-5xl">
               <div>
                 <h3 className="font-bold text-lg">
-                  Congratulations both trader's have come to an agreement!
+                  Congratulations! Both swappers have come to an agreement!
                 </h3>
                 <p className="py-4">
-                  By clicking confirm you both have met eachother at the argreed
-                  upon location and have swapped the agreed upon items. until
-                  both have submitted confirmation this swap will be live and
-                  regarded as pending on your reputation.
+                  By clicking confirm you both have met each other at the agreed
+                  upon location and have swapped the agreed upon items. In order to get credit for a completed transaction, and for the item to change hands, bot swappers must confirm that the swap has taken place, and rate their swapmates.
                 </p>
                 <div className="modal-action">
                   <label
@@ -293,7 +291,7 @@ const HaggleView = ({ state }) => {
                 className="btn btn-primary drawer-button "
                 onClick={() => setInventory(yourInfo.inOrOut)}
               >
-                Open Inventory
+                See Other Items
               </label>
               {yourInfo.userAccept ? (
                 theirInfo.userAccept && yourInfo.userAccept ? (
@@ -301,7 +299,7 @@ const HaggleView = ({ state }) => {
                     htmlFor="my-modal-5"
                     className="btn modal-button w-full"
                   >
-                    Mark Complete
+                    Swap Complete!
                   </label>
                 ) : (
                   <button className="btn loading">Waiting...</button>
@@ -334,7 +332,7 @@ const HaggleView = ({ state }) => {
                 className="btn btn-primary drawer-button"
                 onClick={() => setInventory("")}
               >
-                Close Inventory
+                Close
               </label>
               <HaggleInventory user={user.id} />
             </ul>
@@ -375,7 +373,7 @@ const HaggleView = ({ state }) => {
                 className="btn btn-primary drawer-button"
                 onClick={() => setInventory(theirInfo.inOrOut)}
               >
-                Open Inventory
+                See Other Items
               </label>
             </div>
             <div className="bg-gray-100 w-full grid grid-rows-1 justify-center pt-16 pb-16">
@@ -391,7 +389,7 @@ const HaggleView = ({ state }) => {
                 className="btn btn-primary drawer-button"
                 onClick={() => setInventory("")}
               >
-                Close Inventory
+                Close
               </label>
               <HaggleInventory user={notUserId} />
             </ul>
