@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import ItemPic from "./ItemPic";
 import { useNavigate, useParams } from "react-router-dom";
+import LoadingPage from './LoadingPage'
 
 const CreateOrEditListing = (props) => {
   //Props passed down to this component will determine whether a listing in question
   //is being edited, or created. If it is being edited, the 'mode' prop will be 'edit'.
   //If it is being created, the 'mode' prop will be 'create'.
   const [loading, setLoading] = useState(null);
-  //loading is not currently used, but will be pending our
-  //design of a loading component
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -40,6 +39,7 @@ const CreateOrEditListing = (props) => {
             description: data.description,
             category: data.category,
             listed: data.listed,
+            itemPicUrl: data.image_url,
             itemPicName: data.image_name,
           });
         }
@@ -137,7 +137,7 @@ const CreateOrEditListing = (props) => {
     }
   };
 
-  return (
+  return loading ? (<LoadingPage /> ) : (
     <div className="px-[20%] mt-10">
       <form className="" onSubmit={handleSubmit}>
         <ItemPic

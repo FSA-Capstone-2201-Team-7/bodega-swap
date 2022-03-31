@@ -65,7 +65,6 @@ const AllItems = ({state}) => {
     };
     filter();
   }, [items]);
-  console.log(filterItem)
   useEffect(() => {
     const categoryFromMain = () => {
       try {
@@ -112,7 +111,7 @@ const AllItems = ({state}) => {
                           navigate("/createproposal", { state: { item } })
                         }
                       >
-                        Propose Trade
+                        Propose Swap
                       </button>
                     }
                     secondButton={
