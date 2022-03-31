@@ -16,6 +16,7 @@ const TradesAndMessages = () => {
   const user = supabase.auth.user();
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const getOutboundSwaps = async () => {
       try {
@@ -24,7 +25,6 @@ const TradesAndMessages = () => {
 
           .from("swaps")
           .select()
-
           .eq("inbound_id", user.id)
           .neq("status", "rated");
 
@@ -60,6 +60,9 @@ const TradesAndMessages = () => {
     getInboundSwaps();
   }, [user.id]);
 
+
+
+
   const handleActivate = async (swap) => {
     if (swap.status === "proposed") {
       const { data } = await supabase
@@ -89,17 +92,15 @@ const TradesAndMessages = () => {
         .from("conversations")
         .select("id")
         .eq("swap_Id", swap.id);
-      setConversationId(...data);
+
+  
       if (data) {
         await supabase
-          .from("messages")
+          .from('messages')
           .delete()
-          .eq("conversations_ID", getConversationId.id);
+          .match({ conversations_ID: data[0].id });
 
-        await supabase.from("conversations").delete().eq("swap_Id", swap.id);
-
-        await supabase.from("swaps").delete().eq("id", swap.id);
-
+          console.log('id', getConversationId.id);
         await supabase.from("conversations").delete().eq("swap_Id", swap.id);
 
         await supabase.from("swaps").delete().eq("id", swap.id);

@@ -110,7 +110,7 @@ const Chat = (props) => {
   return loading ? (
     <LoadingPage />
   ) : (
-    <div className="container bg-base-100 border rounded ">
+    <div className="container bg-base-100 border rounded">
       <div className="relative flex items-center justify-between p-3 border-b border-gray-300 gap-x-4">
         <div className="flex gap-2 items-center">
           <img src={TheirAvatarUrl} alt="" className="h-8 w-8 rounded-full" />
@@ -122,7 +122,10 @@ const Chat = (props) => {
         </div>
       </div>
 
-      <div className="p:2 sm:p-6 justify-between h-screen bg-base-100 max-w-2xl rounded overflow-auto">
+      <div
+        className="p:2 sm:p-6 h-96 justify-between bg-base-100 max-w-2xl rounded overflow-auto"
+      
+      >
         {messages ? (
           <InfiniteScroll id="chat" dataLength={messages.length}>
             <div className="justify-items-center pt-5">

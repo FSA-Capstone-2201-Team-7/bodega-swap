@@ -284,9 +284,9 @@ const HaggleView = ({ state }) => {
             className="shadow h-48 w-48 rounded-full"
           />
         </div>
-        <div className="drawer">
+        <div className="drawer h-96">
           <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-          <div className="drawer-content">
+          <div className="drawer-content ">
             <div className="flex grid grid-cols-2">
               <label
                 htmlFor="my-drawer"
@@ -321,18 +321,18 @@ const HaggleView = ({ state }) => {
                 inOrOut={yourInfo.inOrOut}
               /> */}
             </div>
-            <div className="bg-indigo-300 w-full grid grid-rows-1 justify-center pt-16 pb-16">
-              <Card id={yourInfo.id} imageUrl={yourInfo.image_url} />
+            <div className="bg-indigo-300 w-full grid grid-rows-1 justify-center">
+              <Card id={yourInfo.id} imageUrl={yourInfo.image_url} className="pb=12 "/>
             </div>
           </div>
           <div className="drawer-side">
             <label htmlFor="my-drawer" className="drawer-overlay"></label>
 
-            <ul className="menu p-4 overflow-y-auto w-full md:w-auto bg-base-100 text-base-content mr-12">
+            <ul className="menu p-4 overflow-y-auto w-full md:w-auto  bg-base-100 text-base-content mr-12">
               <label
                 htmlFor="my-drawer"
                 className="btn btn-primary drawer-button"
-                onClick={() => setInventory("")}
+                onClick={() => setInventory('')}
               >
                 Close Inventory
               </label>
@@ -360,7 +360,7 @@ const HaggleView = ({ state }) => {
             className="shadow h-48 w-48 rounded-full border-none"
           />
         </div>
-        <div className="drawer drawer-end">
+        <div className="drawer drawer-end h-96">
           <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content">
             <div className="flex grid grid-cols-2">
@@ -378,7 +378,7 @@ const HaggleView = ({ state }) => {
                 Open Inventory
               </label>
             </div>
-            <div className="bg-gray-100 w-full grid grid-rows-1 justify-center pt-16 pb-16">
+            <div className="bg-gray-100 w-full grid grid-rows-1 justify-center">
               <Card id={theirInfo.id} imageUrl={theirInfo.image_url} />
             </div>
           </div>
@@ -389,7 +389,7 @@ const HaggleView = ({ state }) => {
               <label
                 htmlFor="my-drawer-4"
                 className="btn btn-primary drawer-button"
-                onClick={() => setInventory("")}
+                onClick={() => setInventory('')}
               >
                 Close Inventory
               </label>
