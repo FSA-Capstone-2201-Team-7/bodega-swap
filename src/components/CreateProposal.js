@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { useLocation, useNavigate } from 'react-router-dom';
+import LoadingPage from './LoadingPage';
 // import { useNavigate } from 'react-router';
 
 const CreateProposal = ({ state }) => {
@@ -89,7 +90,7 @@ const CreateProposal = ({ state }) => {
   };
 
   return loading ? (
-    <div>Loading</div>
+    <LoadingPage />
   ) : swap[0] ? (
     <div>you already have an open trade with this trader</div>
   ) : (

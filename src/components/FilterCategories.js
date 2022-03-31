@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
+import LoadingPage from './LoadingPage';
 
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(" ");
@@ -8,7 +9,7 @@ const classNames = (...classes) => {
 const FilterCategory = (props) => {
   const { list, setSelected, loading } = props;
   return loading ? (
-    <div>Loading...</div>
+    <LoadingPage />
   ) : (
     <Menu
       as="div"
