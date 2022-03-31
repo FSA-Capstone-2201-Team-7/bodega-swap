@@ -3,7 +3,7 @@ import Routing from "./Routes";
 
 const App = () => {
   return (
-    <div className="bg-white">
+    <div className="bg-white h-screen ">
       <Routing />
     </div>
   );
