@@ -75,7 +75,7 @@ function Footer() {
               Help Center
             </li>
             <li className="cursor-pointer hover:scale-110 hover:text-indigo-400 ">
-              Trader Protection
+              Swapper Protection
             </li>
             <li className="cursor-pointer hover:scale-110">Safty Guidelines</li>
           </ul>

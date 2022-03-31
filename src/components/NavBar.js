@@ -16,7 +16,6 @@ const NavBar = ({ session }) => {
     setNavMenuOpen(!navMenuOpen);
   };
 
-  // console.log(localStorage);
   return (
     <header className="sticky top-0 flex justify-between bg-white p-5 shadow-md md:px-10 z-40 ">
       <div className="flex items-center">
@@ -84,7 +83,7 @@ const NavBar = ({ session }) => {
                   className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
                   to="/messages"
                 >
-                  My Trades
+                  My Swaps
                 </Link>
 
                 <Link
