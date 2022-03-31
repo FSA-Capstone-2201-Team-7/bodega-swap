@@ -12,11 +12,9 @@ const NavBar = ({ session }) => {
   const [navMenuOpen, setNavMenuOpen] = useState(null);
   const navigate = useNavigate();
 
-
   const handleNavToggle = () => {
     setNavMenuOpen(!navMenuOpen);
   };
-
 
   return (
     <header className="sticky top-0 flex justify-between bg-white p-5 shadow-md md:px-10 z-40 ">
@@ -67,59 +65,13 @@ const NavBar = ({ session }) => {
                 <MenuIcon className="h-6 " />
               )}
             </label>
-
-            {navMenuOpen ? (
-              <ul
-                tabIndex="0"
-                className="dropdown-content menu p-2 text-base leading-7 shadow bg-base-100 rounded-sm w-52 border-2 border-b-indigo-500"
-              >
-                <Link
-                  className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
-                  to="/myAccount"
-                >
-                  My Account
-                </Link>
-                <Link
-                  className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
-                  to="/wishlist"
-                >
-                  My Wishlist
-                </Link>
-                <Link
-                  className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
-                  to="/messages"
-                >
-                  My Swaps
-                </Link>
-
-                <Link
-                  className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
-                  to="/createListing"
-                >
-                  List an item
-                </Link>
-                <Link
-                  className="hover:text-indigo-500  hover:transition duration-300 ease-out"
-                  to="/"
-                  onClick={async () => {
-                    await supabase.auth.signOut();
-                    navigate(`/home`);
-                  }}
-                >
-                  Logout
-                </Link>
-              </ul>
-            ) : (
-              <></>
-            )}
-
           </nav>
           {navMenuOpen ? (
             <div className="md:hidden w-100% top-20 shadow-md bg-white right-6 absolute border-2 border-b-indigo-500">
               <ul className="relative">
                 <li className="relative">
                   <Link
-                    class="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    class="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     to="/myAccount"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
@@ -129,7 +81,7 @@ const NavBar = ({ session }) => {
                 </li>
                 <li className="relative">
                   <Link
-                    className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    className="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     to="/wishlist"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
@@ -139,7 +91,7 @@ const NavBar = ({ session }) => {
                 </li>
                 <li className="relative">
                   <Link
-                    className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    className="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     to="/messages"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
@@ -149,7 +101,7 @@ const NavBar = ({ session }) => {
                 </li>
                 <li className="relative">
                   <Link
-                    className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    className="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     to="/createListing"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
@@ -159,7 +111,7 @@ const NavBar = ({ session }) => {
                 </li>
                 <li className="relative">
                   <Link
-                    className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    className="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                     to="/"
                     onClick={async () => {
                       await supabase.auth.signOut();
@@ -215,58 +167,3 @@ const NavBar = ({ session }) => {
 };
 
 export default NavBar;
-{
-  /* <div class="drawer drawer-end">
-  <input id="my-drawer-4" type="checkbox" class="drawer-toggle">
-  <div class="drawer-content">
-    <!-- Page content here -->
-    <label for="my-drawer-4" class="drawer-button btn btn-primary">Open drawer</label>
-  </div>
-  <div class="drawer-side">
-  <XIcon className="h-6"  />
-    <label for="my-drawer-4" class="drawer-overlay"></label>
-    <ul class="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
-    <ul
-tabIndex="0"
-className="p-2 text-base leading-7 shadow bg-base-100 rounded-sm w-52 border-2 border-b-indigo-500"
->
-<Link
-  className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
-  to="/myAccount"
->
-  My Account
-</Link>
-<Link
-  className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
-  to="/wishlist"
->
-  My Wishlist
-</Link>
-<Link
-  className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
-  to="/messages"
->
-  My Trades
-</Link>
-
-<Link
-  className=" hover:text-indigo-500  hover:transition duration-300 ease-out"
-  to="/createListing"
->
-  List an item
-</Link>
-<Link
-  className="hover:text-indigo-500  hover:transition duration-300 ease-out"
-  to="/"
-  onClick={async () => {
-    await supabase.auth.signOut();
-    navigate(`/home`);
-  }}
->
-  Logout
-</Link>
-</ul>
-    </ul>
-  </div>
-</div> */
-}
