@@ -4,13 +4,13 @@ import LoadingPage from "./LoadingPage";
 import Card from "./Card";
 import StepBar from "./StepBar";
 import { useNavigate } from "react-router-dom";
-
+import "../main.css";
 const Main = () => {
   const [getImages, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const user = supabase.auth.user();
 
   useEffect(() => {
@@ -84,8 +84,8 @@ const Main = () => {
     catergories();
   }, [list, getImages]);
 
-  const recentlyadded = getImages.slice(getImages.length - 4)
-console.log(recentlyadded);
+  const recentlyadded = getImages.slice(getImages.length - 14);
+  console.log(recentlyadded);
   return loading ? (
     <LoadingPage />
   ) : (
@@ -114,7 +114,7 @@ console.log(recentlyadded);
               >
                 <button
                   type="button"
-                  onClick={() => navigate('/items', { state: { image } })}
+                  onClick={() => navigate("/items", { state: { image } })}
                 >
                   <img
                     src={image[1]}
@@ -130,7 +130,7 @@ console.log(recentlyadded);
           })}
         </div>
         <div className="text-2xl font-semibold mb-4 mt-6">Recently Added</div>
-        <div class="flex-grow p-6 overflow-auto bg-gray-200">
+        {/*  <div class="flex-grow p-6 overflow-auto bg-gray-200">
           <div class="grid grid-cols-3 gap-6">
             <div class="h-96 col-span-2 bg-white border border-gray-300">
               <img src={recentlyadded[0].image_url} alt="" className="object-contain"/>
@@ -139,17 +139,116 @@ console.log(recentlyadded);
             <div class="h-24 col-span-1 bg-white border border-gray-300"></div>
             <div class="h-24 col-span-2 bg-white border border-gray-300"></div>
           </div>
-        </div>
+        </div> */}
+        <section className="gallery bg-indigo-50">
+          <figure className="gallery__item gallery__item--1">
+            <img
+              src={recentlyadded[0].image_url}
+              alt=""
+              className="gallery__img"
+            />
+          </figure>
+          <figure className="gallery__item gallery__item--2">
+            <img
+              src={recentlyadded[1].image_url}
+              alt=""
+              className="gallery__img"
+            />
+          </figure>
+          <figure className="gallery__item gallery__item--3">
+            <img
+              src={recentlyadded[2].image_url}
+              alt=""
+              className="gallery__img"
+            />
+          </figure>
+          <figure className="gallery__item gallery__item--4">
+            <img
+              src={recentlyadded[3].image_url}
+              alt=""
+              className="gallery__img"
+            />
+          </figure>
+          <figure className="gallery__item gallery__item--5">
+            <img
+              src={recentlyadded[4].image_url}
+              alt=""
+              className="gallery__img"
+            />
+          </figure>
+          <figure className="gallery__item gallery__item--6">
+            <img
+              src={recentlyadded[5].image_url}
+              alt=""
+              className="gallery__img"
+            />
+          </figure>
+          <figure className="gallery__item gallery__item--7">
+            <img
+              src={recentlyadded[6].image_url}
+              alt=""
+              className="gallery__img"
+            />
+          </figure>
+          <figure className="gallery__item gallery__item--8">
+            <img
+              src={recentlyadded[7].image_url}
+              alt=""
+              className="gallery__img"
+            />
+          </figure>
+          <figure className="gallery__item gallery__item--9">
+            <img
+              src={recentlyadded[8].image_url}
+              alt=""
+              className="gallery__img"
+            />
+          </figure>
+          <figure className="gallery__item gallery__item--10">
+            <img
+              src={recentlyadded[9].image_url}
+              alt=""
+              className="gallery__img"
+            />
+          </figure>
+          <figure className="gallery__item gallery__item--11">
+            <img
+              src={recentlyadded[10].image_url}
+              alt=""
+              className="gallery__img"
+            />
+          </figure>
+          <figure className="gallery__item gallery__item--12">
+            <img
+              src={recentlyadded[11].image_url}
+              alt=""
+              className="gallery__img"
+            />
+          </figure>
+          <figure className="gallery__item gallery__item--13">
+            <img
+              src={recentlyadded[12].image_url}
+              alt=""
+              className="gallery__img"
+            />
+          </figure>
+          <figure className="gallery__item gallery__item--14">
+            <img
+              src={recentlyadded[13].image_url}
+              alt=""
+              className="gallery__img"
+            />
+          </figure>
+        </section>
       </div>
+
       <StepBar />
       <div className="text-2xl font-semibold mb-4 mt-6">Top Accounts</div>
 
       <div className="col-span-2">
         <div className="hero w-full">
           <div className="h-56"></div>
-          <div class="hero-overlay bg-gray-200">
-
-          </div>
+          <div class="hero-overlay bg-gray-200"></div>
         </div>
       </div>
     </div>
@@ -157,4 +256,3 @@ console.log(recentlyadded);
 };
 
 export default Main;
-

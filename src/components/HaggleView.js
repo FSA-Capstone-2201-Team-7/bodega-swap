@@ -153,7 +153,6 @@ const HaggleView = ({ state }) => {
           .from("swaps")
           .update({
             inbound_accept: true,
-           
           })
           .eq("id", swapHaggle.id);
       }
@@ -163,7 +162,6 @@ const HaggleView = ({ state }) => {
           .from("swaps")
           .update({
             outbound_accept: true,
-
           })
           .eq("id", swapHaggle.id);
       }
@@ -358,7 +356,11 @@ const HaggleView = ({ state }) => {
               >
                 Close
               </label>
-              <HaggleInventory user={userObj.id} setItem={setTraderItem} swap={swap}/>
+              <HaggleInventory
+                user={userObj.id}
+                setItem={setTraderItem}
+                swap={swap}
+              />
             </ul>
           </div>
         </div>
