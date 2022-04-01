@@ -21,7 +21,7 @@ const Chat = (props) => {
           .from("conversations")
           .select(`id`)
           .eq("swap_Id", props.swap.id);
-         console.log('here')
+        
         setConversation( ...data);
         if (!data[0]) {
           const { data: reversed } = await supabase
@@ -34,6 +34,8 @@ const Chat = (props) => {
       } catch (error) {
         console.error(error);
       }
+
+
     };
     getConversation();
   }, [props.sender, props.receiver, props.swap.id]);
@@ -47,7 +49,7 @@ const Chat = (props) => {
           const { data } = await supabase
             .from("messages")
             .select()
-            .eq("conversations_ID", conversationId.id);
+            .eq("conversations_Id", conversationId.id);
           setMessages(data);
 
           supabase
@@ -86,7 +88,7 @@ const Chat = (props) => {
           {
             content: input,
             sender_Id: props.sender,
-            conversations_ID: conversationId.id,
+            conversations_Id: conversationId.id,
           },
         ]);
 
