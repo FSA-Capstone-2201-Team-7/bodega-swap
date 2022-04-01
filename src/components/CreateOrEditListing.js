@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import ItemPic from "./ItemPic";
 import { useNavigate, useParams } from "react-router-dom";
-import LoadingPage from './LoadingPage'
-
+import LoadingPage from "./LoadingPage";
+import { toast } from "react-toastify";
 const CreateOrEditListing = (props) => {
   //Props passed down to this component will determine whether a listing in question
   //is being edited, or created. If it is being edited, the 'mode' prop will be 'edit'.
@@ -102,8 +102,8 @@ const CreateOrEditListing = (props) => {
       }
       if (data) {
         props.mode === "create"
-          ? alert("Listing Successfully Created!")
-          : alert("Listing Updated Successfully!");
+          ? toast.success("Listing Successfully Created!")
+          : toast.success("Listing Updated Successfully!");
       }
     } catch (error) {
       console.error(error);
@@ -137,7 +137,9 @@ const CreateOrEditListing = (props) => {
     }
   };
 
-  return loading ? (<LoadingPage /> ) : (
+  return loading ? (
+    <LoadingPage />
+  ) : (
     <div className="px-[20%] mt-10">
       <form className="" onSubmit={handleSubmit}>
         <ItemPic

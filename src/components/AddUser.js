@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import Avatar from "./Avatar";
 import { useNavigate } from "react-router";
-
+import { toast } from "react-toastify";
 function AddUser({ session }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -23,7 +23,7 @@ function AddUser({ session }) {
         .select(`username`)
         .eq("id", user.id)
         .single();
-
+      toast(`Account Sucessfully Created!`);
       if (error && status !== 406) {
         throw error;
       }
@@ -33,7 +33,7 @@ function AddUser({ session }) {
         setAvatarUrl(data.avatarUrl);
       }
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }

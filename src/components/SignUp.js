@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { useNavigate } from "react-router";
 import DemoAccount from "./DemoAccount";
+import { toast } from "react-toastify";
 function SignUp() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -16,7 +17,7 @@ function SignUp() {
       const { user, error } = await supabase.auth.signUp({ email, password });
       if (error) throw error;
     } catch (error) {
-      alert(error.error_description || error.message);
+      toast.error(error.error_description || error.message);
     } finally {
       setLoading(false);
     }

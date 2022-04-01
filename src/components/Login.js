@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { useNavigate } from "react-router";
 import DemoAccount from "./DemoAccount";
-
+import { toast } from "react-toastify";
 export default function Auth() {
   const [loading, setLoading] = useState(null);
   const [email, setEmail] = useState("");
@@ -21,13 +21,14 @@ export default function Auth() {
         email,
         password,
       });
+      if (user) {
+        navigate("/home");
+      }
 
       if (error) throw error;
     } catch (error) {
-      alert(error.error_description || error.message);
-    } finally {
+      toast.error(error.error_description || error.message);
     }
-    navigate("/home");
   };
 
   return (
