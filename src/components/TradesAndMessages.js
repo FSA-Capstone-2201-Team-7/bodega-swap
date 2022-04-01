@@ -93,7 +93,7 @@ const TradesAndMessages = () => {
         await supabase
           .from('messages')
           .delete()
-          .match({ conversations_ID: data[0].id });
+          .match({ conversations_Id: data[0].id });
         await supabase.from('conversations').delete().eq('swap_Id', swap.id);
 
         await supabase.from('swaps').delete().eq('id', swap.id);
