@@ -21,8 +21,8 @@ const Chat = (props) => {
           .from("conversations")
           .select(`id`)
           .eq("swap_Id", props.swap.id);
-        
-        setConversation( ...data);
+
+        setConversation(...data);
         if (!data[0]) {
           const { data: reversed } = await supabase
             .from("conversations")
@@ -34,8 +34,6 @@ const Chat = (props) => {
       } catch (error) {
         console.error(error);
       }
-
-
     };
     getConversation();
   }, [props.sender, props.receiver, props.swap.id]);
@@ -104,12 +102,10 @@ const Chat = (props) => {
     setInput(value);
   };
 
-
-
   return loading ? (
     <LoadingPage />
   ) : (
-    <div className="container bg-base-100 border rounded">
+    <div className="container bg-base-100 border rounded col-span-3 lg:col-span-1">
       <div className="relative flex items-center justify-between p-3 border-b border-gray-300 gap-x-4">
         <div className="flex gap-2 items-center">
           <img src={TheirAvatarUrl} alt="" className="h-8 w-8 rounded-full" />
@@ -121,10 +117,7 @@ const Chat = (props) => {
         </div>
       </div>
 
-      <div
-        className="p:2 sm:p-6 h-96 justify-between bg-base-100 max-w-2xl rounded overflow-auto"
-      
-      >
+      <div className="p:2 sm:p-6 h-96 justify-between bg-base-100 max-w-2xl rounded overflow-auto">
         {messages ? (
           <InfiniteScroll id="chat" dataLength={messages.length}>
             <div className="justify-items-center pt-5">
