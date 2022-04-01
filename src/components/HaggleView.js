@@ -153,7 +153,7 @@ const HaggleView = ({ state }) => {
           .from("swaps")
           .update({
             inbound_accept: true,
-            inbound_offer: userItem,
+           
           })
           .eq("id", swapHaggle.id);
       }
@@ -163,7 +163,7 @@ const HaggleView = ({ state }) => {
           .from("swaps")
           .update({
             outbound_accept: true,
-            outbound_offer: userItem,
+
           })
           .eq("id", swapHaggle.id);
       }
@@ -271,8 +271,8 @@ const HaggleView = ({ state }) => {
             </div>
             <div className="bg-indigo-300 w-full grid grid-rows-1 justify-center">
               <Card
-                id={traderItem.id}
-                imageUrl={traderItem.image_url}
+                id={userItem.id}
+                imageUrl={userItem.image_url}
                 className="pb=12"
               />
             </div>
@@ -288,7 +288,7 @@ const HaggleView = ({ state }) => {
               >
                 Close
               </label>
-              <HaggleInventory user={notUserId} setItem={setUserItem} />
+              <HaggleInventory user={notUserId} />
             </ul>
           </div>
         </div>
@@ -344,7 +344,7 @@ const HaggleView = ({ state }) => {
               </label>
             </div>
             <div className="bg-gray-100 w-full grid grid-rows-1 justify-center">
-              <Card id={userItem.id} imageUrl={userItem.image_url} />
+              <Card id={traderItem.id} imageUrl={traderItem.image_url} />
             </div>
           </div>
           <div className="drawer-side">
@@ -358,7 +358,7 @@ const HaggleView = ({ state }) => {
               >
                 Close
               </label>
-              <HaggleInventory user={userObj.id} setItem={setTraderItem} />
+              <HaggleInventory user={userObj.id} setItem={setTraderItem} swap={swap}/>
             </ul>
           </div>
         </div>

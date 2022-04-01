@@ -84,8 +84,8 @@ const Main = () => {
     catergories();
   }, [list, getImages]);
 
-  const recentlyadded = getImages.slice(getImages.length - 6)
-
+  const recentlyadded = getImages.slice(getImages.length - 4)
+console.log(recentlyadded);
   return loading ? (
     <LoadingPage />
   ) : (
@@ -132,7 +132,9 @@ const Main = () => {
         <div className="text-2xl font-semibold mb-4 mt-6">Recently Added</div>
         <div class="flex-grow p-6 overflow-auto bg-gray-200">
           <div class="grid grid-cols-3 gap-6">
-            <div class="h-96 col-span-2 bg-white border border-gray-300"></div>
+            <div class="h-96 col-span-2 bg-white border border-gray-300">
+              <img src={recentlyadded[0].image_url} alt="" className="object-contain"/>
+            </div>
             <div class="h-68 col-span-1 bg-white border border-gray-300"></div>
             <div class="h-24 col-span-1 bg-white border border-gray-300"></div>
             <div class="h-24 col-span-2 bg-white border border-gray-300"></div>
@@ -156,41 +158,3 @@ const Main = () => {
 
 export default Main;
 
-
-  //<section className="grid p-6 overflow-hidden grid-cols-8 gap-4  w-full ">
-    /* <div className="col-span-2">
-          //   <img
-          //     className="h-80 w-full"
-          //     src={recentlyadded[0].image_url}
-          //     alt=""
-          //   />
-          // </div>
-          // <div className="col-span-2">
-          //   <img
-          //     className="h-80 w-96"
-          //     src={recentlyadded[1].image_url}
-          //     alt=""
-          //   />
-          // </div>
-          // <div className="col-span-2">
-          //   <img
-          //     className="h-80 w-96"
-          //     src={recentlyadded[2].image_url}
-          //     alt=""
-          //   />
-          // </div>
-          // <div className="col-span-2">
-          //   <img
-          //     className="h-80 w-96"
-          //     src={recentlyadded[3].image_url}
-          //     alt=""
-          //   />
-          // </div>
-          // <div className="col-span-2">
-          //   <img
-          //     className="h-80 w-96"
-          //     src={recentlyadded[4].image_url}
-          //     alt=""
-          //   />
-          </div> */
-  //{/* </section>; */}

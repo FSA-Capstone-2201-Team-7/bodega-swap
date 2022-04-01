@@ -5,6 +5,8 @@ import LoadingPage from "./LoadingPage";
 const HaggleInventory = (props) => {
   const [userItems, setUserItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [inventorySwap, setSwap] = useState({})
+  const userInfo = supabase.auth.user();
   let { user, swap, setItem } = props;
 
   useEffect(() => {
@@ -29,11 +31,21 @@ const HaggleInventory = (props) => {
 
   const handleSwitch = async (item) => {
     try {
+      // if(item) {
+      //   const {data} = await supabase
+      //   .from('swaps')
+      //   .update({
+
+      //   })
+      // }
       setItem(item)
+      console.log('item obj invetory', item)
+      console.log('swap in inventory', swap)
     } catch (error) {
       console.error(error)
     }
   };
+  console.log(userInfo.id)
 
   return loading ? (
     <LoadingPage />
@@ -43,13 +55,19 @@ const HaggleInventory = (props) => {
         return (
           <div className="p-5" key={item.id}>
             <Card id={item.id} imageUrl={item.image_url} />
-            <button
+            {user === userInfo.id ? (
+               <button
               type="button"
               className="btn btn-wide w-full"
               onClick={() => handleSwitch(item)}
             >
-              Switch
+              Swap-In
             </button>
+
+            ) : (
+              <></>
+            ) }
+           
           </div>
         );
       })}

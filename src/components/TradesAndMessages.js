@@ -57,8 +57,8 @@ const TradesAndMessages = ({state}) => {
         setLoading(false);
       }
     };
-    getInboundSwaps();
-  }, [user.id]);
+    getInboundSwaps()
+  }, [user.id])
 
  
 
