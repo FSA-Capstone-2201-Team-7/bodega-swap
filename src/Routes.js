@@ -53,7 +53,6 @@ const Routing = () => {
             <Route exact path="/items" element={<AllItems />} />
             <Route exact path="/items/:id" element={<SingleItem />} />
             <Route path="/wishlist" element={<Wishlist />} />
-            <Route path='/demoAccount' element={<DemoAccount />} />
           </Routes>
         </main>
       ) : (
