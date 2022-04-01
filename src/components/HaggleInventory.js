@@ -5,7 +5,7 @@ import LoadingPage from "./LoadingPage";
 const HaggleInventory = (props) => {
   const [userItems, setUserItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  let { user, swap } = props;
+  let { user, swap, setItem } = props;
 
   useEffect(() => {
     const getInventory = async () => {
@@ -27,7 +27,13 @@ const HaggleInventory = (props) => {
     getInventory();
   }, [user]);
 
-  const handleSwitch = () => {};
+  const handleSwitch = async (item) => {
+    try {
+      setItem(item)
+    } catch (error) {
+      console.error(error)
+    }
+  };
 
   return loading ? (
     <LoadingPage />
@@ -40,7 +46,7 @@ const HaggleInventory = (props) => {
             <button
               type="button"
               className="btn btn-wide w-full"
-              onClick={() => handleSwitch}
+              onClick={() => handleSwitch(item)}
             >
               Switch
             </button>

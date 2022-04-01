@@ -136,6 +136,7 @@ const HaggleView = ({ state }) => {
             .from('swaps')
             .update({
               status: 'agreed',
+              
             })
             .eq('id', swapHaggle.id);
         }
@@ -148,12 +149,13 @@ const HaggleView = ({ state }) => {
 
   const handleAcceptance = async (check) => {
     try {
-      console.log(check);
+  
       if (check.inOrOut === 'inbound') {
         await supabase
           .from('swaps')
           .update({
             inbound_accept: true,
+            inbound_offer: userItem,
           })
           .eq('id', swapHaggle.id);
       }
@@ -163,6 +165,7 @@ const HaggleView = ({ state }) => {
           .from('swaps')
           .update({
             outbound_accept: true,
+            outbound_offer: userItem
           })
           .eq('id', swapHaggle.id);
       }
@@ -199,6 +202,8 @@ const HaggleView = ({ state }) => {
     }
     navigate('/messages', { state: { swap } });
   };
+
+ 
 
   //testing
   // console.log('userObj', userObj);
@@ -287,7 +292,7 @@ const HaggleView = ({ state }) => {
               >
                 Close
               </label>
-              <HaggleInventory user={notUserId} />
+              <HaggleInventory user={notUserId} setItem={setUserItem} />
             </ul>
           </div>
         </div>
@@ -339,7 +344,7 @@ const HaggleView = ({ state }) => {
                 className="btn btn-primary drawer-button"
                 onClick={() => setInventory(userObj.inOrOut)}
               >
-                See Other Items
+                My Items
               </label>
             </div>
             <div className="bg-gray-100 w-full grid grid-rows-1 justify-center">
@@ -357,7 +362,7 @@ const HaggleView = ({ state }) => {
               >
                 Close
               </label>
-              <HaggleInventory user={userObj.id} />
+              <HaggleInventory user={userObj.id} setItem={setTraderItem} />
             </ul>
           </div>
         </div>
