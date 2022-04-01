@@ -105,8 +105,8 @@ const Chat = (props) => {
   return loading ? (
     <LoadingPage />
   ) : (
-    <div className="container bg-base-100 border rounded col-span-3 lg:col-span-1">
-      <div className="relative flex items-center justify-between p-3 border-b border-gray-300 gap-x-4">
+    <div className="container  bg-base-100 border rounded col-span-3 lg:col-span-1">
+      <div className="relative flex items-center justify-between p-3 border-b border-gray-300 gap-x-4 ">
         <div className="flex gap-2 items-center">
           <img src={TheirAvatarUrl} alt="" className="h-8 w-8 rounded-full" />
           <p className="font-semibold">{TheirUserName}</p>
@@ -116,8 +116,7 @@ const Chat = (props) => {
           <span className="w-3 h-3 bg-green-600 rounded-full text-white "></span>
         </div>
       </div>
-
-      <div className="p:2 sm:p-6 h-96 justify-between bg-base-100 max-w-2xl rounded overflow-auto">
+      <div className="p:2 sm:p-6 h-96 justify-between bg-base-100 max-w-2xl rounded overflow-auto mt-20">
         {messages ? (
           <InfiniteScroll id="chat" dataLength={messages.length}>
             <div className="justify-items-center pt-5">

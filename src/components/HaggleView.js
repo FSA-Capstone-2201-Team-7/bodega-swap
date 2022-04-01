@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
-import { useLocation, useNavigate } from "react-router-dom";
-import LoadingPage from "./LoadingPage";
-import Chat from "./Chat";
-import Card from "./Card";
-import HaggleInventory from "./HaggleInventory";
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import { useLocation, useNavigate } from 'react-router-dom';
+import LoadingPage from './LoadingPage';
+import Chat from './Chat';
+import Card from './Card';
+import HaggleInventory from './HaggleInventory';
 
 const HaggleView = ({ state }) => {
   const location = useLocation(null);
-  const { swap = "" } = location.state || {};
+  const { swap = '' } = location.state || {};
   const [loading, setLoading] = useState(true);
   const [userObj, setUserObj] = useState({});
   const [userItem, setUserItem] = useState({});
   const [userAccept, setUserAccept] = useState({});
-  const [notUserId, setNotUserId] = useState("");
+  const [notUserId, setNotUserId] = useState('');
   const [traderObj, setTraderObj] = useState({});
   const [traderItem, setTraderItem] = useState({});
   const [traderAccept, setTraderAccept] = useState({});
   const [swapHaggle, setSwap] = useState({});
-  const [inventory, setInventory] = useState("");
+  const [inventory, setInventory] = useState('');
   const user = supabase.auth.user();
   const navigate = useNavigate();
 
@@ -26,10 +26,10 @@ const HaggleView = ({ state }) => {
     const fetchSwap = async () => {
       try {
         const { data } = await supabase
-          .from("swaps")
+          .from('swaps')
           .select()
           .single()
-          .eq("id", swap.id);
+          .eq('id', swap.id);
 
         setSwap(data);
       } catch (error) {
@@ -44,7 +44,7 @@ const HaggleView = ({ state }) => {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from("users")
+          .from('users')
           .select(
             `
           avatarUrl,
@@ -52,7 +52,7 @@ const HaggleView = ({ state }) => {
           id
           `
           )
-          .eq("id", user.id);
+          .eq('id', user.id);
         setUserObj(...data);
         if (swapHaggle.outbound_id === user.id) {
           setUserItem({ ...swapHaggle.outbound_offer });
@@ -60,11 +60,11 @@ const HaggleView = ({ state }) => {
           setTraderItem({ ...swapHaggle.inbound_offer });
           setUserAccept({
             userAccept: swapHaggle.outbound_accept,
-            inOrOut: "outbound",
+            inOrOut: 'outbound',
           });
           setTraderAccept({
             userAccept: swapHaggle.inbound_accept,
-            inOrOut: "inbound",
+            inOrOut: 'inbound',
           });
         }
         if (swapHaggle.inbound_id === user.id) {
@@ -73,11 +73,11 @@ const HaggleView = ({ state }) => {
           setTraderItem({ ...swapHaggle.outbound_offer });
           setUserAccept({
             userAccept: swapHaggle.inbound_accept,
-            inOrOut: "inbound",
+            inOrOut: 'inbound',
           });
           setTraderAccept({
             userAccept: swapHaggle.outbound_accept,
-            inOrOut: "outbound",
+            inOrOut: 'outbound',
           });
         }
       } catch (error) {
@@ -102,7 +102,7 @@ const HaggleView = ({ state }) => {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from("users")
+          .from('users')
           .select(
             `
           avatarUrl,
@@ -111,7 +111,7 @@ const HaggleView = ({ state }) => {
 
           `
           )
-          .eq("id", notUserId);
+          .eq('id', notUserId);
 
         setTraderObj(...data);
       } catch (error) {
@@ -133,11 +133,11 @@ const HaggleView = ({ state }) => {
       try {
         if (swapHaggle.inbound_accept && swapHaggle.outbound_accept) {
           await supabase
-            .from("swaps")
+            .from('swaps')
             .update({
-              status: "agreed",
+              status: 'agreed',
             })
-            .eq("id", swapHaggle.id);
+            .eq('id', swapHaggle.id);
         }
       } catch (error) {
         console.error(error);
@@ -148,57 +148,55 @@ const HaggleView = ({ state }) => {
 
   const handleAcceptance = async (check) => {
     try {
-      if (check.inOrOut === "inbound") {
+      if (check.inOrOut === 'inbound') {
         await supabase
-          .from("swaps")
+          .from('swaps')
           .update({
             inbound_accept: true,
-           
           })
-          .eq("id", swapHaggle.id);
+          .eq('id', swapHaggle.id);
       }
 
-      if (check.inOrOut === "outbound") {
+      if (check.inOrOut === 'outbound') {
         await supabase
-          .from("swaps")
+          .from('swaps')
           .update({
             outbound_accept: true,
-
           })
-          .eq("id", swapHaggle.id);
+          .eq('id', swapHaggle.id);
       }
     } catch (error) {
       console.error(error);
     }
   };
   supabase
-    .from("swaps")
-    .on("UPDATE", (button) => {
+    .from('swaps')
+    .on('UPDATE', (button) => {
       setSwap(button.new);
     })
     .subscribe();
 
   const handleConfimation = async (check) => {
     try {
-      if (check === "inbound") {
+      if (check === 'inbound') {
         await supabase
-          .from("swaps")
+          .from('swaps')
           .update({
             inbound_confirm: true,
           })
-          .eq("id", swapHaggle.id);
+          .eq('id', swapHaggle.id);
       } else {
         await supabase
-          .from("swaps")
+          .from('swaps')
           .update({
             outbound_confirm: true,
           })
-          .eq("id", swapHaggle.id);
+          .eq('id', swapHaggle.id);
       }
     } catch (error) {
       console.error(error);
     }
-    navigate("/messages", { state: { swap } });
+    navigate('/messages', { state: { swap } });
   };
 
   //testing
@@ -214,7 +212,7 @@ const HaggleView = ({ state }) => {
   return loading ? (
     <LoadingPage />
   ) : (
-    <div className="grid grid-cols-3 px-10 justify-items-center gap-10 mt-20">
+    <div className="grid grid-cols-3 px-10 justify-items-center gap-10 mt-12">
       <div className="relative hidden lg:flex lg:flex-col  justify-center">
         <div>
           <input type="checkbox" id="my-modal-5" className="modal-toggle" />
@@ -284,13 +282,128 @@ const HaggleView = ({ state }) => {
               <label
                 htmlFor="my-drawer"
                 className="btn btn-primary drawer-button"
-                onClick={() => setInventory("")}
+                onClick={() => setInventory('')}
               >
                 Close
               </label>
               <HaggleInventory user={notUserId} />
             </ul>
           </div>
+        </div>
+      </div>
+
+      <div className="drawer drawer-end absolute h-96">
+        <div className="drawer-content">
+          <label
+            htmlFor="my-drawer-4"
+            className="btn btn-primary drawer-button pr-3"
+            onClick={() => setInventory(userObj.inOrOut)}
+          >
+            Menu
+          </label>
+        </div>
+        <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
+        <div className="drawer-side overflow-y-auto pl-96 ">
+          <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
+
+          <ul className="menu absolute overflow-y-auto md:h-auto mb-56 h-96 bg-base-100 text-base-content  pl-24 pr-28 ">
+            {userAccept.userAccept ? (
+              traderAccept.userAccept ? (
+                <div>
+                  <button
+                    type="button"
+                    className="btn btn-xs sm:btn-sm md:btn-md w-full"
+                    onClick={() => handleConfimation(userAccept.inOrOut)}
+                  >
+                    Mark Complete
+                  </button>
+                  <div className=" h-20 card bg-base-300 rounded-box place-items-center text-lg font-semibold mt-3">
+                    <p className="py-4">
+                      By clicking confirm you both have met each other
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <button className="btn loading">Waiting...</button>
+              )
+            ) : (
+              <button
+                className="btn btn-xs sm:btn-sm md:btn-md"
+                onClick={() => handleAcceptance(userAccept)}
+              >
+                Accept Terms
+              </button>
+            )}
+            <p className="text-xl font-semibold mb-4 mt-6">Current Trade</p>
+            <div className="flex w-full">
+              <div className="grid h-20 flex-grow card bg-base-300 rounded-box place-items-center text-xl font-semibold">
+                {traderObj.username}
+              </div>
+              <div className="divider divider-horizontal">Swap</div>
+              <div className="grid h-20 flex-grow card bg-base-300 rounded-box place-items-center text-xl font-semibold">
+                Your Item
+              </div>
+            </div>
+
+            <div className="flex grid grid-cols-2 pt-5">
+              <div className="avatar">
+                <div className="w-48 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                  <img
+                    src={userItem.image_url}
+                    alt="..."
+                    className="shadow h-48 w-48 rounded-full"
+                  />
+                </div>
+              </div>
+              <div className="avatar">
+                <div className="w-48 rounded-full ring ring-primary ring-offset-base-500 ring-offset-2">
+                  <img
+                    src={traderItem.image_url}
+                    alt="..."
+                    className="shadow h-48 w-48 rounded-full"
+                  />
+                </div>
+              </div>
+            </div>
+            <label className="swap swap-flip text-xl pt-10">
+              <input type="checkbox" />
+
+              <div className="swap-on">
+                <div
+                  type="button"
+                  className="grid h-20 card bg-base-300 rounded-box place-items-center"
+                >
+                  Your Inventory
+                </div>
+                <HaggleInventory
+                  user={userObj.id}
+                  setItem={setTraderItem}
+                  swap={swap}
+                />
+              </div>
+              <div className="swap-off">
+                <div className="grid h-20 card bg-base-300 rounded-box place-items-center ">
+                  {traderObj.username} Inventory
+                </div>
+                <HaggleInventory user={traderObj.id} swap={swap} />
+              </div>
+            </label>
+            {/* <div class="flex flex-col w-full pt-10">
+              <button type='button' class="grid h-20 card bg-base-300 rounded-box place-items-center">
+                Your Inventory
+              </button>
+              <HaggleInventory
+                user={userObj.id}
+                setItem={setTraderItem}
+                swap={swap}
+              />
+              <div class="divider"></div>
+              <div class="grid h-20 card bg-base-300 rounded-box place-items-center">
+                {traderObj.username} Inventory
+              </div>
+              <HaggleInventory user={traderObj.id} swap={swap} />
+            </div> */}
+          </ul>
         </div>
       </div>
 
@@ -354,11 +467,15 @@ const HaggleView = ({ state }) => {
               <label
                 htmlFor="my-drawer-4"
                 className="btn btn-primary drawer-button"
-                onClick={() => setInventory("")}
+                onClick={() => setInventory('')}
               >
                 Close
               </label>
-              <HaggleInventory user={userObj.id} setItem={setTraderItem} swap={swap}/>
+              <HaggleInventory
+                user={userObj.id}
+                setItem={setTraderItem}
+                swap={swap}
+              />
             </ul>
           </div>
         </div>
