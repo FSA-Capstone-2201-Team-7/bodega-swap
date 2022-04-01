@@ -10,13 +10,17 @@ const DemoAccount = () => {
   const createDemoAccount = async (e) => {
     e.preventDefault()
     try {
-      let { user, error } = await supabase.auth.signUp({ email: `demoaccount${randomInt()}`, password: `demo${randomInt()}` })
+      let { user, error } = await supabase.auth.signUp({ email: `demoaccount${randomInt()}@demoacct.com`, password: `demo${randomInt()}` })
       if (error) throw error
       console.log(user)
     } catch (error) {
       console.error(error)
     }
   }
+
+  return (
+    <button type='button' onClick={createDemoAccount}>Demo Account</button>
+  )
 } 
 
 export default DemoAccount

@@ -27,6 +27,7 @@ import AddUser from "./components/AddUser";
 import OwnerProfile from "./components/OwnerProfile";
 import Footer from "./components/Footer";
 import RatingView from "./components/RatingView";
+import DemoAccount from './components/DemoAccount';
 
 const Routing = () => {
   const [session, setSession] = useState(null);
@@ -52,6 +53,7 @@ const Routing = () => {
             <Route exact path="/items" element={<AllItems />} />
             <Route exact path="/items/:id" element={<SingleItem />} />
             <Route path="/wishlist" element={<Wishlist />} />
+            <Route path='/demoAccount' element={<DemoAccount />} />
           </Routes>
         </main>
       ) : (
