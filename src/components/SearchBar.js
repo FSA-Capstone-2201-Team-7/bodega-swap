@@ -56,12 +56,12 @@ function SearchBar(props) {
     setWordEntered("");
   };
   return (
-    <div className="md:flex hidden md:justify-center">
+    <div className="flex justify-center">
       {loading ? (
         <LoadingPage />
       ) : (
         <div className="flex relative flex-col w-[80%] z-20">
-          <div className="flex items-center rounded-full py-2 md:border-2 md:shadow-sm ">
+          <div className="flex items-center rounded-full py-2 border-2 shadow-sm ">
             <input
               className="w-full bg-transparent pl-5 text-sm text-gray-600 placeholder-gray-400 outline-none"
               placeholder="Search"
@@ -72,10 +72,10 @@ function SearchBar(props) {
 
             <div className="">
               {filteredData.length === 0 ? (
-                <SearchIcon className="h-6 hidden md:inline-flex cursor-pointer md:mx-2 pr-1" />
+                <SearchIcon className="h-6 md:inline-flex cursor-pointer md:mx-2 pr-1" />
               ) : (
                 <XIcon
-                  className="h-6  hidden md:inline-flex cursor-pointer pr-2"
+                  className="h-6 md:inline-flex cursor-pointer pr-2"
                   onClick={clearInput}
                 />
               )}
