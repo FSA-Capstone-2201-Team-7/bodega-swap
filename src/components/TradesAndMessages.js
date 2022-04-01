@@ -2,17 +2,20 @@
 
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import Card from './Card';
 import ConfirmationCard from './ConfirmationCard';
 import LoadingPage from './LoadingPage';
 import NoCurrentTrades from './NoCurrentTrades';
 
-const TradesAndMessages = () => {
+
+const TradesAndMessages = ({state}) => {
   const [loading, setLoading] = useState(true);
   const [getInbound, setInbound] = useState([]);
   const [getOutbound, setOutbound] = useState([]);
+  
+  
   const user = supabase.auth.user();
   const navigate = useNavigate();
 
@@ -42,10 +45,8 @@ const TradesAndMessages = () => {
       try {
         setLoading(true);
         const { data } = await supabase
-
           .from('swaps')
           .select()
-
           .eq('outbound_id', user.id)
           .neq('status', 'rated');
 
@@ -58,6 +59,8 @@ const TradesAndMessages = () => {
     };
     getInboundSwaps();
   }, [user.id]);
+
+ 
 
   const handleActivate = async (swap) => {
     if (swap.status === 'proposed') {
@@ -107,7 +110,7 @@ const TradesAndMessages = () => {
         supabase
           .from('swaps')
           .on('DELETE', (deleted) => {
-            console.log('deleted', deleted)
+    
             const renderOut = getOutbound.filter((active) => {
               if (active.id !== deleted.old.id) {
                 return active;
@@ -125,7 +128,7 @@ const TradesAndMessages = () => {
           })
           .subscribe();
       } catch (error) {
-        console.log(error);
+        console.error(error);
       } 
     }
   
