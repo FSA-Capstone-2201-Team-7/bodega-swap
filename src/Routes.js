@@ -27,6 +27,7 @@ import AddUser from "./components/AddUser";
 import OwnerProfile from "./components/OwnerProfile";
 import Footer from "./components/Footer";
 import RatingView from "./components/RatingView";
+import DemoAccount from './components/DemoAccount';
 
 const Routing = () => {
   const [session, setSession] = useState(null);
