@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router';
-import DemoAccount from './DemoAccount';
+import { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import { useNavigate } from "react-router";
+import DemoAccount from "./DemoAccount";
 
 export default function Auth() {
   const [loading, setLoading] = useState(null);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function Auth() {
       alert(error.error_description || error.message);
     } finally {
     }
-    navigate('/home');
+    navigate("/home");
   };
 
   return (
@@ -58,7 +58,7 @@ export default function Auth() {
               />
             </div>
             <div className="mb-4">
-              {' '}
+              {" "}
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="password"
@@ -86,8 +86,8 @@ export default function Auth() {
             >
               Login
             </button>
+            <DemoAccount />
           </form>
-          <DemoAccount />
         </div>
       </div>
     </div>
