@@ -61,7 +61,7 @@ function AddUser({ session }) {
         throw error;
       }
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }

@@ -129,7 +129,7 @@ const CreateOrEditListing = (props) => {
         .eq("id", params.id);
 
       if (error) throw error;
-      if (data) alert("Listing Successfully Deleted!");
+      if (data) toast.success("Listing Successfully Deleted!");
     } catch (error) {
       console.error(error);
     } finally {
