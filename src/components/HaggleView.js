@@ -149,6 +149,7 @@ const HaggleView = ({ state }) => {
 
   const handleAcceptance = async (check) => {
     try {
+      
   
       if (check.inOrOut === 'inbound') {
         await supabase
