@@ -1,19 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import LoadingPage from './LoadingPage';
 
-
 const ConfirmationCard = (props) => {
-  const [comSwap, setComSwap] = useState({})
-  const [loading, setloading] = useState(true)
+  const [comSwap, setComSwap] = useState({});
+  const [loading, setloading] = useState(true);
   const { swap, inOrOut } = props;
   const navigate = useNavigate();
 
   useEffect(() => {
     const checkCompleted = async () => {
       try {
-        setloading(true)
+        setloading(true);
         if (swap.inbound_confirm === true && swap.outbound_confirm === true) {
           await supabase
             .from('swaps')
@@ -22,8 +21,6 @@ const ConfirmationCard = (props) => {
             })
             .eq('id', swap.id);
         }
-       
-      
       } catch (error) {
         console.error(error);
       }
@@ -34,30 +31,24 @@ const ConfirmationCard = (props) => {
   useEffect(() => {
     const fetchSwap = async () => {
       try {
-          setComSwap( swap )
-       
-       
-        
-        
-        
+        setComSwap(swap);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       } finally {
-        setloading(false)
+        setloading(false);
       }
-    }
-    fetchSwap()
-  }, [swap])
-   supabase
-     .from('swaps')
-     .on('UPDATE', (update) => {
-       setComSwap(update.new);
-     })
-     .subscribe();
+    };
+    fetchSwap();
+  }, [swap]);
+  supabase
+    .from('swaps')
+    .on('UPDATE', (update) => {
+      setComSwap(update.new);
+    })
+    .subscribe();
 
-  
-  console.log('com', comSwap)
-  
+  console.log('com', comSwap);
+
   return loading ? (
     <LoadingPage />
   ) : (
