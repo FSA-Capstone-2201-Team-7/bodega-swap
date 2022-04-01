@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
-import LoadingPage from "./LoadingPage";
-import Card from "./Card";
-import StepBar from "./StepBar";
-import { useNavigate } from "react-router-dom";
-import "../main.css";
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import LoadingPage from './LoadingPage';
+import Card from './Card';
+import { Link } from 'react-router-dom';
+import StepBar from './StepBar';
+import { useNavigate } from 'react-router-dom';
+import '../main.css';
 const Main = () => {
   const [getImages, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,14 +19,14 @@ const Main = () => {
       try {
         setLoading(true);
         let { data, error, status } = await supabase
-          .from("items")
+          .from('items')
           .select(
             `name, description, ownerId, id, category, listed, image_url, created_at`
           )
-          .eq("listed", true)
+          .eq('listed', true)
           .neq(
-            "ownerId",
-            user ? user.id : "11111111-1111-1111-1111-111111111111"
+            'ownerId',
+            user ? user.id : '11111111-1111-1111-1111-111111111111'
           );
 
         if (error && status !== 406) {
@@ -85,7 +86,7 @@ const Main = () => {
   }, [list, getImages]);
 
   const recentlyadded = getImages.slice(getImages.length - 14);
-  console.log(recentlyadded);
+ 
   return loading ? (
     <LoadingPage />
   ) : (
@@ -114,7 +115,7 @@ const Main = () => {
               >
                 <button
                   type="button"
-                  onClick={() => navigate("/items", { state: { image } })}
+                  onClick={() => navigate('/items', { state: { image } })}
                 >
                   <img
                     src={image[1]}
@@ -130,114 +131,132 @@ const Main = () => {
           })}
         </div>
         <div className="text-2xl font-semibold mb-4 mt-6">Recently Added</div>
-        {/*  <div class="flex-grow p-6 overflow-auto bg-gray-200">
-          <div class="grid grid-cols-3 gap-6">
-            <div class="h-96 col-span-2 bg-white border border-gray-300">
-              <img src={recentlyadded[0].image_url} alt="" className="object-contain"/>
-            </div>
-            <div class="h-68 col-span-1 bg-white border border-gray-300"></div>
-            <div class="h-24 col-span-1 bg-white border border-gray-300"></div>
-            <div class="h-24 col-span-2 bg-white border border-gray-300"></div>
-          </div>
-        </div> */}
         <section className="gallery bg-indigo-50">
           <figure className="gallery__item gallery__item--1">
-            <img
-              src={recentlyadded[0].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[0].id}`}>
+              <img
+                src={recentlyadded[0].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--2">
-            <img
-              src={recentlyadded[1].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[1].id}`}>
+              <img
+                src={recentlyadded[1].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--3">
-            <img
-              src={recentlyadded[2].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[2].id}`}>
+              <img
+                src={recentlyadded[2].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--4">
-            <img
-              src={recentlyadded[3].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[3].id}`}>
+              <img
+                src={recentlyadded[3].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--5">
-            <img
-              src={recentlyadded[4].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[4].id}`}>
+              <img
+                src={recentlyadded[4].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--6">
-            <img
-              src={recentlyadded[5].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[5].id}`}>
+              <img
+                src={recentlyadded[5].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--7">
-            <img
-              src={recentlyadded[6].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[6].id}`}>
+              <img
+                src={recentlyadded[6].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--8">
-            <img
-              src={recentlyadded[7].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[7].id}`}>
+              <img
+                src={recentlyadded[7].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--9">
-            <img
-              src={recentlyadded[8].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[8].id}`}>
+              <img
+                src={recentlyadded[8].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--10">
-            <img
-              src={recentlyadded[9].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[9].id}`}>
+              <img
+                src={recentlyadded[9].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--11">
-            <img
-              src={recentlyadded[10].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[10].id}`}>
+              <img
+                src={recentlyadded[10].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--12">
-            <img
-              src={recentlyadded[11].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[11].id}`}>
+              <img
+                src={recentlyadded[11].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--13">
-            <img
-              src={recentlyadded[12].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[12].id}`}>
+              <img
+                src={recentlyadded[12].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--14">
-            <img
-              src={recentlyadded[13].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[13].id}`}>
+              <img
+                src={recentlyadded[13].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
         </section>
       </div>
