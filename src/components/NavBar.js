@@ -17,33 +17,33 @@ const NavBar = ({ session }) => {
   };
 
   return (
-    <header className="sticky top-0 flex justify-between bg-white p-5 shadow-md md:px-10 z-40 ">
-      <div className="flex items-center">
+    <header className="sticky top-0 flex justify-between items-center bg-white p-5 shadow-md md:px-10 z-40 ">
+      <div className="flex flex-col md:flex-row md:items-center">
         <Link to="/home">
-          <h1 className="text-bold text-2xl">BODEGA SWAP</h1>
+          <h1 className="text-bold text-lg md:text-2xl">BODEGA SWAP</h1>
         </Link>
 
         <Link
-          className=" font-normal text-gray-500 pl-5 hover:text-indigo-500  hover:scale-105 duration-300 ease-out"
+          className=" font-normal text-gray-500 md:pl-5 hover:text-indigo-500  hover:scale-105 duration-300 ease-out"
           to="/items"
         >
           Explore
         </Link>
       </div>
-      <div className="flex-grow px-7">
+      <div className="flex-grow px-2 md:px-7">
         <SearchBar />
       </div>
 
       {!session ? (
-        <nav className="flex items-center justify-end space-x-4 text-white">
+        <nav className="flex items-center justify-end space-x-1 md:space-x-4 text-white">
           <Link
-            className="py-1.5 px-3 hover:bg-indigo-500 bg-indigo-600 rounded-sm"
+            className="py-1 md:py-1.5 px-1.5 md:px-3 hover:bg-indigo-500 bg-indigo-600 rounded-sm"
             to="login"
           >
             Login
           </Link>
           <Link
-            className="text-gray-900 py-1.5 px-2.5 border rounded-sm hover:text-white hover:bg-indigo-200 border-indigo-500 hover:border-indigo-200 "
+            className="text-gray-900 py-1 md:py-1.5 px-1 md:px-2.5 border rounded-sm hover:text-white hover:bg-indigo-200 border-indigo-500 hover:border-indigo-200 "
             to="signup"
           >
             SignUp

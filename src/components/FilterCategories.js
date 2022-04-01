@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
-import LoadingPage from './LoadingPage';
+import LoadingPage from "./LoadingPage";
 
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(" ");
@@ -20,7 +20,7 @@ const FilterCategory = (props) => {
           as="div"
           className="inline-flex rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
         >
-          Search
+          Filter
           <ChevronDownIcon className=" -mr-1 ml-2 h-5 w-5" aria-hidden="true" />
         </Menu.Button>
       </div>
