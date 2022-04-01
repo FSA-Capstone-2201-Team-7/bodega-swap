@@ -17,10 +17,36 @@ const HaggleView = ({ state }) => {
   const [traderObj, setTraderObj] = useState({});
   const [traderItem, setTraderItem] = useState({});
   const [traderAccept, setTraderAccept] = useState({});
-
+  const [swapHaggle, setSwap] =useState({})
   const [inventory, setInventory] = useState('');
   const user = supabase.auth.user();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchSwap = async () => {
+      try {
+        const { data } = await supabase
+          .from('swaps')
+          .select()
+          .single()
+          .eq('id', swap.id);
+
+        setSwap(data);
+        supabase
+          .from('swaps')
+          .on('UPDATE', (button) => {
+            setSwap(button.new);
+            setTraderAccept(traderAccept);
+            setUserAccept(userAccept);
+          })
+          .subscribe();
+        
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    fetchSwap()
+  }, [swap.id])
 
   useEffect(() => {
     const userInfo = async () => {
@@ -37,51 +63,51 @@ const HaggleView = ({ state }) => {
           )
           .eq('id', user.id);
         setUserObj(...data);
-        if (swap.outbound_id === user.id) {
-          setUserItem({ ...swap.outbound_offer });
-          setNotUserId(swap.inbound_id);
-          setTraderItem({ ...swap.inbound_offer });
+        if (swapHaggle.outbound_id === user.id) {
+          setUserItem({ ...swapHaggle.outbound_offer });
+          setNotUserId(swapHaggle.inbound_id);
+          setTraderItem({ ...swapHaggle.inbound_offer });
           setUserAccept({
-            userAccept: swap.outbound_accept,
+            userAccept: swapHaggle.outbound_accept,
             inOrOut: 'outbound',
           });
           setTraderAccept({
-            userAccept: swap.inbound_accept,
+            userAccept: swapHaggle.inbound_accept,
             inOrOut: 'inbound',
           });
-          supabase
-            .from('swaps')
-            .on('UPDATE', (button) => {
-              setUserAccept({
-                userAccept: button.new.outbound_accept,
-                inOrOut: 'outbound',
-              });
-              console.log('updated', button.new);
-            })
-            .subscribe();
+          // supabase
+          //   .from('swaps')
+          //   .on('UPDATE', (button) => {
+          //     setUserAccept({
+          //       userAccept: button.new.outbound_accept,
+          //       inOrOut: 'outbound',
+          //     });
+          //     console.log('updated', button.new);
+          //   })
+          //   .subscribe();
         }
-        if (swap.inbound_id === user.id) {
-          setUserItem({ ...swap.inbound_offer });
-          setNotUserId(swap.outbound_id);
-          setTraderItem({ ...swap.outbound_offer });
+        if (swapHaggle.inbound_id === user.id) {
+          setUserItem({ ...swapHaggle.inbound_offer });
+          setNotUserId(swapHaggle.outbound_id);
+          setTraderItem({ ...swapHaggle.outbound_offer });
           setUserAccept({
-            userAccept: swap.inbound_accept,
+            userAccept: swapHaggle.inbound_accept,
             inOrOut: 'inbound',
           });
           setTraderAccept({
-            userAccept: swap.outbound_accept,
+            userAccept: swapHaggle.outbound_accept,
             inOrOut: 'outbound',
           });
-          supabase
-            .from('swaps')
-            .on('UPDATE', (button) => {
-              setUserAccept({
-                userAccept: button.new.inbound_accept,
-                inOrOut: 'inbound',
-              });
-              console.log('updated', button.new);
-            })
-            .subscribe();
+          // supabase
+          //   .from('swaps')
+          //   .on('UPDATE', (button) => {
+          //     setUserAccept({
+          //       userAccept: button.new.inbound_accept,
+          //       inOrOut: 'inbound',
+          //     });
+          //     console.log('updated', button.new);
+          //   })
+          //   .subscribe();
         }
       } catch (error) {
         console.error(error);
@@ -91,13 +117,13 @@ const HaggleView = ({ state }) => {
     };
     userInfo();
   }, [
-    swap.outbound_offer,
-    swap.inbound_offer,
-    swap.outbound_id,
-    swap.inbound_id,
+    swapHaggle.outbound_offer,
+    swapHaggle.inbound_offer,
+    swapHaggle.outbound_id,
+    swapHaggle.inbound_id,
     user.id,
-    swap.inbound_accept,
-    swap.outbound_accept,
+    swapHaggle.inbound_accept,
+    swapHaggle.outbound_accept,
   ]);
 
   useEffect(() => {
@@ -115,6 +141,7 @@ const HaggleView = ({ state }) => {
           `
           )
           .eq('id', notUserId);
+         
         setTraderObj(...data);
       } catch (error) {
         console.error(error);
@@ -132,20 +159,20 @@ const HaggleView = ({ state }) => {
   useEffect(() => {
     const setAgreement = async () => {
       try {
-        if (swap.inbound_accept && swap.outbound_accept) {
+        if (swapHaggle.inbound_accept && swapHaggle.outbound_accept) {
           await supabase
             .from('swaps')
             .update({
               status: 'agreed',
             })
-            .eq('id', swap.id);
+            .eq('id', swapHaggle.id);
         }
       } catch (error) {
         console.error(error);
       }
     };
     setAgreement();
-  }, [swap.id, swap.outbound_accept, swap.inbound_accept]);
+  }, [swapHaggle.id, swapHaggle.outbound_accept, swapHaggle.inbound_accept]);
 
   const handleAcceptance = async (check) => {
     try {
@@ -156,16 +183,16 @@ const HaggleView = ({ state }) => {
           .update({
             inbound_accept: true,
           })
-          .eq('id', swap.id);
+          .eq('id', swapHaggle.id);
 
-        setUserAccept({
-          userAccept: swap.inbound_accept,
-          inOrOut: 'inbound',
-        });
-        setTraderAccept({
-          userAccept: swap.outbound_accept,
-          inOrOut: 'outbound',
-        });
+        // setUserAccept({
+        //   userAccept: swapHaggle.inbound_accept,
+        //   inOrOut: 'inbound',
+        // });
+        // setTraderAccept({
+        //   userAccept: swapHaggle.outbound_accept,
+        //   inOrOut: 'outbound',
+        // });
       }
 
       if (check.inOrOut === 'outbound') {
@@ -174,19 +201,19 @@ const HaggleView = ({ state }) => {
           .update({
             outbound_accept: true,
           })
-          .eq('id', swap.id);
-        setUserAccept({
-          userAccept: swap.outbound_accept,
-          inOrOut: 'outbound',
-        });
-        setTraderAccept({
-          userAccept: swap.inbound_accept,
-          inOrOut: 'inbound',
-        });
+          .eq('id', swapHaggle.id);
+        // setUserAccept({
+        //   userAccept: swapHaggle.outbound_accept,
+        //   inOrOut: 'outbound',
+        // });
+        // setTraderAccept({
+        //   userAccept: swapHaggle.inbound_accept,
+        //   inOrOut: 'inbound',
+        // });
       }
 
-      setTraderAccept(traderAccept);
-      setUserAccept(userAccept);
+      // setTraderAccept(traderAccept);
+      // setUserAccept(userAccept);
     } catch (error) {
       console.error(error);
     }
@@ -195,18 +222,18 @@ const HaggleView = ({ state }) => {
       try {
         if (check === "inbound") {
           await supabase
-            .from("swaps")
+            .from('swaps')
             .update({
               inbound_confirm: true,
             })
-            .eq("id", swap.id);
+            .eq('id', swapHaggle.id);
         } else {
           await supabase
-            .from("swaps")
+            .from('swaps')
             .update({
               outbound_confirm: true,
             })
-            .eq("id", swap.id);
+            .eq('id', swapHaggle.id);
         }
       } catch (error) {
         console.error(error);
@@ -217,11 +244,11 @@ const HaggleView = ({ state }) => {
   // console.log('userObj', userObj);
   // console.log('useraccept', userAccept.inOrOut);
   // console.log('userItem', userItem);
-  // console.log('TraderObj', traderObj);
-  // console.log('Traderaccept', traderAccept);
+  //console.log('TraderObj', traderObj);
+  console.log('Traderaccept', traderAccept);
   // console.log('TraderItem', traderItem);
   // console.log('status, ', swap.status);
-
+console.log('haggle', swapHaggle)
   return loading ? (
     <LoadingPage />
   ) : (
@@ -237,7 +264,10 @@ const HaggleView = ({ state }) => {
                 </h3>
                 <p className="py-4">
                   By clicking confirm you both have met each other at the agreed
-                  upon location and have swapped the agreed upon items. In order to get credit for a completed transaction, and for the item to change hands, bot swappers must confirm that the swap has taken place, and rate their swapmates.
+                  upon location and have swapped the agreed upon items. In order
+                  to get credit for a completed transaction, and for the item to
+                  change hands, bot swappers must confirm that the swap has
+                  taken place, and rate their swapmates.
                 </p>
                 <div className="modal-action">
                   <label
