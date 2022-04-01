@@ -66,4 +66,11 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.gallery__img:hover {
+  transform: scale(1.1);
+  outline: 0.8rem solid #eef2ff;
+  box-shadow: 0 2.5rem 4rem rgba(0, 0, 0, 0.5);
 }
