@@ -91,16 +91,29 @@ const RatingView = () => {
     }
   };
   return rated ? (
-    <div>Thanks for rating!</div>
+    <div className="flex justify-center text-2xl font-bold text-indigo-900">
+      Thanks for rating!
+    </div>
   ) : (
-    <div>
-      <button onClick={(e) => handleRating(e, "down")} type="button">
-        <ThumbDownIcon className="h-8" />
-      </button>
-      <button onClick={(e) => handleRating(e, "up")} type="button">
-        <ThumbUpIcon className="h-8" />
-      </button>
-      <p>
+    <div className="flex flex-col items-center justify-center text-2xl font-bold">
+      <div className="flex gap-7">
+        <button
+          className="p-3 bg-red-500 rounded-full motion-safe:animate-bounce"
+          onClick={(e) => handleRating(e, "down")}
+          type="button"
+        >
+          <ThumbDownIcon className="h-8  fill-yellow-400 stroke-yellow-500" />
+        </button>
+        <button
+          className="animate-bounce  p-3 bg-indigo-500 rounded-full "
+          onClick={(e) => handleRating(e, "up")}
+          type="button"
+        >
+          <ThumbUpIcon className="h-8  fill-yellow-400 stroke-yellow-500" />
+        </button>
+      </div>
+
+      <p className="mt-5  text-gray-600">
         Rate your swapmate! Our community is built on trust, so please be fair!
       </p>
     </div>
