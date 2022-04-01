@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import signup from '../../../tutorialPics/desktopTutorial/signup.png';
 import signupGif from '../../../tutorialPics/desktopTutorial/signupgif.gif';
 import createaccountgif from '../../../tutorialPics/desktopTutorial/createaccountgif.gif';

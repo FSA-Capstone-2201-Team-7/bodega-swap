@@ -12,7 +12,9 @@ const TutorialPage = () => {
             <Link to="/tutorials/desktop/signup">Signup/Create Account</Link>
           </li>
           <li>Edit Account</li>
-          <li>List An Item</li>
+          <li>
+            <Link to="/tutorials/desktop/listing">List An Item</Link>
+          </li>
           <li>Edit a Listing</li>
           <li>Propose a Trade</li>
         </ul>

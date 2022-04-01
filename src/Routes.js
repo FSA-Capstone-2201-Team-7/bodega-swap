@@ -27,9 +27,9 @@ import AddUser from './components/AddUser';
 import OwnerProfile from './components/OwnerProfile';
 import Footer from './components/Footer';
 import RatingView from './components/RatingView';
-import DemoAccount from './components/DemoAccount';
 import TutorialPage from './components/tutorial/Tutorial';
 import DesktopSignup from './components/tutorial/desktop/DesktopSignup';
+import DesktopListing from './components/tutorial/desktop/DesktopListing';
 
 const Routing = () => {
   const [session, setSession] = useState(null);
@@ -56,6 +56,14 @@ const Routing = () => {
             <Route exact path="/items/:id" element={<SingleItem />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route exact path="/tutorials" element={<TutorialPage />} />
+            <Route
+              path="/tutorials/desktop/signup"
+              element={<DesktopSignup />}
+            />
+            <Route
+              path="/tutorials/desktop/listing"
+              element={<DesktopListing />}
+            />
           </Routes>
         </main>
       ) : (
@@ -97,6 +105,10 @@ const Routing = () => {
             <Route
               path="/tutorials/desktop/signup"
               element={<DesktopSignup />}
+            />
+            <Route
+              path="/tutorials/desktop/listing"
+              element={<DesktopListing />}
             />
           </Routes>
         </main>
