@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router';
-import DemoAccount from './DemoAccount';
+import { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import { useNavigate } from "react-router";
+import DemoAccount from "./DemoAccount";
+import { toast } from "react-toastify";
 function SignUp() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -16,11 +17,11 @@ function SignUp() {
       const { user, error } = await supabase.auth.signUp({ email, password });
       if (error) throw error;
     } catch (error) {
-      alert(error.error_description || error.message);
+      toast.error(error.error_description || error.message);
     } finally {
       setLoading(false);
     }
-    navigate('/addUser');
+    navigate("/addUser");
   };
 
   return (
@@ -28,7 +29,7 @@ function SignUp() {
       <div className="lg:w-2/4" aria-live="polite">
         <h1 className="text-2xl my-5">Bodega Swap</h1>
         {loading ? (
-          'Logging in...'
+          "Logging in..."
         ) : (
           <div className="w-full max-w-s">
             <p className="mb-5">Create an account</p>
@@ -37,7 +38,7 @@ function SignUp() {
               onSubmit={handleSignup}
             >
               <div className="mb-4">
-                {' '}
+                {" "}
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
                   htmlFor="email"
@@ -55,7 +56,7 @@ function SignUp() {
               </div>
 
               <div className="mb-4">
-                {' '}
+                {" "}
                 <label
                   className="block text-gray-700 text-sm font-bold mb-2"
                   htmlFor="password"
@@ -78,8 +79,8 @@ function SignUp() {
               >
                 Sign up
               </button>
+              <DemoAccount />
             </form>
-            <DemoAccount />
           </div>
         )}
       </div>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
 import VisuallyHidden from "@reach/visually-hidden";
-
+import { toast } from "react-toastify";
 const ItemPic = ({ url, size, onUpload, mode }) => {
   const [itemPicUrl, setItemPicUrl] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -52,7 +52,7 @@ weird, it is probably a result of coding for the particularities of supabase's s
 
       onUpload(filePath, mode);
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     } finally {
       setUploading(false);
     }

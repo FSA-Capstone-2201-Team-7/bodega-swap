@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
-import { supabase } from '../supabaseClient';
-import LoadingPage from './LoadingPage';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
+import { supabase } from "../supabaseClient";
+import LoadingPage from "./LoadingPage";
 
 const DemoAccount = () => {
   const [demoPassword, setDemoPassword] = useState(null);
@@ -39,31 +39,29 @@ const DemoAccount = () => {
 
   const createDemoAccount = async (demoId) => {
     try {
-      let { error } = await supabase.from('users').upsert(
+      let { error } = await supabase.from("users").upsert(
         {
           id: demoId,
           username: `${demoPassword}`,
         },
-        { returning: 'minimal' }
+        { returning: "minimal" }
       );
       if (error) throw error;
     } catch (error) {
       console.error(error);
     } finally {
-      navigate('/myAccount');
+      navigate("/myAccount");
     }
   };
 
   return demoPassword ? (
-    <div className="bg-white shadow-md rounded px-8 pt-0 pb-8 mb-4">
-      <button
-        className="cursor-pointer mt-5 rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white w-full hover:bg-indigo-600"
-        aria-live="polite"
-        onClick={createDemoAuth}
-      >
-        Create Demo Account
-      </button>
-    </div>
+    <button
+      className="cursor-pointer mt-5 rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white w-full hover:bg-indigo-600"
+      aria-live="polite"
+      onClick={createDemoAuth}
+    >
+      Create Demo Account
+    </button>
   ) : (
     <LoadingPage />
   );

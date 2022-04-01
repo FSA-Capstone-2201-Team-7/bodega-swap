@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import Avatar from "./Avatar";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
 const Account = ({ session }) => {
   const [loading, setLoading] = useState(true);
   const [profileData, setProfileData] = useState({
@@ -38,7 +38,7 @@ const Account = ({ session }) => {
           });
         }
       } catch (error) {
-        alert(error.message);
+        toast.error(error.message);
       } finally {
         setLoading(false);
       }
@@ -70,9 +70,9 @@ const Account = ({ session }) => {
         throw error;
       }
 
-      if (data) alert("Profile Successfully Updated!");
+      if (data) toast.success("Account Sucessfully Updated!");
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     } finally {
       setLoading(false);
       navigate("/myAccount");

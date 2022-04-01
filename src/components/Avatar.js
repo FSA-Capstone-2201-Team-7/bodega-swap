@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
 import VisuallyHidden from "@reach/visually-hidden";
-
+import { toast } from "react-toastify";
 const Avatar = ({ url, size, onUpload }) => {
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -47,7 +47,7 @@ const Avatar = ({ url, size, onUpload }) => {
 
       onUpload(filePath);
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     } finally {
       setUploading(false);
     }
