@@ -99,11 +99,11 @@ const AllItems = ({state}) => {
                     id={item.id}
                     imageUrl={item.image_url}
                     name={item.name}
-                    /*  description={item.description} */
+                
                     category={item.category}
                     ownerId={item.ownerId}
                     firstButton={
-                      // <Link to="/createproposal" state={{ item }}>
+                      
                       <button
                         type="button"
                         className="bg-indigo-600 mb-2 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-md"

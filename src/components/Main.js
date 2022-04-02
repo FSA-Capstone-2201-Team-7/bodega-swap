@@ -1,31 +1,74 @@
-import React, { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
-import LoadingPage from "./LoadingPage";
-import Card from "./Card";
-import StepBar from "./StepBar";
-import { useNavigate } from "react-router-dom";
-import "../main.css";
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import LoadingPage from './LoadingPage';
+import Card from './Card';
+import { ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/outline';
+import { Link } from 'react-router-dom';
+import StepBar from './StepBar';
+import { useNavigate } from 'react-router-dom';
+import '../main.css';
 const Main = () => {
   const [getImages, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
+  const [users, setUsers] = useState([]);
   const navigate = useNavigate();
   const user = supabase.auth.user();
+
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const topAccounts = [];
+        let userNumbers = [];
+        const { data } = await supabase.from('users').select();
+
+        if (data) {
+          data.map((user) => {
+            userNumbers.push(user.swaps_completed);
+          });
+          userNumbers = userNumbers
+            .sort((a, b) => {
+              return b - a;
+            })
+            .slice(0, 3);
+        }
+        if (userNumbers && data) {
+          userNumbers.map((num) => {
+            if (topAccounts.length !== 3) {
+              data.forEach((user) => {
+                if (num === user.swaps_completed) {
+               
+                  topAccounts.push({...user, item: {ownerId: user.id}}  )
+                }
+              });
+            }
+          });
+        }
+
+        setUsers(topAccounts);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getUsers();
+  }, []);
+  
+
 
   useEffect(() => {
     const getItems = async () => {
       try {
         setLoading(true);
         let { data, error, status } = await supabase
-          .from("items")
+          .from('items')
           .select(
             `name, description, ownerId, id, category, listed, image_url, created_at`
           )
-          .eq("listed", true)
+          .eq('listed', true)
           .neq(
-            "ownerId",
-            user ? user.id : "11111111-1111-1111-1111-111111111111"
+            'ownerId',
+            user ? user.id : '11111111-1111-1111-1111-111111111111'
           );
 
         if (error && status !== 406) {
@@ -85,7 +128,7 @@ const Main = () => {
   }, [list, getImages]);
 
   const recentlyadded = getImages.slice(getImages.length - 14);
-  console.log(recentlyadded);
+  
   return loading ? (
     <LoadingPage />
   ) : (
@@ -114,7 +157,7 @@ const Main = () => {
               >
                 <button
                   type="button"
-                  onClick={() => navigate("/items", { state: { image } })}
+                  onClick={() => navigate('/items', { state: { image } })}
                 >
                   <img
                     src={image[1]}
@@ -129,126 +172,235 @@ const Main = () => {
             );
           })}
         </div>
-        <div className="text-2xl font-semibold mb-4 mt-6">Recently Added</div>
-        {/*  <div class="flex-grow p-6 overflow-auto bg-gray-200">
-          <div class="grid grid-cols-3 gap-6">
-            <div class="h-96 col-span-2 bg-white border border-gray-300">
-              <img src={recentlyadded[0].image_url} alt="" className="object-contain"/>
+        <div className="col-span-2">
+          <div className="hero w-full">
+            <div className="h-56"></div>
+            <div className="hero-overlay bg-indigo-50 pt-10">
+              <StepBar />
             </div>
-            <div class="h-68 col-span-1 bg-white border border-gray-300"></div>
-            <div class="h-24 col-span-1 bg-white border border-gray-300"></div>
-            <div class="h-24 col-span-2 bg-white border border-gray-300"></div>
           </div>
-        </div> */}
+        </div>
+        <div className="text-2xl font-semibold mb-4 mt-6">Recently Added</div>
         <section className="gallery bg-indigo-50">
           <figure className="gallery__item gallery__item--1">
-            <img
-              src={recentlyadded[0].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[0].id}`}>
+              <img
+                src={recentlyadded[0].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--2">
-            <img
-              src={recentlyadded[1].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[1].id}`}>
+              <img
+                src={recentlyadded[1].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--3">
-            <img
-              src={recentlyadded[2].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[2].id}`}>
+              <img
+                src={recentlyadded[2].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--4">
-            <img
-              src={recentlyadded[3].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[3].id}`}>
+              <img
+                src={recentlyadded[3].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--5">
-            <img
-              src={recentlyadded[4].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[4].id}`}>
+              <img
+                src={recentlyadded[4].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--6">
-            <img
-              src={recentlyadded[5].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[5].id}`}>
+              <img
+                src={recentlyadded[5].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--7">
-            <img
-              src={recentlyadded[6].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[6].id}`}>
+              <img
+                src={recentlyadded[6].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--8">
-            <img
-              src={recentlyadded[7].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[7].id}`}>
+              <img
+                src={recentlyadded[7].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--9">
-            <img
-              src={recentlyadded[8].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[8].id}`}>
+              <img
+                src={recentlyadded[8].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--10">
-            <img
-              src={recentlyadded[9].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[9].id}`}>
+              <img
+                src={recentlyadded[9].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--11">
-            <img
-              src={recentlyadded[10].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[10].id}`}>
+              <img
+                src={recentlyadded[10].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--12">
-            <img
-              src={recentlyadded[11].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[11].id}`}>
+              <img
+                src={recentlyadded[11].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--13">
-            <img
-              src={recentlyadded[12].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[12].id}`}>
+              <img
+                src={recentlyadded[12].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
           <figure className="gallery__item gallery__item--14">
-            <img
-              src={recentlyadded[13].image_url}
-              alt=""
-              className="gallery__img"
-            />
+            <Link to={`/items/${recentlyadded[13].id}`}>
+              <img
+                src={recentlyadded[13].image_url}
+                alt=""
+                className="gallery__img"
+              />
+            </Link>
           </figure>
         </section>
       </div>
 
-      <StepBar />
       <div className="text-2xl font-semibold mb-4 mt-6">Top Accounts</div>
 
-      <div className="col-span-2">
+      <div className="row-span-2">
         <div className="hero w-full">
           <div className="h-56"></div>
-          <div class="hero-overlay bg-gray-200"></div>
+          <div className="hero-overlay bg-indigo-50 pt-10 pb-10 flex ">
+            {users.map((account, i) => {
+              console.log(account)
+              const item = account.item
+              return (
+                <div
+                  key={i}
+                  className="card w-96 bg-base-100 shadow-xl image-full"
+                >
+                  <figure>
+                    <img src={account.avatarUrl} alt="Shoes" />
+                  </figure>
+                  <div className="card-body">
+                    <h2 className="card-title">{account.username}</h2>
+                    <p></p>
+
+                    <div className="stats shadow">
+                      <div className="stat">
+                        <div className="stat-title">Total Swaps Completed</div>
+                        <div className="stat-value flex justify-center">
+                          {account.swaps_completed}
+                        </div>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          className="inline-block w-8 h-8 stroke-current items-center"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                          ></path>
+                        </svg>
+
+                        <div className="card-actions justify-end">
+                          <button
+                            className="btn btn-primary"
+                            //need to get item tied to user to avoid error
+                            onClick={() =>
+                              navigate(`/items/${1}/OwnerProfile`, {
+                                state: { item },
+                              })
+                            }
+                          >
+                            Go To Account
+                          </button>
+                        </div>
+                      </div>
+                      <div className="stat">
+                        <div className="stat-title">Reputation</div>
+                        <div className="flex space-x-4">
+                          <div>
+                            {' '}
+                            <ThumbDownIcon className="h-8 fill-yellow-400 stroke-yellow-500" />
+                            <p>
+                              {Math.ceil(
+                                100 *
+                                  (account.downvotes /
+                                    (account.upvotes + account.downvotes))
+                              )}
+                              %
+                            </p>
+                          </div>
+                          <div>
+                            {' '}
+                            <ThumbUpIcon className="h-8 fill-yellow-400 stroke-yellow-500" />
+                            <p>
+                              {Math.ceil(
+                                100 *
+                                  (account.upvotes /
+                                    (account.upvotes + account.downvotes))
+                              )}
+                              %
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
