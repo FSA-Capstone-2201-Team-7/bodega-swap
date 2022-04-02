@@ -116,7 +116,7 @@ const Chat = (props) => {
           <span className="w-3 h-3 bg-green-600 rounded-full text-white "></span>
         </div>
       </div>
-      <div className="p:2 sm:p-6 h-96 justify-between bg-base-100 max-w-2xl rounded overflow-auto mt-20">
+      <div className="p:2 sm:p-6 h-96 justify-between bg-base-100 max-w-2xl rounded overflow-auto">
         {messages ? (
           <InfiniteScroll id="chat" dataLength={messages.length}>
             <div className="justify-items-center pt-5">
