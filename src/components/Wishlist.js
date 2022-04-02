@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import { Link, useNavigate } from "react-router-dom";
 import LoadingPage from "./LoadingPage";
+import { XIcon } from "@heroicons/react/outline";
 const Wishlist = () => {
   const [loading, setLoading] = useState(true);
   const [wishlist, setWishList] = useState(null);
@@ -71,13 +72,13 @@ const Wishlist = () => {
               <div className="card-body flex flex-row justify-between pb-1 ">
                 <p className="card-title ">{item.items.name}</p>
               </div>
-              <div className="card-actions  justify-between mt-5 pb-3  px-6">
+              <div className="card-actions  justify-between mt-5 pb-3 px-4  md:px-6">
                 <button
                   type="button"
-                  className="cursor-pointer rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white hover:bg-red-500"
+                  className=" flex cursor-pointer rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white hover:bg-red-500"
                   onClick={(e) => handleRemove(e, item.items.id)}
                 >
-                  Remove From Wishlist
+                  <span>Wishlist</span> <XIcon className="inline-flex h-5" />{" "}
                 </button>
                 <button
                   className="cursor-pointer rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white hover:bg-indigo-400"
