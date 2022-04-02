@@ -104,20 +104,4 @@ const SingleItem = () => {
 };
 
 export default SingleItem;
-// {
-//   /* <p>{item.name}</p>
-//           <button
-//             type="button"
-//             onClick={() => navigate('OwnerProfile', { state: { item } })}
-//           >
-//             <p>Owner: {item.users.username}</p>
-//           </button>
 
-//           <p>{item.description}</p>
-//           <img src={item.image_url} alt="" />
-//           {user ? (
-//             <ToggleWishlistButton userId={user.id} itemId={item.id} />
-//           ) : (
-//             <></>
-//           )} */
-// }

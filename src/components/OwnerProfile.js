@@ -15,9 +15,9 @@ const OwnerProfile = ({ state }) => {
       try {
         setLoading(true);
         let { data, error, status } = await supabase
-          .from("users")
-          .select("*")
-          .eq("id", item.ownerId)
+          .from('users')
+          .select('*')
+          .eq('id', item.ownerId)
           .single();
 
         if (error && status !== 406) {

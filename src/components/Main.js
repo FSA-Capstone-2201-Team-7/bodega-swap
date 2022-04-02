@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import LoadingPage from './LoadingPage';
 import Card from './Card';
+import { ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/outline';
 import { Link } from 'react-router-dom';
 import StepBar from './StepBar';
 import { useNavigate } from 'react-router-dom';
@@ -11,8 +12,49 @@ const Main = () => {
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
+  const [users, setUsers] = useState([]);
   const navigate = useNavigate();
   const user = supabase.auth.user();
+
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const topAccounts = [];
+        let userNumbers = [];
+        const { data } = await supabase.from('users').select();
+
+        if (data) {
+          data.map((user) => {
+            userNumbers.push(user.swaps_completed);
+          });
+          userNumbers = userNumbers
+            .sort((a, b) => {
+              return b - a;
+            })
+            .slice(0, 3);
+        }
+        if (userNumbers && data) {
+          userNumbers.map((num) => {
+            if (topAccounts.length !== 3) {
+              data.forEach((user) => {
+                if (num === user.swaps_completed) {
+               
+                  topAccounts.push({...user, item: {ownerId: user.id}}  )
+                }
+              });
+            }
+          });
+        }
+
+        setUsers(topAccounts);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getUsers();
+  }, []);
+  
+
 
   useEffect(() => {
     const getItems = async () => {
@@ -86,7 +128,7 @@ const Main = () => {
   }, [list, getImages]);
 
   const recentlyadded = getImages.slice(getImages.length - 14);
- 
+  
   return loading ? (
     <LoadingPage />
   ) : (
@@ -129,6 +171,14 @@ const Main = () => {
               </div>
             );
           })}
+        </div>
+        <div className="col-span-2">
+          <div className="hero w-full">
+            <div className="h-56"></div>
+            <div className="hero-overlay bg-indigo-50 pt-10">
+              <StepBar />
+            </div>
+          </div>
         </div>
         <div className="text-2xl font-semibold mb-4 mt-6">Recently Added</div>
         <section className="gallery bg-indigo-50">
@@ -261,13 +311,96 @@ const Main = () => {
         </section>
       </div>
 
-      <StepBar />
       <div className="text-2xl font-semibold mb-4 mt-6">Top Accounts</div>
 
-      <div className="col-span-2">
+      <div className="row-span-2">
         <div className="hero w-full">
           <div className="h-56"></div>
-          <div class="hero-overlay bg-gray-200"></div>
+          <div className="hero-overlay bg-indigo-50 pt-10 pb-10 flex ">
+            {users.map((account, i) => {
+              console.log(account)
+              const item = account.item
+              return (
+                <div
+                  key={i}
+                  className="card w-96 bg-base-100 shadow-xl image-full"
+                >
+                  <figure>
+                    <img src={account.avatarUrl} alt="Shoes" />
+                  </figure>
+                  <div className="card-body">
+                    <h2 className="card-title">{account.username}</h2>
+                    <p></p>
+
+                    <div className="stats shadow">
+                      <div className="stat">
+                        <div className="stat-title">Total Swaps Completed</div>
+                        <div className="stat-value flex justify-center">
+                          {account.swaps_completed}
+                        </div>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          className="inline-block w-8 h-8 stroke-current items-center"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                          ></path>
+                        </svg>
+
+                        <div className="card-actions justify-end">
+                          <button
+                            className="btn btn-primary"
+                            //need to get item tied to user to avoid error
+                            onClick={() =>
+                              navigate(`/items/${1}/OwnerProfile`, {
+                                state: { item },
+                              })
+                            }
+                          >
+                            Go To Account
+                          </button>
+                        </div>
+                      </div>
+                      <div className="stat">
+                        <div className="stat-title">Reputation</div>
+                        <div className="flex space-x-4">
+                          <div>
+                            {' '}
+                            <ThumbDownIcon className="h-8 fill-yellow-400 stroke-yellow-500" />
+                            <p>
+                              {Math.ceil(
+                                100 *
+                                  (account.downvotes /
+                                    (account.upvotes + account.downvotes))
+                              )}
+                              %
+                            </p>
+                          </div>
+                          <div>
+                            {' '}
+                            <ThumbUpIcon className="h-8 fill-yellow-400 stroke-yellow-500" />
+                            <p>
+                              {Math.ceil(
+                                100 *
+                                  (account.upvotes /
+                                    (account.upvotes + account.downvotes))
+                              )}
+                              %
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
