@@ -53,58 +53,60 @@ function Footer() {
             </div>
           </div>
         </div>
-        <div className="hidden md:flex md:col-span-2 md:justify-between">
-          <ul className="flex-cols  md:pl-14 text-indigo-300 text-sm ">
+        <div className="hidden md:flex md:col-span-2 md:justify-between  duration-200">
+          <ul className="flex-cols  md:pl-14 text-indigo-300 text-sm  ">
             <h3 className="font-semibold pb-2 text-indigo-500">Shop</h3>
-            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400 ">
+            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400  duration-200">
               Mobile App
             </li>
-            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400 ">
+            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400  duration-200">
               Categories
             </li>
-            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400 ">
+            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400  duration-200">
               Shop Local
             </li>
           </ul>
           <ul className="flex-cols text-indigo-300 text-sm ">
             <h3 className="font-semibold pb-2 text-indigo-500">Support</h3>
-            <li className="cursor-pointer hover:scale-110  hover:text-indigo-400 ">
+            <li className="cursor-pointer hover:scale-110  hover:text-indigo-400  duration-200">
               Contact Us
             </li>
-            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400 ">
+            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400  duration-200">
               Help Center
             </li>
-            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400 ">
+            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400  duration-200">
               Swapper Protection
             </li>
-            <li className="cursor-pointer hover:scale-110">Safty Guidelines</li>
+            <li className="cursor-pointer hover:scale-110 duration-200 hover:text-indigo">
+              Safty Guidelines
+            </li>
           </ul>
           <ul className="flex-cols text-indigo-300  text-sm">
             <h3 className="font-semibold pb-2 text-indigo-500">
               Policy Center
             </h3>
-            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400 ">
+            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400  duration-200">
               Terms of Service
             </li>
-            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400 ">
+            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400  duration-200">
               Privacy
             </li>
-            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400 ">
+            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400  duration-200">
               Prohibited Items
             </li>
-            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400 ">
+            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400  duration-200">
               Prohibited Conduct
             </li>
           </ul>
           <ul className="flex-cols md:pr-14 lg:pr-24 text-indigo-300 text-sm">
             <h3 className="font-semibold pb-2 text-indigo-500">Company</h3>
-            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400 ">
+            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400  duration-200">
               About Us
             </li>
-            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400 ">
-              Blo4
+            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400  duration-200">
+              Blog
             </li>
-            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400 ">
+            <li className="cursor-pointer hover:scale-110 hover:text-indigo-400  duration-200">
               Careers
             </li>
           </ul>

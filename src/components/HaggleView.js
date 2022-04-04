@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
-import { useLocation, useNavigate } from 'react-router-dom';
-import LoadingPage from './LoadingPage';
-import Chat from './Chat';
-import Card from './Card';
-import HaggleInventory from './HaggleInventory';
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
+import { useLocation, useNavigate } from "react-router-dom";
+import LoadingPage from "./LoadingPage";
+import Chat from "./Chat";
+import Card from "./Card";
+import HaggleInventory from "./HaggleInventory";
 
 const HaggleView = ({ state }) => {
   const location = useLocation(null);
-  const { swap = '' } = location.state || {};
+  const { swap = "" } = location.state || {};
   const [loading, setLoading] = useState(true);
   const [userObj, setUserObj] = useState({});
   const [userItem, setUserItem] = useState([]);
   const [userAccept, setUserAccept] = useState({});
-  const [notUserId, setNotUserId] = useState('');
+  const [notUserId, setNotUserId] = useState("");
   const [traderObj, setTraderObj] = useState({});
   const [traderItem, setTraderItem] = useState([]);
   const [traderAccept, setTraderAccept] = useState({});
@@ -25,10 +25,10 @@ const HaggleView = ({ state }) => {
     const fetchSwap = async () => {
       try {
         const { data } = await supabase
-          .from('swaps')
+          .from("swaps")
           .select()
           .single()
-          .eq('id', swap.id);
+          .eq("id", swap.id);
 
         setSwap(data);
       } catch (error) {
@@ -43,7 +43,7 @@ const HaggleView = ({ state }) => {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from('users')
+          .from("users")
           .select(
             `
           avatarUrl,
@@ -51,7 +51,7 @@ const HaggleView = ({ state }) => {
           id
           `
           )
-          .eq('id', user.id);
+          .eq("id", user.id);
 
         setUserObj(...data);
         if (swapHaggle.outbound_id === user.id) {
@@ -63,11 +63,11 @@ const HaggleView = ({ state }) => {
           setTraderItem(swapHaggle.inbound_items);
           setUserAccept({
             userAccept: swapHaggle.outbound_accept,
-            inOrOut: 'outbound',
+            inOrOut: "outbound",
           });
           setTraderAccept({
             userAccept: swapHaggle.inbound_accept,
-            inOrOut: 'inbound',
+            inOrOut: "inbound",
           });
         }
         if (swapHaggle.inbound_id === user.id) {
@@ -79,11 +79,11 @@ const HaggleView = ({ state }) => {
           setTraderItem(swapHaggle.outbound_items);
           setUserAccept({
             userAccept: swapHaggle.inbound_accept,
-            inOrOut: 'inbound',
+            inOrOut: "inbound",
           });
           setTraderAccept({
             userAccept: swapHaggle.outbound_accept,
-            inOrOut: 'outbound',
+            inOrOut: "outbound",
           });
         }
       } catch (error) {
@@ -110,7 +110,7 @@ const HaggleView = ({ state }) => {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from('users')
+          .from("users")
           .select(
             `
           avatarUrl,
@@ -119,7 +119,7 @@ const HaggleView = ({ state }) => {
 
           `
           )
-          .eq('id', notUserId);
+          .eq("id", notUserId);
 
         setTraderObj(...data);
       } catch (error) {
@@ -141,11 +141,11 @@ const HaggleView = ({ state }) => {
       try {
         if (swapHaggle.inbound_accept && swapHaggle.outbound_accept) {
           await supabase
-            .from('swaps')
+            .from("swaps")
             .update({
-              status: 'agreed',
+              status: "agreed",
             })
-            .eq('id', swapHaggle.id);
+            .eq("id", swapHaggle.id);
         }
       } catch (error) {
         console.error(error);
@@ -156,55 +156,55 @@ const HaggleView = ({ state }) => {
 
   const handleAcceptance = async (check) => {
     try {
-      if (check.inOrOut === 'inbound') {
+      if (check.inOrOut === "inbound") {
         await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             inbound_accept: true,
           })
-          .eq('id', swapHaggle.id);
+          .eq("id", swapHaggle.id);
       }
 
-      if (check.inOrOut === 'outbound') {
+      if (check.inOrOut === "outbound") {
         await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             outbound_accept: true,
           })
-          .eq('id', swapHaggle.id);
+          .eq("id", swapHaggle.id);
       }
     } catch (error) {
       console.error(error);
     }
   };
   supabase
-    .from('swaps')
-    .on('UPDATE', (button) => {
+    .from("swaps")
+    .on("UPDATE", (button) => {
       setSwap(button.new);
     })
     .subscribe();
 
   const handleConfimation = async (check) => {
     try {
-      if (check === 'inbound') {
+      if (check === "inbound") {
         await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             inbound_confirm: true,
           })
-          .eq('id', swapHaggle.id);
+          .eq("id", swapHaggle.id);
       } else {
         await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             outbound_confirm: true,
           })
-          .eq('id', swapHaggle.id);
+          .eq("id", swapHaggle.id);
       }
     } catch (error) {
       console.error(error);
     }
-    navigate('/messages', { state: { swap } });
+    navigate("/messages", { state: { swap } });
   };
 
   const handleRemove = async (item, allItems, inOrOut) => {
@@ -347,11 +347,13 @@ const HaggleView = ({ state }) => {
         </div>
       </div>
 
-      {/* <div className="drawer drawer-end absolute h-96">
+
+      <div className="lg:hidden drawer drawer-end absolute h-96">
+
         <div className="drawer-content">
           <label
             htmlFor="my-drawer-4"
-            className="btn btn-primary drawer-button pr-5 pl-5 w-24 absolute right-1 top-1  "
+            className="btn btn-primary drawer-button pr-5 pl-5 w-24 absolute right-1 top-1"
           >
             Menu
           </label>
