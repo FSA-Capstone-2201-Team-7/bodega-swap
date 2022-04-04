@@ -7,7 +7,7 @@ import {
 } from "@heroicons/react/outline";
 function StepBar() {
   return (
-    <div className="w-full py-6">
+    <div className="w-full md:py-10 lg:py-16 py-6">
       <div className=" flex ">
         <div className="w-1/4">
           <div className="relative mb-2">

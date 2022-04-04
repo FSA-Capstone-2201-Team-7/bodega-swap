@@ -24,7 +24,7 @@ const NavBar = ({ session }) => {
         </Link>
 
         <Link
-          className=" font-normal text-gray-500 md:pl-5 hover:text-indigo-500  hover:scale-105 duration-300 ease-out"
+          className=" font-normal text-gray-500 md:pl-5 hover:text-indigo-500  hover:scale-105 duration-200 ease-out"
           to="/items"
         >
           Explore
@@ -37,7 +37,7 @@ const NavBar = ({ session }) => {
       {!session ? (
         <nav className="flex items-center justify-end space-x-1 md:space-x-4 text-white">
           <Link
-            className="py-1 md:py-1.5 px-1.5 md:px-3 hover:bg-indigo-500 bg-indigo-600 rounded-sm"
+            className="py-1 md:py-1.5 px-1.5 md:px-3 hover:bg-indigo-500 bg-indigo-600 border rounded-sm border-indigo-500"
             to="login"
           >
             Login
@@ -71,7 +71,7 @@ const NavBar = ({ session }) => {
               <ul className="relative">
                 <li className="relative">
                   <Link
-                    class="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    class="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-200 ease-in-out"
                     to="/myAccount"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
@@ -81,7 +81,7 @@ const NavBar = ({ session }) => {
                 </li>
                 <li className="relative">
                   <Link
-                    className="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    className="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-200 ease-in-out"
                     to="/wishlist"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
@@ -91,7 +91,7 @@ const NavBar = ({ session }) => {
                 </li>
                 <li className="relative">
                   <Link
-                    className="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    className="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-200 ease-in-out"
                     to="/messages"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
@@ -131,13 +131,13 @@ const NavBar = ({ session }) => {
 
           <nav className="hidden md:flex md:items-center md:justify-end md:space-x-4 text-gray-500">
             <Link to="/wishlist">
-              <FavoriteBorderIcon className="hover:scale-110  hover:text-indigo-500  hover:transition duration-300 ease-out" />
+              <FavoriteBorderIcon className="hover:scale-110  hover:text-indigo-500  hover:transition duration-200 ease-out" />
             </Link>
             <Link to="/messages">
-              <ChatAltIcon className="h-6 hover:text-indigo-500 hover:transition duration-300 ease-out hover:scale-110" />
+              <ChatAltIcon className="h-6 hover:text-indigo-500 hover:transition duration-200 ease-out hover:scale-110" />
             </Link>
             <Link to="/myAccount">
-              <PersonIcon className="hover:scale-110 hover:text-indigo-500  hover:transition duration-300 ease-out" />
+              <PersonIcon className="hover:scale-110 hover:text-indigo-500  hover:transition duration-200 ease-out" />
             </Link>
             <Link to="/createListing">
               {" "}
