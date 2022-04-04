@@ -66,7 +66,7 @@ const Chat = (props) => {
     };
 
     getUserMessages();
-  }, [conversationId]);
+  }, [conversationId, messages]);
 
   useEffect(() => {
     const scrollToBottom = () => {
