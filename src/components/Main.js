@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
-import LoadingPage from "./LoadingPage";
-import Card from "./Card";
-import { ThumbDownIcon, ThumbUpIcon } from "@heroicons/react/outline";
-import { Link } from "react-router-dom";
-import StepBar from "./StepBar";
-import { useNavigate } from "react-router-dom";
-import "../main.css";
-const Main = () => {
+
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import LoadingPage from './LoadingPage';
+import Card from './Card';
+import { ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/outline';
+import { Link } from 'react-router-dom';
+import StepBar from './StepBar';
+import { useNavigate } from 'react-router-dom';
+import '../main.css';
+const Main = (props) => {
+
   const [getImages, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
@@ -15,7 +17,7 @@ const Main = () => {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
   const user = supabase.auth.user();
-
+  
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -347,6 +349,7 @@ const Main = () => {
                     </p>
                   </div>
 
+
                   <div className="card-actions justify-center">
                     <button
                       className="bg-indigo-600 rounded-lg text-base text-white px-2 py-2"
@@ -387,6 +390,7 @@ const Main = () => {
                         )}
                         %
                       </p>
+
                     </div>
                   </div>
                 </div>

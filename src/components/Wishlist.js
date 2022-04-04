@@ -15,7 +15,7 @@ const Wishlist = () => {
         setLoading(true);
         let { data, error, status } = await supabase
           .from("wishlist_items")
-          .select(`*, items(id, name, image_url, description, listed)`)
+          .select(`*, items(id, name, image_url, description, listed, ownerId)`)
           .eq("user_id", user.id);
 
         if (error && status !== 406) {
@@ -55,6 +55,7 @@ const Wishlist = () => {
     }
   };
 
+  console.log(wishlist)
   return loading ? (
     <LoadingPage />
   ) : wishlist.length ? (
@@ -63,20 +64,22 @@ const Wishlist = () => {
         <h3 className="md:col-span-2 col-span-1 lg:col-span-3 text-2xl ">
           My Wishlist
         </h3>
-        {wishlist.map((item, idx) => {
+        {wishlist.map((itemloop, idx) => {
+          const item = itemloop.items
+          console.log(item)
           return (
             <div key={idx} className="rounded overflow-hidden shadow-xl">
-              <Link to={`/items/${item.items.id}`}>
-                <img className="h-80 w-96" src={item.items.image_url} alt="" />
+              <Link to={`/items/${itemloop.items.id}`}>
+                <img className="h-80 w-96" src={itemloop.items.image_url} alt="" />
               </Link>
               <div className="card-body flex flex-row justify-between pb-1 ">
-                <p className="card-title ">{item.items.name}</p>
+                <p className="card-title ">{itemloop.items.name}</p>
               </div>
               <div className="card-actions  justify-between mt-5 pb-3 px-4  md:px-6">
                 <button
                   type="button"
                   className=" flex cursor-pointer rounded-lg bg-indigo-500 px-4 py-2 text-sm text-white hover:bg-red-500"
-                  onClick={(e) => handleRemove(e, item.items.id)}
+                  onClick={(e) => handleRemove(e, itemloop.items.id)}
                 >
                   <span>Wishlist</span> <XIcon className="inline-flex h-5" />{" "}
                 </button>
