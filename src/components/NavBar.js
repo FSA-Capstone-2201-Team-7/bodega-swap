@@ -71,7 +71,7 @@ const NavBar = ({ session }) => {
               <ul className="relative">
                 <li className="relative">
                   <Link
-                    class="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    class="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-200 ease-in-out"
                     to="/myAccount"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
@@ -81,7 +81,7 @@ const NavBar = ({ session }) => {
                 </li>
                 <li className="relative">
                   <Link
-                    className="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    className="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-200 ease-in-out"
                     to="/wishlist"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
@@ -91,7 +91,7 @@ const NavBar = ({ session }) => {
                 </li>
                 <li className="relative">
                   <Link
-                    className="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                    className="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-200 ease-in-out"
                     to="/messages"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"
