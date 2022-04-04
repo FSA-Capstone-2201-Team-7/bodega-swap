@@ -347,48 +347,56 @@ const HaggleView = ({ state }) => {
         </div>
       </div>
 
-      {/* <div className="drawer drawer-end absolute h-96">
+      <div className="drawer drawer-end absolute h-96">
         <div className="drawer-content">
           <label
             htmlFor="my-drawer-4"
-            className="btn btn-primary drawer-button pr-3"
-            onClick={() => setInventory(userObj.inOrOut)}
+            className="btn btn-primary drawer-button pr-5 pl-5 w-24 absolute right-1 top-1  "
           >
             Menu
           </label>
+          {userAccept.userAccept ? (
+            traderAccept.userAccept ? (
+              <div>
+                <button
+                  type="button"
+                  className="btn pr-5 pl-5 w-24 absolute right-1 top-20"
+                  onClick={() => handleConfimation(userAccept.inOrOut)}
+                >
+                  Mark Complete
+                </button>
+                <div className=" h-20 card bg-base-300 rounded-box place-items-center text-lg font-semibold mt-3">
+                  <p className="py-4">
+                    By clicking confirm you both have met each other
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <button className="btn pr-5 pl-5 w-24 absolute right-1 top-20 loading">
+                Waiting...
+              </button>
+            )
+          ) : (
+            <button
+              className="pr-5 pl-5 w-24 absolute right-1 top-20 btn "
+              onClick={() => handleAcceptance(userAccept)}
+            >
+              Accept Terms
+            </button>
+          )}
         </div>
         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-side overflow-y-auto pl-96 ">
+        <div className="drawer-side overflow-y-auto w-1/2 ">
           <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
 
-          <ul className="menu absolute overflow-y-auto md:h-auto mb-56 h-96 bg-base-100 text-base-content  pl-24 pr-28 ">
-            {userAccept.userAccept ? (
-              traderAccept.userAccept ? (
-                <div>
-                  <button
-                    type="button"
-                    className="btn btn-xs sm:btn-sm md:btn-md w-full"
-                    onClick={() => handleConfimation(userAccept.inOrOut)}
-                  >
-                    Mark Complete
-                  </button>
-                  <div className=" h-20 card bg-base-300 rounded-box place-items-center text-lg font-semibold mt-3">
-                    <p className="py-4">
-                      By clicking confirm you both have met each other
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <button className="btn loading">Waiting...</button>
-              )
-            ) : (
-              <button
-                className="btn btn-xs sm:btn-sm md:btn-md"
-                onClick={() => handleAcceptance(userAccept)}
-              >
-                Accept Terms
-              </button>
-            )}
+          <ul className="menu absolute overflow-y-auto md:h-auto mb-56 h-96 bg-base-100 text-base-content w-5/6 pl-5 pr-5">
+            <label
+              htmlFor="my-drawer-4"
+              className="btn btn-primary relative drawer-button pr-5 pl-5 ml-5 mt-5"
+            >
+              close
+            </label>
+
             <p className="text-xl font-semibold mb-4 mt-6">Current Trade</p>
             <div className="flex w-full">
               <div className="grid h-20 flex-grow card bg-base-300 rounded-box place-items-center text-xl font-semibold">
@@ -401,15 +409,19 @@ const HaggleView = ({ state }) => {
             </div>
 
             <div className="flex grid grid-cols-2 pt-5">
-              <div className="avatar">
-                <div className="w-48 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                  <img
-                    src={userItem.image_url}
-                    alt="..."
-                    className="shadow h-48 w-48 rounded-full"
-                  />
+           
+                <div className="avatar">
+                  <div className="w-48 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                 
+                   
+                    <img
+                      src={userItem.image_url}
+                      alt="..."
+                      className="shadow h-48 w-48 rounded-full"
+                    />
+                  </div>
                 </div>
-              </div>
+         
               <div className="avatar">
                 <div className="w-48 rounded-full ring ring-primary ring-offset-base-500 ring-offset-2">
                   <img
@@ -440,13 +452,12 @@ const HaggleView = ({ state }) => {
                 <div className="grid h-20 card bg-base-300 rounded-box place-items-center ">
                   {traderObj.username} Inventory
                 </div>
-                <HaggleInventory user={traderObj.id} swap={swap} />
+                <HaggleInventory user={notUserId} />
               </div>
             </label>
-          
           </ul>
         </div>
-      </div> */}
+      </div>
 
       <Chat
         MyUserName={userObj.username}
@@ -529,7 +540,6 @@ const HaggleView = ({ state }) => {
                   </div>
                 );
               })}
-  
             </div>
             {/* <div className="bg-gray-100 w-full flex  justify-center">
               <Card id={traderItem.id} imageUrl={traderItem.image_url} />
