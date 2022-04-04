@@ -4,15 +4,15 @@ import Card from "./Card";
 import LoadingPage from "./LoadingPage";
 const HaggleInventory = (props) => {
   const [userItems, setUserItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setloading] = useState(true);
   const [inventorySwap, setSwap] = useState({})
   const userInfo = supabase.auth.user();
-  let { user, swap, setItem } = props;
+  let { user, swap, setItem, inOrOut } = props;
 
   useEffect(() => {
     const getInventory = async () => {
       try {
-        setLoading(true);
+        setloading(true);
         const { data } = await supabase
           .from("items")
           .select("*")
@@ -22,30 +22,79 @@ const HaggleInventory = (props) => {
         }
       } catch (error) {
         console.error(error);
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
     getInventory();
   }, [user]);
+  useEffect(() => {
+    const fetchSwap = async () => {
+      try {
+        setSwap(swap);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setloading(false);
+      }
+    };
+    fetchSwap();
+  }, [swap]);
 
   const handleSwitch = async (item) => {
     try {
-      // if(item) {
-      //   const {data} = await supabase
-      //   .from('swaps')
-      //   .update({
+      if(item && inOrOut === 'outbound') {
+      await supabase
+        .from('swaps')
+        .update({
+      inbound_offer: item
+        })
+      .eq('id', inventorySwap.id);
+      supabase
+        .from('swaps')
+        .on('UPDATE', (update) => {
+          setSwap(update.new);
+          setItem(update.new.inbound_offer);
+          console.log('update', update.new);
+        })
+        .subscribe();
 
-      //   })
-      // }
-      setItem(item)
-      console.log('item obj invetory', item)
-      console.log('swap in inventory', swap)
+      
+       }
+      if(item && inOrOut === 'inbound') {
+       await supabase
+         .from('swaps')
+         .update({
+           outbound_offer: item,
+         })
+         .eq('id', inventorySwap.id);
+          supabase
+            .from('swaps')
+            .on('UPDATE', (update) => {
+           setSwap(update.new);
+              setItem(update.new.outbound_offer)
+              console.log('update', update.new);
+            })
+            .subscribe();
+       
+      }
+     
+      // console.log('item obj invetory', item);
+      // console.log('swap in inventory', swap);
     } catch (error) {
       console.error(error)
     }
   };
-  console.log(userInfo.id)
+  // supabase
+  //   .from('swaps')
+  //   .on('UPDATE', (update) => {
+  //     setSwap(update.new)
+  //     console.log('update', update.new);
+  //   })
+  //   .subscribe();
+  
+
+
+  // console.log('this', swap)
+  // console.log('inventoryswap', inventorySwap);
 
   return loading ? (
     <LoadingPage />

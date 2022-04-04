@@ -79,7 +79,7 @@ const AllItems = ({state}) => {
     categoryFromMain()
   }, [image])
 
-  
+  console.log('proposal', items)
   return (
     <div>
       {loading ? (

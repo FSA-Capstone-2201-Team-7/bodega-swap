@@ -201,7 +201,7 @@ const HaggleView = ({ state }) => {
 
   //testing
   // console.log('userObj', userObj);
-  // console.log('useraccept', userAccept.inOrOut);
+   console.log('useraccept', userAccept);
   // console.log('userItem', userItem);
   //console.log('TraderObj', traderObj);
   //console.log('Traderaccept', traderAccept);
@@ -278,11 +278,12 @@ const HaggleView = ({ state }) => {
           <div className="drawer-side">
             <label htmlFor="my-drawer" className="drawer-overlay"></label>
 
-            <ul className="menu p-4 overflow-y-auto w-full md:w-auto  bg-base-100 text-base-content mr-12">
+            <ul className="menu p-4 overflow-y-auto w-full md:w-auto  bg-base-100 text-base-content">
               <label
                 htmlFor="my-drawer"
                 className="btn btn-primary drawer-button"
                 onClick={() => setInventory('')}
+
               >
                 Close
               </label>
@@ -292,7 +293,7 @@ const HaggleView = ({ state }) => {
         </div>
       </div>
 
-      <div className="drawer drawer-end absolute h-96">
+      {/* <div className="drawer drawer-end absolute h-96">
         <div className="drawer-content">
           <label
             htmlFor="my-drawer-4"
@@ -388,24 +389,10 @@ const HaggleView = ({ state }) => {
                 <HaggleInventory user={traderObj.id} swap={swap} />
               </div>
             </label>
-            {/* <div class="flex flex-col w-full pt-10">
-              <button type='button' class="grid h-20 card bg-base-300 rounded-box place-items-center">
-                Your Inventory
-              </button>
-              <HaggleInventory
-                user={userObj.id}
-                setItem={setTraderItem}
-                swap={swap}
-              />
-              <div class="divider"></div>
-              <div class="grid h-20 card bg-base-300 rounded-box place-items-center">
-                {traderObj.username} Inventory
-              </div>
-              <HaggleInventory user={traderObj.id} swap={swap} />
-            </div> */}
+          
           </ul>
         </div>
-      </div>
+      </div> */}
 
       <Chat
         MyUserName={userObj.username}
@@ -463,7 +450,7 @@ const HaggleView = ({ state }) => {
           <div className="drawer-side">
             <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
 
-            <ul className="menu p-4 overflow-y-auto w-full md:w-auto bg-base-100 text-base-content ml-12">
+            <ul className="menu p-4 overflow-y-auto w-full md:w-auto bg-base-100 text-base-content">
               <label
                 htmlFor="my-drawer-4"
                 className="btn btn-primary drawer-button"
@@ -475,6 +462,7 @@ const HaggleView = ({ state }) => {
                 user={userObj.id}
                 setItem={setTraderItem}
                 swap={swap}
+                inOrOut={userAccept.inOrOut}
               />
             </ul>
           </div>

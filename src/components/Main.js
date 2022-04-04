@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import StepBar from './StepBar';
 import { useNavigate } from 'react-router-dom';
 import '../main.css';
-const Main = () => {
+const Main = (props) => {
   const [getImages, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
@@ -15,7 +15,7 @@ const Main = () => {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
   const user = supabase.auth.user();
-
+  
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -128,7 +128,7 @@ const Main = () => {
   }, [list, getImages]);
 
   const recentlyadded = getImages.slice(getImages.length - 14);
-  
+  console.log(user)
   return loading ? (
     <LoadingPage />
   ) : (
@@ -353,17 +353,21 @@ const Main = () => {
                         </svg>
 
                         <div className="card-actions justify-end">
-                          <button
-                            className="btn btn-primary"
-                            //need to get item tied to user to avoid error
-                            onClick={() =>
-                              navigate(`/items/${1}/OwnerProfile`, {
-                                state: { item },
-                              })
-                            }
-                          >
-                            Go To Account
-                          </button>
+                          {user ? (
+                            <button
+                              className="btn btn-primary"
+                              //need to get item tied to user to avoid error
+                              onClick={() =>
+                                navigate(`/items/${1}/OwnerProfile`, {
+                                  state: { item },
+                                })
+                              }
+                            >
+                              Go To Account
+                            </button>
+                          ) : (
+                            <></>
+                          )}
                         </div>
                       </div>
                       <div className="stat">
