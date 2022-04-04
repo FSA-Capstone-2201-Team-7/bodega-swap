@@ -6,19 +6,19 @@ import Chat from './Chat';
 import Card from './Card';
 import HaggleInventory from './HaggleInventory';
 
+
 const HaggleView = ({ state }) => {
   const location = useLocation(null);
   const { swap = '' } = location.state || {};
   const [loading, setLoading] = useState(true);
   const [userObj, setUserObj] = useState({});
-  const [userItem, setUserItem] = useState({});
+  const [userItem, setUserItem] = useState([]);
   const [userAccept, setUserAccept] = useState({});
   const [notUserId, setNotUserId] = useState('');
   const [traderObj, setTraderObj] = useState({});
-  const [traderItem, setTraderItem] = useState({});
+  const [traderItem, setTraderItem] = useState([]);
   const [traderAccept, setTraderAccept] = useState({});
   const [swapHaggle, setSwap] = useState({});
-  const [inventory, setInventory] = useState('');
   const user = supabase.auth.user();
   const navigate = useNavigate();
 
@@ -53,11 +53,15 @@ const HaggleView = ({ state }) => {
           `
           )
           .eq('id', user.id);
+      
         setUserObj(...data);
         if (swapHaggle.outbound_id === user.id) {
-          setUserItem({ ...swapHaggle.outbound_offer });
+          // setUserItem({ ...swapHaggle.outbound_offer });
+          // setTraderItem({ ...swapHaggle.inbound_offer });
+
           setNotUserId(swapHaggle.inbound_id);
-          setTraderItem({ ...swapHaggle.inbound_offer });
+          setUserItem(swapHaggle.outbound_items);
+          setTraderItem(swapHaggle.inbound_items);
           setUserAccept({
             userAccept: swapHaggle.outbound_accept,
             inOrOut: 'outbound',
@@ -68,9 +72,12 @@ const HaggleView = ({ state }) => {
           });
         }
         if (swapHaggle.inbound_id === user.id) {
-          setUserItem({ ...swapHaggle.inbound_offer });
+          // setUserItem({ ...swapHaggle.inbound_offer });
+          // setTraderItem({ ...swapHaggle.outbound_offer });
+
           setNotUserId(swapHaggle.outbound_id);
-          setTraderItem({ ...swapHaggle.outbound_offer });
+          setUserItem(swapHaggle.inbound_items);
+          setTraderItem(swapHaggle.outbound_items);
           setUserAccept({
             userAccept: swapHaggle.inbound_accept,
             inOrOut: 'inbound',
@@ -95,6 +102,8 @@ const HaggleView = ({ state }) => {
     user.id,
     swapHaggle.inbound_accept,
     swapHaggle.outbound_accept,
+    swapHaggle.outbound_items,
+    swapHaggle.inbound_items,
   ]);
 
   useEffect(() => {
@@ -201,13 +210,14 @@ const HaggleView = ({ state }) => {
 
   //testing
   // console.log('userObj', userObj);
-   console.log('useraccept', userAccept);
-  // console.log('userItem', userItem);
+  //console.log('useraccept', userAccept);
+  //console.log('userItem', userItem);
   //console.log('TraderObj', traderObj);
   //console.log('Traderaccept', traderAccept);
-  // console.log('TraderItem', traderItem);
+   //console.log('TraderItem', traderItem);
   // console.log('status, ', swap.status);
   //console.log('haggle', swapHaggle)
+  // console.log(swap);
 
   return loading ? (
     <LoadingPage />
@@ -256,7 +266,6 @@ const HaggleView = ({ state }) => {
               <label
                 htmlFor="my-drawer"
                 className="btn btn-primary drawer-button "
-                onClick={() => setInventory(traderObj.inOrOut)}
               >
                 See Other Items
               </label>
@@ -267,13 +276,28 @@ const HaggleView = ({ state }) => {
                 Accept Terms
               </button>
             </div>
-            <div className="bg-indigo-300 w-full grid grid-rows-1 justify-center">
-              <Card
+            <div className="pt-5 pb-5 flex flex-wrap justify-center">
+              {userItem.map((item) => {
+                return (
+                  <div key={item.id}>
+                    <img
+                      src={item.image_url}
+                      alt=""
+                      className="shadow h-48 w-48 mask mask-squircle"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+            {/* <div className="bg-indigo-300 w-full grid grid-rows-1 justify-center">
+            
+              
+              <Card 
                 id={userItem.id}
                 imageUrl={userItem.image_url}
-                className="pb=12"
+                className=" shadow h-48 w-48 rounded-full"
               />
-            </div>
+            </div> */}
           </div>
           <div className="drawer-side">
             <label htmlFor="my-drawer" className="drawer-overlay"></label>
@@ -282,8 +306,6 @@ const HaggleView = ({ state }) => {
               <label
                 htmlFor="my-drawer"
                 className="btn btn-primary drawer-button"
-                onClick={() => setInventory('')}
-
               >
                 Close
               </label>
@@ -438,14 +460,43 @@ const HaggleView = ({ state }) => {
               <label
                 htmlFor="my-drawer-4"
                 className="btn btn-primary drawer-button"
-                onClick={() => setInventory(userObj.inOrOut)}
               >
                 My Items
               </label>
             </div>
-            <div className="bg-gray-100 w-full grid grid-rows-1 justify-center">
-              <Card id={traderItem.id} imageUrl={traderItem.image_url} />
+            <div className="pt-5 pb-5 flex flex-wrap justify-center">
+              {traderItem.map((item) => {
+                return (
+                  <div key={item.id}>
+                    <button className="btn btn-circle" onClick={() => console.log('this item', item)}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-3 w-3"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                    <img
+                      src={item.image_url}
+                      alt=""
+                      className="shadow h-48 w-48 mask mask-squircle relative"
+                    />
+                  </div>
+                );
+              })}
+              mee
             </div>
+            {/* <div className="bg-gray-100 w-full flex  justify-center">
+              <Card id={traderItem.id} imageUrl={traderItem.image_url} />
+            </div> */}
           </div>
           <div className="drawer-side">
             <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
@@ -454,15 +505,16 @@ const HaggleView = ({ state }) => {
               <label
                 htmlFor="my-drawer-4"
                 className="btn btn-primary drawer-button"
-                onClick={() => setInventory('')}
               >
                 Close
               </label>
               <HaggleInventory
                 user={userObj.id}
-                setItem={setTraderItem}
+                setUserItem={setUserItem}
+                setTraderItem={setTraderItem}
                 swap={swap}
                 inOrOut={userAccept.inOrOut}
+                items={traderItem}
               />
             </ul>
           </div>

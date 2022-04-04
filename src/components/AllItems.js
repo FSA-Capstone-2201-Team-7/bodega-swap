@@ -79,7 +79,7 @@ const AllItems = ({state}) => {
     categoryFromMain()
   }, [image])
 
-  console.log('proposal', items)
+  
   return (
     <div>
       {loading ? (
@@ -99,20 +99,22 @@ const AllItems = ({state}) => {
                     id={item.id}
                     imageUrl={item.image_url}
                     name={item.name}
-                
                     category={item.category}
                     ownerId={item.ownerId}
                     firstButton={
-                      
-                      <button
-                        type="button"
-                        className="bg-indigo-600 mb-2 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-md"
-                        onClick={() =>
-                          navigate("/createproposal", { state: { item } })
-                        }
-                      >
-                        Propose Swap
-                      </button>
+                      user && user.id !== item.ownerId ? (
+                        <button
+                          type="button"
+                          className="bg-indigo-600 mb-2 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-md"
+                          onClick={() =>
+                            navigate('/createproposal', { state: { item } })
+                          }
+                        >
+                          Propose Swap
+                        </button>
+                      ) : (
+                        <></>
+                      )
                     }
                     secondButton={
                       user && user.id !== item.ownerId ? (

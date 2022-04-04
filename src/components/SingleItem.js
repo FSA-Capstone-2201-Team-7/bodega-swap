@@ -86,16 +86,22 @@ const SingleItem = () => {
               <div className="flex justify-end my-2">
                 <ToggleWishlistButton userId={user.id} itemId={item.id} />
               </div>
+              
             ) : (
               <></>
             )}
-            <button
+            {user && user.id ? (
+               <button
               type="button"
               className="bg-indigo-600 mb-2 hover:bg-indigo-500 text-white font-bold py-2 px-4 mt-2 rounded-md"
               onClick={() => navigate("/createproposal", { state: { item } })}
             >
               Propose Swap
             </button>
+            ): (
+              <></>
+            )}
+           
           </div>
         </div>
       )}
