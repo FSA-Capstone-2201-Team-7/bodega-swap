@@ -108,9 +108,6 @@ const HaggleInventory = (props) => {
   ) : (
     <div>
       {userItems.map((item) => {
-        if(item === undefined) {
-          console.log('here')
-        }
         return (
           <div className="p-5" key={item.id}>
             <Card id={item.id} imageUrl={item.image_url} />
