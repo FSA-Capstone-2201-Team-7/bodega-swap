@@ -1,33 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '../supabaseClient';
 import Card from './Card';
 import LoadingPage from './LoadingPage';
 const HaggleInventory = (props) => {
-  const [userItems, setUserItems] = useState([]);
   const [loading, setloading] = useState(true);
+  const [userItems, setUserItems] = useState([]);
   const [inventorySwap, setSwap] = useState({});
-  const [ids, setIds] = useState([])
+  const [ids, setIds] = useState([]);
   const userInfo = supabase.auth.user();
-  let { user, swap, setUserItem, setTraderItem, inOrOut, items } = props;
+  let { user, swap, setTraderItem, inOrOut, items } = props;
 
   useEffect(() => {
     const getInventory = async () => {
       try {
+        let isMounted = true;
         setloading(true);
         let fetchIds = [];
-        const { data } = await supabase
-          .from('items')
-          .select('*')
-          .eq('ownerId', user);
-          if(data) {
+
+        if (isMounted) {
+          const { data } = await supabase
+            .from('items')
+            .select('*')
+            .eq('ownerId', user);
+          if (data) {
             setUserItems(data);
           }
-        if (items && data) {
-          
-          items.map((item) => {
-            fetchIds.push(item.id);
-          });
-          setIds(fetchIds);
+          if (items && data) {
+            items.forEach((item) => {
+              fetchIds.push(item.id);
+            });
+            setIds(fetchIds);
+          }
         }
       } catch (error) {
         console.error(error);
@@ -36,75 +39,61 @@ const HaggleInventory = (props) => {
       }
     };
     getInventory();
-  }, [user,items]);
+  }, [user, items]);
 
-  
   useEffect(() => {
     const fetchSwap = async () => {
       try {
         setSwap(swap);
       } catch (error) {
         console.error(error);
-      } finally {
-        setloading(false);
       }
     };
     fetchSwap();
   }, [swap]);
 
-
   const handleSwitch = async (item) => {
     try {
-      
-      
+      setloading(true);
       if (inOrOut === 'outbound') {
-        
         await supabase
           .from('swaps')
           .update({
             inbound_items: [...items, item],
           })
           .eq('id', inventorySwap.id);
-       
+
         supabase
           .from('swaps')
           .on('UPDATE', (update) => {
             setSwap(update.new);
-  
-           setTraderItem(update.new.inbound_items);
-  
+
+            setTraderItem(update.new.inbound_items);
           })
           .subscribe();
-         
       }
       if (inOrOut === 'inbound') {
-       await supabase
-         .from('swaps')
-         .update({
-           outbound_items: [...items, item],
-         })
-         .eq('id', inventorySwap.id);
-       
+        await supabase
+          .from('swaps')
+          .update({
+            outbound_items: [...items, item],
+          })
+          .eq('id', inventorySwap.id);
+
         supabase
           .from('swaps')
           .on('UPDATE', (update) => {
             setSwap(update.new);
-         
-           setTraderItem(update.new.outbound_items);
-         
+
+            setTraderItem(update.new.outbound_items);
           })
           .subscribe();
-          
       }
-      
-     
     } catch (error) {
       console.error(error);
-    } 
+    }
   };
-  
 
-  console.log(userItems)
   return loading ? (
     <LoadingPage />
   ) : (
@@ -123,11 +112,7 @@ const HaggleInventory = (props) => {
                 Add Item
               </button>
             ) : (
-              <button
-                type="button"
-                className="btn btn-wide w-full"
-                disabled
-              >
+              <button type="button" className="btn btn-wide w-full" disabled>
                 Already Up For Trade
               </button>
             )}

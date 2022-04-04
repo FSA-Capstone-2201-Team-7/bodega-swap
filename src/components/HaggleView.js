@@ -57,9 +57,6 @@ const HaggleView = ({ state }) => {
 
         setUserObj(...data);
         if (swapHaggle.outbound_id === user.id) {
-          // setUserItem({ ...swapHaggle.outbound_offer });
-          // setTraderItem({ ...swapHaggle.inbound_offer });
-
           setNotUserId(swapHaggle.inbound_id);
           setUserItem(swapHaggle.outbound_items);
           setTraderItem(swapHaggle.inbound_items);
@@ -73,9 +70,6 @@ const HaggleView = ({ state }) => {
           });
         }
         if (swapHaggle.inbound_id === user.id) {
-          // setUserItem({ ...swapHaggle.inbound_offer });
-          // setTraderItem({ ...swapHaggle.outbound_offer });
-
           setNotUserId(swapHaggle.outbound_id);
           setUserItem(swapHaggle.inbound_items);
           setTraderItem(swapHaggle.outbound_items);
@@ -133,11 +127,6 @@ const HaggleView = ({ state }) => {
     trader();
   }, [notUserId]);
 
-  // final settlement between users are set when both agree
-  // the database is updated from 'active' to 'processing?'
-  //this is completed when both users hand off the trade
-  // another method here may be to set it as complete and render a time
-  //limit for both the exchange items or repurcussion on there reputation status may happen
   useEffect(() => {
     const setAgreement = async () => {
       try {
@@ -211,7 +200,6 @@ const HaggleView = ({ state }) => {
 
   const handleRemove = async (item, allItems, inOrOut) => {
     try {
-      console.log(inOrOut);
       const filtered = allItems.filter((keep) => {
         if (keep.id !== item.id) {
           return keep;
@@ -225,8 +213,6 @@ const HaggleView = ({ state }) => {
             inbound_items: filtered,
           })
           .eq('id', swap.id);
-        console.log(data);
-        //setTraderItem;
       }
       if (filtered.length !== allItems.length && inOrOut === 'inbound') {
         const { data } = await supabase
@@ -235,7 +221,6 @@ const HaggleView = ({ state }) => {
             outbound_items: filtered,
           })
           .eq('id', swap.id);
-        console.log(data);
       }
     } catch (error) {
       console.error(error);
@@ -247,17 +232,6 @@ const HaggleView = ({ state }) => {
       setSwap(button.new);
     })
     .subscribe();
-
-  //testing
-  // console.log('userObj', userObj);
-  //console.log('useraccept', userAccept);
-  //console.log('userItem', userItem);
-  //console.log('TraderObj', traderObj);
-  //console.log('Traderaccept', traderAccept);
-  //console.log('TraderItem', traderItem);
-  // console.log('status, ', swap.status);
-  //console.log('haggle', swapHaggle)
-  // console.log(swap);
 
   return loading ? (
     <LoadingPage />
@@ -329,15 +303,6 @@ const HaggleView = ({ state }) => {
                 );
               })}
             </div>
-            {/* <div className="bg-indigo-300 w-full grid grid-rows-1 justify-center">
-            
-              
-              <Card 
-                id={userItem.id}
-                imageUrl={userItem.image_url}
-                className=" shadow h-48 w-48 rounded-full"
-              />
-            </div> */}
           </div>
           <div className="drawer-side">
             <label htmlFor="my-drawer" className="drawer-overlay"></label>
@@ -364,7 +329,7 @@ const HaggleView = ({ state }) => {
         sender={userObj.id}
         swap={swap}
       />
-      <div className="">
+      {/* <div className="">
         <button
           type="button"
           className="btn btn-primary drawer-button pr-5 pl-5 w-24"
@@ -459,7 +424,7 @@ const HaggleView = ({ state }) => {
                       <div>
                         {userItem.map((item) => {
                           return (
-                            <div className="avatar">
+                            <div className="avatar" key={item.id}>
                               <div className="w-48 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                                 <img
                                   src={item.image_url}
@@ -474,7 +439,7 @@ const HaggleView = ({ state }) => {
                       <div>
                         {traderItem.map((item) => {
                           return (
-                            <div className="avatar">
+                            <div className="avatar" key={item.id}>
                               <div className="w-48 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                                 <img
                                   src={item.image_url}
@@ -532,17 +497,7 @@ const HaggleView = ({ state }) => {
             </div>
           </div>
         </Dialog>
-      </Transition.Root>
-
-      {/* <Chat
-        MyUserName={userObj.username}
-        TheirUserName={traderObj.username}
-        MyAvatarUrl={userObj.avatarUrl}
-        TheirAvatarUrl={traderObj.avatarUrl}
-        receiver={traderObj.id}
-        sender={userObj.id}
-        swap={swap}
-      /> */}
+      </Transition.Root> */}
 
       <div className="relative hidden lg:flex lg:flex-col lg:justify-center">
         <div className="px-4 grid justify-center">
@@ -616,9 +571,6 @@ const HaggleView = ({ state }) => {
                 );
               })}
             </div>
-            {/* <div className="bg-gray-100 w-full flex  justify-center">
-              <Card id={traderItem.id} imageUrl={traderItem.image_url} />
-            </div> */}
           </div>
           <div className="drawer-side">
             <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
@@ -647,112 +599,3 @@ const HaggleView = ({ state }) => {
 };
 
 export default HaggleView;
-
-//  <div className="lg:hidden drawer drawer-end absolute h-96">
-//    <div className="drawer-content">
-//      <label
-//        htmlFor="my-drawer-4"
-//        className="btn btn-primary drawer-button pr-5 pl-5 w-24 absolute right-1 top-1"
-//      >
-//        Menu
-//      </label>
-//      {userAccept.userAccept ? (
-//        traderAccept.userAccept ? (
-//          <div>
-//            <button
-//              type="button"
-//              className="btn pr-5 pl-5 w-24 absolute right-1 top-20"
-//              onClick={() => handleConfimation(userAccept.inOrOut)}
-//            >
-//              Mark Complete
-//            </button>
-//            <div className=" h-20 card bg-base-300 rounded-box place-items-center text-lg font-semibold mt-3">
-//              <p className="py-4">
-//                By clicking confirm you both have met each other
-//              </p>
-//            </div>
-//          </div>
-//        ) : (
-//          <button className="btn pr-5 pl-5 w-24 absolute right-1 top-20 loading">
-//            Waiting...
-//          </button>
-//        )
-//      ) : (
-//        <button
-//          className="pr-5 pl-5 w-24 absolute right-1 top-20 btn "
-//          onClick={() => handleAcceptance(userAccept)}
-//        >
-//          Accept Terms
-//        </button>
-//      )}
-//    </div>
-//    <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-//    <div className="drawer-side overflow-y-auto w-1/2 ">
-//      <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
-
-//      <ul className="menu absolute overflow-y-auto md:h-auto mb-56 h-96 bg-base-100 text-base-content w-5/6 pl-5 pr-5">
-//        <label
-//          htmlFor="my-drawer-4"
-//          className="btn btn-primary relative drawer-button pr-5 pl-5 ml-5 mt-5"
-//        >
-//          close
-//        </label>
-
-//        <p className="text-xl font-semibold mb-4 mt-6">Current Trade</p>
-//        <div className="flex w-full">
-//          <div className="grid h-20 flex-grow card bg-base-300 rounded-box place-items-center text-xl font-semibold">
-//            {traderObj.username}
-//          </div>
-//          <div className="divider divider-horizontal">Swap</div>
-//          <div className="grid h-20 flex-grow card bg-base-300 rounded-box place-items-center text-xl font-semibold">
-//            Your Item
-//          </div>
-//        </div>
-
-//        <div className="flex grid grid-cols-2 pt-5">
-//          <div className="avatar">
-//            <div className="w-48 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-//              <img
-//                src={userItem.image_url}
-//                alt="..."
-//                className="shadow h-48 w-48 rounded-full"
-//              />
-//            </div>
-//          </div>
-
-//          <div className="avatar">
-//            <div className="w-48 rounded-full ring ring-primary ring-offset-base-500 ring-offset-2">
-//              <img
-//                src={traderItem.image_url}
-//                alt="..."
-//                className="shadow h-48 w-48 rounded-full"
-//              />
-//            </div>
-//          </div>
-//        </div>
-//        <label className="swap swap-flip text-xl pt-10">
-//          <input type="checkbox" />
-
-//          <div className="swap-on">
-//            <div
-//              type="button"
-//              className="grid h-20 card bg-base-300 rounded-box place-items-center"
-//            >
-//              Your Inventory
-//            </div>
-//            <HaggleInventory
-//              user={userObj.id}
-//              setItem={setTraderItem}
-//              swap={swap}
-//            />
-//          </div>
-//          <div className="swap-off">
-//            <div className="grid h-20 card bg-base-300 rounded-box place-items-center ">
-//              {traderObj.username} Inventory
-//            </div>
-//            <HaggleInventory user={notUserId} />
-//          </div>
-//        </label>
-//      </ul>
-//    </div>
-//  </div>;

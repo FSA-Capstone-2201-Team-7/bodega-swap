@@ -19,6 +19,8 @@ const TradesAndMessages = ({state}) => {
   const user = supabase.auth.user();
   const navigate = useNavigate();
 
+  
+
   useEffect(() => {
     const getOutboundSwaps = async () => {
       try {

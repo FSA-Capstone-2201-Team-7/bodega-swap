@@ -100,7 +100,7 @@ const CreateProposal = ({ state }) => {
           onClick={() => handleProposal(defaultImage[1])}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
         >
-          {' '}
+         
           Submit Proposal
         </button>
         <img src={defaultImage[0]} alt="" className="w-80 h-80" />
@@ -114,7 +114,7 @@ const CreateProposal = ({ state }) => {
             >
               <img src={item.image_url} alt="" className="w-80 h-80" />
               <div className=" flex justify-end">
-                {' '}
+              
                 <button
                   type="button"
                   onClick={() => handleSubmit(item.image_url, item)}
