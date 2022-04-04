@@ -91,12 +91,12 @@ const HaggleInventory = (props) => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setloading(false)
     }
   };
 
-  return loading ? (
-    <LoadingPage />
-  ) : (
+  return (
     <div>
       {userItems.map((item) => {
         return (

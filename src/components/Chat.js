@@ -22,7 +22,10 @@ const Chat = (props) => {
           .select(`id`)
           .eq("swap_Id", props.swap.id);
 
-        setConversation(...data);
+          if(data) {
+            setConversation(...data);
+          }
+        
         if (!data[0]) {
           const { data: reversed } = await supabase
             .from("conversations")
@@ -37,6 +40,8 @@ const Chat = (props) => {
     };
     getConversation();
   }, [props.sender, props.receiver, props.swap.id]);
+
+
 
   //here we implement realtime by applying any change made with messages
   //to the database to be seen in realtime with .on() .subscribe()
@@ -68,6 +73,8 @@ const Chat = (props) => {
     getUserMessages();
   }, [conversationId, messages]);
 
+
+  
   useEffect(() => {
     const scrollToBottom = () => {
       if (newMessage) {

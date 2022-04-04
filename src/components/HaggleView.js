@@ -17,7 +17,6 @@ const HaggleView = ({ state }) => {
   const [traderItem, setTraderItem] = useState([]);
   const [traderAccept, setTraderAccept] = useState({});
   const [swapHaggle, setSwap] = useState({});
-  const [open, setOpen] = useState(true);
   const user = supabase.auth.user();
   const navigate = useNavigate();
   const location = useLocation(null);
@@ -112,12 +111,13 @@ const HaggleView = ({ state }) => {
           avatarUrl,
           username,
           id
-
           `
           )
           .eq('id', notUserId);
 
-        setTraderObj(...data);
+        if (data) {
+          setTraderObj(...data);
+        }
       } catch (error) {
         console.error(error);
       } finally {
@@ -213,6 +213,15 @@ const HaggleView = ({ state }) => {
             inbound_items: filtered,
           })
           .eq('id', swap.id);
+        if (data) {
+          supabase
+            .from('swaps')
+            .on('UPDATE', (updated) => {
+              //setSwap(updated.new);
+              setTraderItem(updated.new.inbound_items);
+            })
+            .subscribe();
+        }
       }
       if (filtered.length !== allItems.length && inOrOut === 'inbound') {
         const { data } = await supabase
@@ -221,17 +230,24 @@ const HaggleView = ({ state }) => {
             outbound_items: filtered,
           })
           .eq('id', swap.id);
+        if (data) {
+          supabase
+            .from('swaps')
+            .on('UPDATE', (updated) => {
+              //setSwap(updated.new);
+               setTraderItem(updated.new.outbound_items);
+            })
+            .subscribe();
+        }
       }
     } catch (error) {
       console.error(error);
     }
   };
-  supabase
-    .from('swaps')
-    .on('UPDATE', (button) => {
-      setSwap(button.new);
-    })
-    .subscribe();
+
+  //testing for open subscriptions
+  const subscriptions = supabase.getSubscriptions();
+  console.log('open sub', subscriptions);
 
   return loading ? (
     <LoadingPage />
@@ -538,38 +554,44 @@ const HaggleView = ({ state }) => {
               </label>
             </div>
             <div className="pt-5 pb-5 flex flex-wrap justify-center">
-              {traderItem.map((item) => {
-                return (
-                  <div key={item.id} className="relative">
-                    <img
-                      src={item.image_url}
-                      alt=""
-                      className="shadow h-48 w-48 mask mask-squircle relative "
-                    />
-                    <button
-                      className="btn btn-circle absolute top-0 right-0 "
-                      onClick={() =>
-                        handleRemove(item, traderItem, userAccept.inOrOut)
-                      }
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-3 w-3"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+              {traderItem && traderItem ? (
+                traderItem.map((item) => {
+                  return (
+                    <div key={item.id} className="relative">
+                      <img
+                        src={item.image_url}
+                        alt=""
+                        className="shadow h-48 w-48 mask mask-squircle relative "
+                      />
+                      <button
+                        className="btn btn-circle absolute top-0 right-0 "
+                        onClick={() =>
+                          handleRemove(item, traderItem, userAccept.inOrOut)
+                        }
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                );
-              })}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-3 w-3"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  );
+                })
+              ) : (
+                <div>
+                  <LoadingPage />
+                </div>
+              )}
             </div>
           </div>
           <div className="drawer-side">
@@ -589,6 +611,7 @@ const HaggleView = ({ state }) => {
                 swap={swap}
                 inOrOut={userAccept.inOrOut}
                 items={traderItem}
+                // handleSwitch={handleSwitch}
               />
             </ul>
           </div>
