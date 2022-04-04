@@ -1,18 +1,18 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { supabase } from '../supabaseClient';
-import { useLocation, useNavigate } from 'react-router-dom';
-import LoadingPage from './LoadingPage';
-import Chat from './Chat';
-import HaggleInventory from './HaggleInventory';
-import { Dialog, Transition } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/outline';
+import React, { useState, useEffect, Fragment } from "react";
+import { supabase } from "../supabaseClient";
+import { useLocation, useNavigate } from "react-router-dom";
+import LoadingPage from "./LoadingPage";
+import Chat from "./Chat";
+import HaggleInventory from "./HaggleInventory";
+import { Dialog, Transition } from "@headlessui/react";
+import { XIcon } from "@heroicons/react/outline";
 
 const HaggleView = ({ state }) => {
   const [loading, setLoading] = useState(true);
   const [userObj, setUserObj] = useState({});
   const [userItem, setUserItem] = useState([]);
   const [userAccept, setUserAccept] = useState({});
-  const [notUserId, setNotUserId] = useState('');
+  const [notUserId, setNotUserId] = useState("");
   const [traderObj, setTraderObj] = useState({});
   const [traderItem, setTraderItem] = useState([]);
   const [traderAccept, setTraderAccept] = useState({});
@@ -21,16 +21,16 @@ const HaggleView = ({ state }) => {
   const user = supabase.auth.user();
   const navigate = useNavigate();
   const location = useLocation(null);
-  const { swap = '' } = location.state || {};
+  const { swap = "" } = location.state || {};
 
   useEffect(() => {
     const fetchSwap = async () => {
       try {
         const { data } = await supabase
-          .from('swaps')
+          .from("swaps")
           .select()
           .single()
-          .eq('id', swap.id);
+          .eq("id", swap.id);
 
         setSwap(data);
       } catch (error) {
@@ -45,7 +45,7 @@ const HaggleView = ({ state }) => {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from('users')
+          .from("users")
           .select(
             `
           avatarUrl,
@@ -53,7 +53,7 @@ const HaggleView = ({ state }) => {
           id
           `
           )
-          .eq('id', user.id);
+          .eq("id", user.id);
 
         setUserObj(...data);
         if (swapHaggle.outbound_id === user.id) {
@@ -65,11 +65,11 @@ const HaggleView = ({ state }) => {
           setTraderItem(swapHaggle.inbound_items);
           setUserAccept({
             userAccept: swapHaggle.outbound_accept,
-            inOrOut: 'outbound',
+            inOrOut: "outbound",
           });
           setTraderAccept({
             userAccept: swapHaggle.inbound_accept,
-            inOrOut: 'inbound',
+            inOrOut: "inbound",
           });
         }
         if (swapHaggle.inbound_id === user.id) {
@@ -81,11 +81,11 @@ const HaggleView = ({ state }) => {
           setTraderItem(swapHaggle.outbound_items);
           setUserAccept({
             userAccept: swapHaggle.inbound_accept,
-            inOrOut: 'inbound',
+            inOrOut: "inbound",
           });
           setTraderAccept({
             userAccept: swapHaggle.outbound_accept,
-            inOrOut: 'outbound',
+            inOrOut: "outbound",
           });
         }
       } catch (error) {
@@ -112,7 +112,7 @@ const HaggleView = ({ state }) => {
       try {
         setLoading(true);
         const { data } = await supabase
-          .from('users')
+          .from("users")
           .select(
             `
           avatarUrl,
@@ -121,7 +121,7 @@ const HaggleView = ({ state }) => {
 
           `
           )
-          .eq('id', notUserId);
+          .eq("id", notUserId);
 
         setTraderObj(...data);
       } catch (error) {
@@ -143,11 +143,11 @@ const HaggleView = ({ state }) => {
       try {
         if (swapHaggle.inbound_accept && swapHaggle.outbound_accept) {
           await supabase
-            .from('swaps')
+            .from("swaps")
             .update({
-              status: 'agreed',
+              status: "agreed",
             })
-            .eq('id', swapHaggle.id);
+            .eq("id", swapHaggle.id);
         }
       } catch (error) {
         console.error(error);
@@ -158,55 +158,55 @@ const HaggleView = ({ state }) => {
 
   const handleAcceptance = async (check) => {
     try {
-      if (check.inOrOut === 'inbound') {
+      if (check.inOrOut === "inbound") {
         await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             inbound_accept: true,
           })
-          .eq('id', swapHaggle.id);
+          .eq("id", swapHaggle.id);
       }
 
-      if (check.inOrOut === 'outbound') {
+      if (check.inOrOut === "outbound") {
         await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             outbound_accept: true,
           })
-          .eq('id', swapHaggle.id);
+          .eq("id", swapHaggle.id);
       }
     } catch (error) {
       console.error(error);
     }
   };
   supabase
-    .from('swaps')
-    .on('UPDATE', (button) => {
+    .from("swaps")
+    .on("UPDATE", (button) => {
       setSwap(button.new);
     })
     .subscribe();
 
   const handleConfimation = async (check) => {
     try {
-      if (check === 'inbound') {
+      if (check === "inbound") {
         await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             inbound_confirm: true,
           })
-          .eq('id', swapHaggle.id);
+          .eq("id", swapHaggle.id);
       } else {
         await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             outbound_confirm: true,
           })
-          .eq('id', swapHaggle.id);
+          .eq("id", swapHaggle.id);
       }
     } catch (error) {
       console.error(error);
     }
-    navigate('/messages', { state: { swap } });
+    navigate("/messages", { state: { swap } });
   };
 
   const handleRemove = async (item, allItems, inOrOut) => {
@@ -218,23 +218,23 @@ const HaggleView = ({ state }) => {
         }
       });
 
-      if (filtered.length !== allItems.length && inOrOut === 'outbound') {
+      if (filtered.length !== allItems.length && inOrOut === "outbound") {
         const { data } = await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             inbound_items: filtered,
           })
-          .eq('id', swap.id);
+          .eq("id", swap.id);
         console.log(data);
         //setTraderItem;
       }
-      if (filtered.length !== allItems.length && inOrOut === 'inbound') {
+      if (filtered.length !== allItems.length && inOrOut === "inbound") {
         const { data } = await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             outbound_items: filtered,
           })
-          .eq('id', swap.id);
+          .eq("id", swap.id);
         console.log(data);
       }
     } catch (error) {
@@ -242,8 +242,8 @@ const HaggleView = ({ state }) => {
     }
   };
   supabase
-    .from('swaps')
-    .on('UPDATE', (button) => {
+    .from("swaps")
+    .on("UPDATE", (button) => {
       setSwap(button.new);
     })
     .subscribe();
@@ -330,9 +330,9 @@ const HaggleView = ({ state }) => {
               })}
             </div>
             {/* <div className="bg-indigo-300 w-full grid grid-rows-1 justify-center">
-            
-              
-              <Card 
+
+
+              <Card
                 id={userItem.id}
                 imageUrl={userItem.image_url}
                 className=" shadow h-48 w-48 rounded-full"
@@ -364,7 +364,7 @@ const HaggleView = ({ state }) => {
         sender={userObj.id}
         swap={swap}
       />
-      <div className="">
+      <div className="lg:hidden">
         <button
           type="button"
           className="btn btn-primary drawer-button pr-5 pl-5 w-24"
