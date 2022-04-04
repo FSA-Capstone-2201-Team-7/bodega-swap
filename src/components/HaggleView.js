@@ -6,7 +6,6 @@ import Chat from './Chat';
 import Card from './Card';
 import HaggleInventory from './HaggleInventory';
 
-
 const HaggleView = ({ state }) => {
   const location = useLocation(null);
   const { swap = '' } = location.state || {};
@@ -53,7 +52,7 @@ const HaggleView = ({ state }) => {
           `
           )
           .eq('id', user.id);
-      
+
         setUserObj(...data);
         if (swapHaggle.outbound_id === user.id) {
           // setUserItem({ ...swapHaggle.outbound_offer });
@@ -208,13 +207,46 @@ const HaggleView = ({ state }) => {
     navigate('/messages', { state: { swap } });
   };
 
+  const handleRemove = async (item, allItems, inOrOut) => {
+    try {
+      console.log(inOrOut);
+      const filtered = allItems.filter((keep) => {
+        if (keep.id !== item.id) {
+          return keep;
+        }
+      });
+
+      if (filtered.length !== allItems.length && inOrOut === 'outbound') {
+        const { data } = await supabase
+          .from('swaps')
+          .update({
+            inbound_items: filtered,
+          })
+          .eq('id', swap.id);
+        console.log(data);
+        //setTraderItem;
+      }
+      if (filtered.length !== allItems.length && inOrOut === 'inbound') {
+        const { data } = await supabase
+          .from('swaps')
+          .update({
+            outbound_items: filtered,
+          })
+          .eq('id', swap.id);
+        console.log(data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   //testing
   // console.log('userObj', userObj);
   //console.log('useraccept', userAccept);
   //console.log('userItem', userItem);
   //console.log('TraderObj', traderObj);
   //console.log('Traderaccept', traderAccept);
-   //console.log('TraderItem', traderItem);
+  //console.log('TraderItem', traderItem);
   // console.log('status, ', swap.status);
   //console.log('haggle', swapHaggle)
   // console.log(swap);
@@ -467,8 +499,18 @@ const HaggleView = ({ state }) => {
             <div className="pt-5 pb-5 flex flex-wrap justify-center">
               {traderItem.map((item) => {
                 return (
-                  <div key={item.id}>
-                    <button className="btn btn-circle" onClick={() => console.log('this item', item)}>
+                  <div key={item.id} className="relative">
+                    <img
+                      src={item.image_url}
+                      alt=""
+                      className="shadow h-48 w-48 mask mask-squircle relative "
+                    />
+                    <button
+                      className="btn btn-circle absolute top-0 right-0 "
+                      onClick={() =>
+                        handleRemove(item, traderItem, userAccept.inOrOut)
+                      }
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-3 w-3"
@@ -484,15 +526,10 @@ const HaggleView = ({ state }) => {
                         />
                       </svg>
                     </button>
-                    <img
-                      src={item.image_url}
-                      alt=""
-                      className="shadow h-48 w-48 mask mask-squircle relative"
-                    />
                   </div>
                 );
               })}
-              mee
+  
             </div>
             {/* <div className="bg-gray-100 w-full flex  justify-center">
               <Card id={traderItem.id} imageUrl={traderItem.image_url} />
