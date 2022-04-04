@@ -262,7 +262,7 @@ const HaggleView = ({ state }) => {
   return loading ? (
     <LoadingPage />
   ) : (
-    <div className="grid grid-cols-3 px-10 justify-items-center gap-10 mt-12">
+    <div className="grid grid-cols-3 md:px-10 justify-items-center gap-10 mt-12">
       <div className="relative hidden lg:flex lg:flex-col  justify-center">
         <div>
           <input type="checkbox" id="my-modal-5" className="modal-toggle" />
@@ -364,7 +364,7 @@ const HaggleView = ({ state }) => {
         sender={userObj.id}
         swap={swap}
       />
-      <div className="lg:hidden">
+      <div className="lg:hidden flex w-full">
         <button
           type="button"
           className="btn btn-primary drawer-button pr-5 pl-5 w-24"
@@ -403,7 +403,7 @@ const HaggleView = ({ state }) => {
       <Transition.Root show={open} as={Fragment}>
         <Dialog
           as="div"
-          className="fixed inset-0 overflow-hidden"
+          className="fixed lg:hidden inset-0 overflow-hidden"
           onClose={setOpen}
         >
           <div className="absolute inset-0 overflow-hidden ">
