@@ -6,6 +6,7 @@ const HaggleInventory = (props) => {
   const [userItems, setUserItems] = useState([]);
   const [loading, setloading] = useState(true);
   const [inventorySwap, setSwap] = useState({});
+  const [ids, setIds] = useState([])
   const userInfo = supabase.auth.user();
   let { user, swap, setUserItem, setTraderItem, inOrOut, items } = props;
 
@@ -13,19 +14,29 @@ const HaggleInventory = (props) => {
     const getInventory = async () => {
       try {
         setloading(true);
+        let fetchIds = [];
         const { data } = await supabase
           .from('items')
           .select('*')
           .eq('ownerId', user);
-        if (data) {
+
+        if (items && data) {
           setUserItems(data);
+          items.map((item) => {
+            fetchIds.push(item.id);
+          });
+          setIds(fetchIds);
         }
       } catch (error) {
         console.error(error);
+      } finally {
+        setloading(false);
       }
     };
     getInventory();
-  }, [user]);
+  }, [user,items]);
+
+  
   useEffect(() => {
     const fetchSwap = async () => {
       try {
@@ -40,51 +51,10 @@ const HaggleInventory = (props) => {
   }, [swap]);
 
 
-  // used for single item view 
-  // const handleSwitch = async (item) => {
-
-  //   try {
-  //     if(item && inOrOut === 'outbound') {
-  //     await supabase
-  //       .from('swaps')
-  //       .update({
-  //     inbound_offer: item
-  //       })
-  //     .eq('id', inventorySwap.id);
-  //     supabase
-  //       .from('swaps')
-  //       .on('UPDATE', (update) => {
-  //         setSwap(update.new);
-  //         setItem(update.new.inbound_offer);
-  //         console.log('update', update.new);
-  //       })
-  //       .subscribe();
-
-  //      }
-  //     if(item && inOrOut === 'inbound') {
-  //      await supabase
-  //        .from('swaps')
-  //        .update({
-  //          outbound_offer: item,
-  //        })
-  //        .eq('id', inventorySwap.id);
-  //         supabase
-  //           .from('swaps')
-  //           .on('UPDATE', (update) => {
-  //          setSwap(update.new);
-  //             setItem(update.new.outbound_offer)
-  //             console.log('update', update.new);
-  //           })
-  //           .subscribe();
-
-  //     }
-  //   } catch (error) {
-  //     console.error(error)
-  //   }
-  // };
-
   const handleSwitch = async (item) => {
     try {
+      
+      
       if (inOrOut === 'outbound') {
         
         await supabase
@@ -98,11 +68,12 @@ const HaggleInventory = (props) => {
           .from('swaps')
           .on('UPDATE', (update) => {
             setSwap(update.new);
-      
+  
            setTraderItem(update.new.inbound_items);
-            console.log('update in', update.new.inbound_items);
+  
           })
           .subscribe();
+         
       }
       if (inOrOut === 'inbound') {
        await supabase
@@ -116,37 +87,50 @@ const HaggleInventory = (props) => {
           .from('swaps')
           .on('UPDATE', (update) => {
             setSwap(update.new);
-          
+         
            setTraderItem(update.new.outbound_items);
-            console.log('update out', update.new.outbound_items);
-             console.log('update out', update.new);
+         
           })
           .subscribe();
+          
       }
+      
+     
     } catch (error) {
       console.error(error);
-    }
+    } 
   };
-console.log('items', items)
-console.log('inorout', inOrOut)
+  
+
+  console.log(userItems)
   return loading ? (
     <LoadingPage />
   ) : (
     <div>
       {userItems.map((item) => {
+        if(item === undefined) {
+          console.log('here')
+        }
         return (
           <div className="p-5" key={item.id}>
             <Card id={item.id} imageUrl={item.image_url} />
-            {user === userInfo.id ? (
+
+            {user === userInfo.id && !ids.includes(item.id) ? (
               <button
                 type="button"
                 className="btn btn-wide w-full"
                 onClick={() => handleSwitch(item)}
               >
-                Swap-In
+                Add Item
               </button>
             ) : (
-              <></>
+              <button
+                type="button"
+                className="btn btn-wide w-full"
+                disabled
+              >
+                Already Up For Trade
+              </button>
             )}
           </div>
         );

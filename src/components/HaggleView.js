@@ -347,7 +347,7 @@ const HaggleView = ({ state }) => {
         </div>
       </div>
 
-      <div className="drawer drawer-end absolute h-96">
+      {/* <div className="drawer drawer-end absolute h-96">
         <div className="drawer-content">
           <label
             htmlFor="my-drawer-4"
@@ -457,7 +457,7 @@ const HaggleView = ({ state }) => {
             </label>
           </ul>
         </div>
-      </div>
+      </div> */}
 
       <Chat
         MyUserName={userObj.username}
