@@ -11,14 +11,13 @@ const HaggleView = ({ state }) => {
   const { swap = "" } = location.state || {};
   const [loading, setLoading] = useState(true);
   const [userObj, setUserObj] = useState({});
-  const [userItem, setUserItem] = useState({});
+  const [userItem, setUserItem] = useState([]);
   const [userAccept, setUserAccept] = useState({});
   const [notUserId, setNotUserId] = useState("");
   const [traderObj, setTraderObj] = useState({});
-  const [traderItem, setTraderItem] = useState({});
+  const [traderItem, setTraderItem] = useState([]);
   const [traderAccept, setTraderAccept] = useState({});
   const [swapHaggle, setSwap] = useState({});
-  const [inventory, setInventory] = useState("");
   const user = supabase.auth.user();
   const navigate = useNavigate();
 
@@ -53,11 +52,15 @@ const HaggleView = ({ state }) => {
           `
           )
           .eq("id", user.id);
+
         setUserObj(...data);
         if (swapHaggle.outbound_id === user.id) {
-          setUserItem({ ...swapHaggle.outbound_offer });
+          // setUserItem({ ...swapHaggle.outbound_offer });
+          // setTraderItem({ ...swapHaggle.inbound_offer });
+
           setNotUserId(swapHaggle.inbound_id);
-          setTraderItem({ ...swapHaggle.inbound_offer });
+          setUserItem(swapHaggle.outbound_items);
+          setTraderItem(swapHaggle.inbound_items);
           setUserAccept({
             userAccept: swapHaggle.outbound_accept,
             inOrOut: "outbound",
@@ -68,9 +71,12 @@ const HaggleView = ({ state }) => {
           });
         }
         if (swapHaggle.inbound_id === user.id) {
-          setUserItem({ ...swapHaggle.inbound_offer });
+          // setUserItem({ ...swapHaggle.inbound_offer });
+          // setTraderItem({ ...swapHaggle.outbound_offer });
+
           setNotUserId(swapHaggle.outbound_id);
-          setTraderItem({ ...swapHaggle.outbound_offer });
+          setUserItem(swapHaggle.inbound_items);
+          setTraderItem(swapHaggle.outbound_items);
           setUserAccept({
             userAccept: swapHaggle.inbound_accept,
             inOrOut: "inbound",
@@ -95,6 +101,8 @@ const HaggleView = ({ state }) => {
     user.id,
     swapHaggle.inbound_accept,
     swapHaggle.outbound_accept,
+    swapHaggle.outbound_items,
+    swapHaggle.inbound_items,
   ]);
 
   useEffect(() => {
@@ -199,15 +207,49 @@ const HaggleView = ({ state }) => {
     navigate("/messages", { state: { swap } });
   };
 
+  const handleRemove = async (item, allItems, inOrOut) => {
+    try {
+      console.log(inOrOut);
+      const filtered = allItems.filter((keep) => {
+        if (keep.id !== item.id) {
+          return keep;
+        }
+      });
+
+      if (filtered.length !== allItems.length && inOrOut === 'outbound') {
+        const { data } = await supabase
+          .from('swaps')
+          .update({
+            inbound_items: filtered,
+          })
+          .eq('id', swap.id);
+        console.log(data);
+        //setTraderItem;
+      }
+      if (filtered.length !== allItems.length && inOrOut === 'inbound') {
+        const { data } = await supabase
+          .from('swaps')
+          .update({
+            outbound_items: filtered,
+          })
+          .eq('id', swap.id);
+        console.log(data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   //testing
   // console.log('userObj', userObj);
-   console.log('useraccept', userAccept);
-  // console.log('userItem', userItem);
+  //console.log('useraccept', userAccept);
+  //console.log('userItem', userItem);
   //console.log('TraderObj', traderObj);
   //console.log('Traderaccept', traderAccept);
-  // console.log('TraderItem', traderItem);
+  //console.log('TraderItem', traderItem);
   // console.log('status, ', swap.status);
   //console.log('haggle', swapHaggle)
+  // console.log(swap);
 
   return loading ? (
     <LoadingPage />
@@ -256,7 +298,6 @@ const HaggleView = ({ state }) => {
               <label
                 htmlFor="my-drawer"
                 className="btn btn-primary drawer-button "
-                onClick={() => setInventory(traderObj.inOrOut)}
               >
                 See Other Items
               </label>
@@ -267,13 +308,28 @@ const HaggleView = ({ state }) => {
                 Accept Terms
               </button>
             </div>
-            <div className="bg-indigo-300 w-full grid grid-rows-1 justify-center">
-              <Card
+            <div className="pt-5 pb-5 flex flex-wrap justify-center">
+              {userItem.map((item) => {
+                return (
+                  <div key={item.id}>
+                    <img
+                      src={item.image_url}
+                      alt=""
+                      className="shadow h-48 w-48 mask mask-squircle"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+            {/* <div className="bg-indigo-300 w-full grid grid-rows-1 justify-center">
+            
+              
+              <Card 
                 id={userItem.id}
                 imageUrl={userItem.image_url}
-                className="pb=12"
+                className=" shadow h-48 w-48 rounded-full"
               />
-            </div>
+            </div> */}
           </div>
           <div className="drawer-side">
             <label htmlFor="my-drawer" className="drawer-overlay"></label>
@@ -282,9 +338,6 @@ const HaggleView = ({ state }) => {
               <label
                 htmlFor="my-drawer"
                 className="btn btn-primary drawer-button"
-
-                onClick={() => setInventory("")}
-
               >
                 Close
               </label>
@@ -300,44 +353,52 @@ const HaggleView = ({ state }) => {
         <div className="drawer-content">
           <label
             htmlFor="my-drawer-4"
-            className="btn btn-primary absolute top-0 drawer-button pr-3"
-            onClick={() => setInventory(userObj.inOrOut)}
+            className="btn btn-primary drawer-button pr-5 pl-5 w-24 absolute right-1 top-1"
           >
             Menu
           </label>
+          {userAccept.userAccept ? (
+            traderAccept.userAccept ? (
+              <div>
+                <button
+                  type="button"
+                  className="btn pr-5 pl-5 w-24 absolute right-1 top-20"
+                  onClick={() => handleConfimation(userAccept.inOrOut)}
+                >
+                  Mark Complete
+                </button>
+                <div className=" h-20 card bg-base-300 rounded-box place-items-center text-lg font-semibold mt-3">
+                  <p className="py-4">
+                    By clicking confirm you both have met each other
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <button className="btn pr-5 pl-5 w-24 absolute right-1 top-20 loading">
+                Waiting...
+              </button>
+            )
+          ) : (
+            <button
+              className="pr-5 pl-5 w-24 absolute right-1 top-20 btn "
+              onClick={() => handleAcceptance(userAccept)}
+            >
+              Accept Terms
+            </button>
+          )}
         </div>
         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-side overflow-y-auto pl-96 ">
+        <div className="drawer-side overflow-y-auto w-1/2 ">
           <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
 
-          <ul className="menu absolute overflow-y-auto md:h-auto mb-56 h-96 bg-base-100 text-base-content  pl-24 pr-28 ">
-            {userAccept.userAccept ? (
-              traderAccept.userAccept ? (
-                <div>
-                  <button
-                    type="button"
-                    className="btn btn-xs sm:btn-sm md:btn-md w-full"
-                    onClick={() => handleConfimation(userAccept.inOrOut)}
-                  >
-                    Mark Complete
-                  </button>
-                  <div className=" h-20 card bg-base-300 rounded-box place-items-center text-lg font-semibold mt-3">
-                    <p className="py-4">
-                      By clicking confirm you both have met each other
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <button className="btn loading">Waiting...</button>
-              )
-            ) : (
-              <button
-                className="btn btn-xs sm:btn-sm md:btn-md"
-                onClick={() => handleAcceptance(userAccept)}
-              >
-                Accept Terms
-              </button>
-            )}
+          <ul className="menu absolute overflow-y-auto md:h-auto mb-56 h-96 bg-base-100 text-base-content w-5/6 pl-5 pr-5">
+            <label
+              htmlFor="my-drawer-4"
+              className="btn btn-primary relative drawer-button pr-5 pl-5 ml-5 mt-5"
+            >
+              close
+            </label>
+
             <p className="text-xl font-semibold mb-4 mt-6">Current Trade</p>
             <div className="flex w-full">
               <div className="grid h-20 flex-grow card bg-base-300 rounded-box place-items-center text-xl font-semibold">
@@ -350,15 +411,19 @@ const HaggleView = ({ state }) => {
             </div>
 
             <div className="flex grid grid-cols-2 pt-5">
-              <div className="avatar">
-                <div className="w-48 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                  <img
-                    src={userItem.image_url}
-                    alt="..."
-                    className="shadow h-48 w-48 rounded-full"
-                  />
+           
+                <div className="avatar">
+                  <div className="w-48 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                 
+                   
+                    <img
+                      src={userItem.image_url}
+                      alt="..."
+                      className="shadow h-48 w-48 rounded-full"
+                    />
+                  </div>
                 </div>
-              </div>
+         
               <div className="avatar">
                 <div className="w-48 rounded-full ring ring-primary ring-offset-base-500 ring-offset-2">
                   <img
@@ -389,10 +454,9 @@ const HaggleView = ({ state }) => {
                 <div className="grid h-20 card bg-base-300 rounded-box place-items-center ">
                   {traderObj.username} Inventory
                 </div>
-                <HaggleInventory user={traderObj.id} swap={swap} />
+                <HaggleInventory user={notUserId} />
               </div>
             </label>
-          
           </ul>
         </div>
       </div> */}
@@ -441,14 +505,47 @@ const HaggleView = ({ state }) => {
               <label
                 htmlFor="my-drawer-4"
                 className="btn btn-primary drawer-button"
-                onClick={() => setInventory(userObj.inOrOut)}
               >
                 My Items
               </label>
             </div>
-            <div className="bg-gray-100 w-full grid grid-rows-1 justify-center">
-              <Card id={traderItem.id} imageUrl={traderItem.image_url} />
+            <div className="pt-5 pb-5 flex flex-wrap justify-center">
+              {traderItem.map((item) => {
+                return (
+                  <div key={item.id} className="relative">
+                    <img
+                      src={item.image_url}
+                      alt=""
+                      className="shadow h-48 w-48 mask mask-squircle relative "
+                    />
+                    <button
+                      className="btn btn-circle absolute top-0 right-0 "
+                      onClick={() =>
+                        handleRemove(item, traderItem, userAccept.inOrOut)
+                      }
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-3 w-3"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                );
+              })}
             </div>
+            {/* <div className="bg-gray-100 w-full flex  justify-center">
+              <Card id={traderItem.id} imageUrl={traderItem.image_url} />
+            </div> */}
           </div>
           <div className="drawer-side">
             <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
@@ -457,15 +554,16 @@ const HaggleView = ({ state }) => {
               <label
                 htmlFor="my-drawer-4"
                 className="btn btn-primary drawer-button"
-                onClick={() => setInventory("")}
               >
                 Close
               </label>
               <HaggleInventory
                 user={userObj.id}
-                setItem={setTraderItem}
+                setUserItem={setUserItem}
+                setTraderItem={setTraderItem}
                 swap={swap}
                 inOrOut={userAccept.inOrOut}
+                items={traderItem}
               />
             </ul>
           </div>

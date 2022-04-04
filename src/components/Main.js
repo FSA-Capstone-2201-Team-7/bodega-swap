@@ -348,8 +348,6 @@ const Main = (props) => {
                       {account.swaps_completed}
                     </p>
                   </div>
-
-
                   <div className="card-actions justify-center">
                     <button
                       className="bg-indigo-600 rounded-lg text-base text-white px-2 py-2"
@@ -390,7 +388,6 @@ const Main = (props) => {
                         )}
                         %
                       </p>
-
                     </div>
                   </div>
                 </div>

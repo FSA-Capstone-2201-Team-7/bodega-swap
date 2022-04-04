@@ -68,6 +68,8 @@ const TradesAndMessages = ({state}) => {
         .from('swaps')
         .update({
           status: 'haggling',
+          inbound_items: [swap.inbound_offer],
+          outbound_items: [swap.outbound_offer]
         })
         .eq('id', swap.id);
 

@@ -1,31 +1,42 @@
-import React, { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
-import Card from "./Card";
-import LoadingPage from "./LoadingPage";
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import Card from './Card';
+import LoadingPage from './LoadingPage';
 const HaggleInventory = (props) => {
   const [userItems, setUserItems] = useState([]);
   const [loading, setloading] = useState(true);
-  const [inventorySwap, setSwap] = useState({})
+  const [inventorySwap, setSwap] = useState({});
+  const [ids, setIds] = useState([])
   const userInfo = supabase.auth.user();
-  let { user, swap, setItem, inOrOut } = props;
+  let { user, swap, setUserItem, setTraderItem, inOrOut, items } = props;
 
   useEffect(() => {
     const getInventory = async () => {
       try {
         setloading(true);
+        let fetchIds = [];
         const { data } = await supabase
-          .from("items")
-          .select("*")
-          .eq("ownerId", user);
-        if (data) {
+          .from('items')
+          .select('*')
+          .eq('ownerId', user);
+
+        if (items && data) {
           setUserItems(data);
+          items.map((item) => {
+            fetchIds.push(item.id);
+          });
+          setIds(fetchIds);
         }
       } catch (error) {
         console.error(error);
-      } 
+      } finally {
+        setloading(false);
+      }
     };
     getInventory();
-  }, [user]);
+  }, [user,items]);
+
+  
   useEffect(() => {
     const fetchSwap = async () => {
       try {
@@ -39,84 +50,88 @@ const HaggleInventory = (props) => {
     fetchSwap();
   }, [swap]);
 
+
   const handleSwitch = async (item) => {
     try {
-      if(item && inOrOut === 'outbound') {
-      await supabase
-        .from('swaps')
-        .update({
-      inbound_offer: item
-        })
-      .eq('id', inventorySwap.id);
-      supabase
-        .from('swaps')
-        .on('UPDATE', (update) => {
-          setSwap(update.new);
-          setItem(update.new.inbound_offer);
-          console.log('update', update.new);
-        })
-        .subscribe();
-
       
-       }
-      if(item && inOrOut === 'inbound') {
+      
+      if (inOrOut === 'outbound') {
+        
+        await supabase
+          .from('swaps')
+          .update({
+            inbound_items: [...items, item],
+          })
+          .eq('id', inventorySwap.id);
+       
+        supabase
+          .from('swaps')
+          .on('UPDATE', (update) => {
+            setSwap(update.new);
+  
+           setTraderItem(update.new.inbound_items);
+  
+          })
+          .subscribe();
+         
+      }
+      if (inOrOut === 'inbound') {
        await supabase
          .from('swaps')
          .update({
-           outbound_offer: item,
+           outbound_items: [...items, item],
          })
          .eq('id', inventorySwap.id);
-          supabase
-            .from('swaps')
-            .on('UPDATE', (update) => {
-           setSwap(update.new);
-              setItem(update.new.outbound_offer)
-              console.log('update', update.new);
-            })
-            .subscribe();
        
+        supabase
+          .from('swaps')
+          .on('UPDATE', (update) => {
+            setSwap(update.new);
+         
+           setTraderItem(update.new.outbound_items);
+         
+          })
+          .subscribe();
+          
       }
+      
      
-      // console.log('item obj invetory', item);
-      // console.log('swap in inventory', swap);
     } catch (error) {
-      console.error(error)
-    }
+      console.error(error);
+    } 
   };
-  // supabase
-  //   .from('swaps')
-  //   .on('UPDATE', (update) => {
-  //     setSwap(update.new)
-  //     console.log('update', update.new);
-  //   })
-  //   .subscribe();
   
 
-
-  // console.log('this', swap)
-  // console.log('inventoryswap', inventorySwap);
-
+  console.log(userItems)
   return loading ? (
     <LoadingPage />
   ) : (
     <div>
       {userItems.map((item) => {
+        if(item === undefined) {
+          console.log('here')
+        }
         return (
           <div className="p-5" key={item.id}>
             <Card id={item.id} imageUrl={item.image_url} />
-            {user === userInfo.id ? (
-               <button
-              type="button"
-              className="btn btn-wide w-full"
-              onClick={() => handleSwitch(item)}
-            >
-              Swap-In
-            </button>
 
+            {user === userInfo.id && !ids.includes(item.id) ? (
+              <button
+                type="button"
+                className="btn btn-wide w-full"
+                onClick={() => handleSwitch(item)}
+              >
+                Add Item
+              </button>
             ) : (
-              <></>
-            ) }
-           
+              <button
+                type="button"
+                className="btn btn-wide w-full"
+                disabled
+              >
+                Already Up For Trade
+              </button>
+            )}
           </div>
         );
       })}
