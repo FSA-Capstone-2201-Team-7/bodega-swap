@@ -3,12 +3,10 @@ import { supabase } from "../supabaseClient";
 import { useLocation, useNavigate } from "react-router-dom";
 import LoadingPage from "./LoadingPage";
 import Chat from "./Chat";
-import Card from "./Card";
 import HaggleInventory from "./HaggleInventory";
 
 const HaggleView = ({ state }) => {
-  const location = useLocation(null);
-  const { swap = "" } = location.state || {};
+  
   const [loading, setLoading] = useState(true);
   const [userObj, setUserObj] = useState({});
   const [userItem, setUserItem] = useState([]);
@@ -20,6 +18,8 @@ const HaggleView = ({ state }) => {
   const [swapHaggle, setSwap] = useState({});
   const user = supabase.auth.user();
   const navigate = useNavigate();
+  const location = useLocation(null);
+  const { swap = '' } = location.state || {};
 
   useEffect(() => {
     const fetchSwap = async () => {
@@ -239,6 +239,12 @@ const HaggleView = ({ state }) => {
       console.error(error);
     }
   };
+  supabase
+    .from('swaps')
+    .on('UPDATE', (button) => {
+      setSwap(button.new);
+    })
+    .subscribe();
 
   //testing
   // console.log('userObj', userObj);

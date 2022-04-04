@@ -19,9 +19,11 @@ const HaggleInventory = (props) => {
           .from('items')
           .select('*')
           .eq('ownerId', user);
-
+          if(data) {
+            setUserItems(data);
+          }
         if (items && data) {
-          setUserItems(data);
+          
           items.map((item) => {
             fetchIds.push(item.id);
           });
