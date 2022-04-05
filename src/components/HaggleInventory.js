@@ -9,51 +9,50 @@ const HaggleInventory = (props) => {
   const userInfo = supabase.auth.user();
   let { user, swap, setTraderItem, setUserItem, inOrOut, items } = props;
 
+  useEffect(() => {
+    init();
+  }, []);
+
+  const init = async () => {
+    await getInventory();
+    await fetchSwap();
+    const subscription = addItemsSubscription()
+    return () => {
+      supabase.removeSubscription(subscription);
+    };
+  };
+  const getInventory = async () => {
+    try {
+      let fetchIds = [];
+
+      const { data } = await supabase
+        .from('items')
+        .select('*')
+        .eq('ownerId', user);
+      if (data) {
+        setUserItems(data);
+      }
+      if (items && data) {
+        items.forEach((item) => {
+          fetchIds.push(item.id);
+        });
+        setIds(fetchIds);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const fetchSwap = async () => {
+    try {
+      setSwap(swap);
+    } catch (error) {
+      console.error(error);
+    }
+  };
  
-  useEffect(() => {
-    const getInventory = async () => {
-      try {
-        let isMounted = true;
-      
-        let fetchIds = [];
-
-        if (isMounted) {
-          const { data } = await supabase
-            .from('items')
-            .select('*')
-            .eq('ownerId', user);
-          if (data) {
-            setUserItems(data);
-          }
-          if (items && data) {
-            items.forEach((item) => {
-              fetchIds.push(item.id);
-            });
-            setIds(fetchIds);
-          }
-        }
-      } catch (error) {
-        console.error(error);
-      } 
-    };
-    getInventory();
-  }, [user, items]);
-
-  useEffect(() => {
-    const fetchSwap = async () => {
-      try {
-        setSwap(swap);
-        
-      } catch (error) {
-        console.error(error);
-      } 
-    };
-    fetchSwap();
-  }, [swap, inOrOut, setTraderItem]);
 
   const handleSwitch = async (item) => {
     try {
-      
       if (inOrOut === 'outbound') {
         await supabase
           .from('swaps')
@@ -61,15 +60,6 @@ const HaggleInventory = (props) => {
             inbound_items: [...items, item],
           })
           .eq('id', inventorySwap.id);
-
-       supabase
-         .from('swaps')
-         .on('UPDATE', (update) => {
-           setTraderItem(update.new.inbound_items);
-       
-         })
-         .subscribe();
-        
       }
       if (inOrOut === 'inbound') {
         await supabase
@@ -78,20 +68,32 @@ const HaggleInventory = (props) => {
             outbound_items: [...items, item],
           })
           .eq('id', inventorySwap.id);
-
-        supabase
-         .from('swaps')
-         .on('UPDATE', (update) => {
-           setTraderItem(update.new.outbound_items);
-      
-         })
-         .subscribe();
-         
       }
     } catch (error) {
       console.error(error);
-    } 
+    }
   };
+
+  const addItemsSubscription = () => {
+    if (inOrOut === 'inbound') { 
+      supabase
+        .from('swaps')
+        .on('UPDATE', (update) => {
+          setTraderItem(update.new.outbound_items);
+         setUserItem(update.new.inbound_items)
+        })
+        .subscribe();
+    } 
+     if (inOrOut === 'outbound') { 
+       supabase
+         .from('swaps')
+         .on('UPDATE', (update) => {
+           setTraderItem(update.new.inbound_items);
+           setUserItem(update.new.outbound_items)
+         })
+         .subscribe();
+     }
+  }
 
   return (
     <div>
