@@ -17,115 +17,100 @@ const HaggleView = ({ state }) => {
   const [traderItem, setTraderItem] = useState([]);
   const [traderAccept, setTraderAccept] = useState({});
   const [swapHaggle, setSwap] = useState({});
+  const [open, setOpen] = useState(true);
   const user = supabase.auth.user();
   const navigate = useNavigate();
   const location = useLocation(null);
   const { swap = '' } = location.state || {};
 
   useEffect(() => {
-    const fetchSwap = async () => {
-      try {
-        const { data } = await supabase
-          .from('swaps')
-          .select()
-          .single()
-          .eq('id', swap.id);
+    initHaggleData();
+  }, []);
 
-        setSwap(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchSwap();
-  }, [swap.id]);
+  const initHaggleData = async () => {
+    const swapData = await getSwap();
+    const traderId = await getUserInfo(swapData);
+    await getTraderInfo(traderId);
+    setLoading(false);
+  };
 
-  useEffect(() => {
-    const userInfo = async () => {
-      try {
-        setLoading(true);
-        const { data } = await supabase
-          .from('users')
-          .select(
-            `
+  const getSwap = async () => {
+    try {
+      const { data } = await supabase
+        .from('swaps')
+        .select()
+        .single()
+        .eq('id', swap.id);
+
+      setSwap(data);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getUserInfo = async (swapData) => {
+    
+    const { data } = await supabase
+      .from('users')
+      .select(
+        `
+      avatarUrl,
+      username,
+      id
+      `
+      )
+      .eq('id', user.id);
+
+    setUserObj(...data);
+    let traderId;
+    if (swapData.outbound_id === user.id) {
+      setNotUserId(swapData.inbound_id);
+      traderId = swapData.inbound_id;
+      setUserItem(swapData.outbound_items);
+      setTraderItem(swapData.inbound_items);
+      setUserAccept({
+        userAccept: swapData.outbound_accept,
+        inOrOut: 'outbound',
+      });
+      setTraderAccept({
+        userAccept: swapData.inbound_accept,
+        inOrOut: 'inbound',
+      });
+    }
+    if (swapData.inbound_id === user.id) {
+      setNotUserId(swapData.outbound_id);
+      traderId = swapData.outbound_id;
+      setUserItem(swapData.inbound_items);
+      setTraderItem(swapData.outbound_items);
+      setUserAccept({
+        userAccept: swapData.inbound_accept,
+        inOrOut: 'inbound',
+      });
+      setTraderAccept({
+        userAccept: swapData.outbound_accept,
+        inOrOut: 'outbound',
+      });
+    }
+    return traderId;
+  };
+
+  const getTraderInfo = async (traderId) => {
+    const { data } = await supabase
+      .from('users')
+      .select(
+        `
           avatarUrl,
           username,
           id
           `
-          )
-          .eq('id', user.id);
+      )
+      .eq('id', traderId);
 
-        setUserObj(...data);
-        if (swapHaggle.outbound_id === user.id) {
-          setNotUserId(swapHaggle.inbound_id);
-          setUserItem(swapHaggle.outbound_items);
-          setTraderItem(swapHaggle.inbound_items);
-          setUserAccept({
-            userAccept: swapHaggle.outbound_accept,
-            inOrOut: 'outbound',
-          });
-          setTraderAccept({
-            userAccept: swapHaggle.inbound_accept,
-            inOrOut: 'inbound',
-          });
-        }
-        if (swapHaggle.inbound_id === user.id) {
-          setNotUserId(swapHaggle.outbound_id);
-          setUserItem(swapHaggle.inbound_items);
-          setTraderItem(swapHaggle.outbound_items);
-          setUserAccept({
-            userAccept: swapHaggle.inbound_accept,
-            inOrOut: 'inbound',
-          });
-          setTraderAccept({
-            userAccept: swapHaggle.outbound_accept,
-            inOrOut: 'outbound',
-          });
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    userInfo();
-  }, [
-    swapHaggle.outbound_offer,
-    swapHaggle.inbound_offer,
-    swapHaggle.outbound_id,
-    swapHaggle.inbound_id,
-    user.id,
-    swapHaggle.inbound_accept,
-    swapHaggle.outbound_accept,
-    swapHaggle.outbound_items,
-    swapHaggle.inbound_items,
-  ]);
-
-  useEffect(() => {
-    const trader = async () => {
-      try {
-        setLoading(true);
-        const { data } = await supabase
-          .from('users')
-          .select(
-            `
-          avatarUrl,
-          username,
-          id
-          `
-          )
-          .eq('id', notUserId);
-
-        if (data) {
-          setTraderObj(...data);
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    trader();
-  }, [notUserId]);
+    if (data) {
+      setTraderObj(...data);
+    }
+  };
 
   useEffect(() => {
     const setAgreement = async () => {
@@ -167,13 +152,9 @@ const HaggleView = ({ state }) => {
     } catch (error) {
       console.error(error);
     }
+    
   };
-  supabase
-    .from('swaps')
-    .on('UPDATE', (button) => {
-      setSwap(button.new);
-    })
-    .subscribe();
+  
 
   const handleConfimation = async (check) => {
     try {
@@ -201,41 +182,37 @@ const HaggleView = ({ state }) => {
   const handleRemove = async (item, allItems, inOrOut) => {
     try {
       const filtered = allItems.filter((keep) => {
-        if (keep.id !== item.id) {
-          return keep;
-        }
+        return keep.id !== item.id;
       });
 
-      if (filtered.length !== allItems.length && inOrOut === 'outbound') {
+      if (inOrOut === 'outbound') {
         const { data } = await supabase
           .from('swaps')
           .update({
             inbound_items: filtered,
           })
-          .eq('id', swap.id);
+          .eq('id', swapHaggle.id);
         if (data) {
           supabase
             .from('swaps')
             .on('UPDATE', (updated) => {
-              //setSwap(updated.new);
               setTraderItem(updated.new.inbound_items);
             })
             .subscribe();
         }
       }
-      if (filtered.length !== allItems.length && inOrOut === 'inbound') {
+      if (inOrOut === 'inbound') {
         const { data } = await supabase
           .from('swaps')
           .update({
             outbound_items: filtered,
           })
-          .eq('id', swap.id);
+          .eq('id', swapHaggle.id);
         if (data) {
           supabase
             .from('swaps')
             .on('UPDATE', (updated) => {
-              //setSwap(updated.new);
-               setTraderItem(updated.new.outbound_items);
+              setTraderItem(updated.new.outbound_items);
             })
             .subscribe();
         }
@@ -245,10 +222,7 @@ const HaggleView = ({ state }) => {
     }
   };
 
-  //testing for open subscriptions
-  const subscriptions = supabase.getSubscriptions();
-  console.log('open sub', subscriptions);
-
+console.log(traderObj)
   return loading ? (
     <LoadingPage />
   ) : (
@@ -301,7 +275,7 @@ const HaggleView = ({ state }) => {
               </label>
               <button
                 className="btn btn-xs sm:btn-sm md:btn-md w-full text-black"
-                disabled="disabled"
+                disabled
               >
                 Accept Terms
               </button>
@@ -345,7 +319,7 @@ const HaggleView = ({ state }) => {
         sender={userObj.id}
         swap={swap}
       />
-      {/* <div className="">
+      <div className="lg:hidden">
         <button
           type="button"
           className="btn btn-primary drawer-button pr-5 pl-5 w-24"
@@ -381,7 +355,7 @@ const HaggleView = ({ state }) => {
           </button>
         )}
       </div>
-      <Transition.Root show={open} as={Fragment}>
+      <Transition.Root show={open} as={Fragment} className="lg:hidden">
         <Dialog
           as="div"
           className="fixed inset-0 overflow-hidden"
@@ -513,7 +487,7 @@ const HaggleView = ({ state }) => {
             </div>
           </div>
         </Dialog>
-      </Transition.Root> */}
+      </Transition.Root>
 
       <div className="relative hidden lg:flex lg:flex-col lg:justify-center">
         <div className="px-4 grid justify-center">
@@ -546,12 +520,24 @@ const HaggleView = ({ state }) => {
                   Accept Terms
                 </button>
               )}
-              <label
-                htmlFor="my-drawer-4"
-                className="btn btn-primary drawer-button"
-              >
-                My Items
-              </label>
+              {swapHaggle.status === 'haggling' ? (
+                userAccept.userAccept === true ? (
+                  <button type="button" className="btn" disabled>
+                    Waiting..
+                  </button>
+                ) : (
+                  <label
+                    htmlFor="my-drawer-4"
+                    className="btn btn-primary drawer-button"
+                  >
+                    My Items
+                  </label>
+                )
+              ) : (
+                <button type="button" className="btn" disabled>
+                  In Trade
+                </button>
+              )}
             </div>
             <div className="pt-5 pb-5 flex flex-wrap justify-center">
               {traderItem && traderItem ? (
@@ -563,27 +549,31 @@ const HaggleView = ({ state }) => {
                         alt=""
                         className="shadow h-48 w-48 mask mask-squircle relative "
                       />
-                      <button
-                        className="btn btn-circle absolute top-0 right-0 "
-                        onClick={() =>
-                          handleRemove(item, traderItem, userAccept.inOrOut)
-                        }
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-3 w-3"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      </button>
+                      {swapHaggle.status !== 'agreed' ? (
+                        userAccept.userAccept === true ? null : (
+                          <button
+                            className="btn btn-circle absolute top-0 right-0 "
+                            onClick={() =>
+                              handleRemove(item, traderItem, userAccept.inOrOut)
+                            }
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-3 w-3"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
+                        )
+                      ) : null}
                     </div>
                   );
                 })
@@ -604,6 +594,7 @@ const HaggleView = ({ state }) => {
               >
                 Close
               </label>
+
               <HaggleInventory
                 user={userObj.id}
                 setUserItem={setUserItem}
@@ -611,7 +602,6 @@ const HaggleView = ({ state }) => {
                 swap={swap}
                 inOrOut={userAccept.inOrOut}
                 items={traderItem}
-                // handleSwitch={handleSwitch}
               />
             </ul>
           </div>

@@ -42,6 +42,7 @@ const Routing = () => {
       setSession(session);
     });
   }, []);
+
   return (
     <div className="flex-col flex h-full justify-between ">
       <NavBar session={session} />

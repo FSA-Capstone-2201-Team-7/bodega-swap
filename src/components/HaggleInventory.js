@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '../supabaseClient';
 import Card from './Card';
-import LoadingPage from './LoadingPage';
+
 const HaggleInventory = (props) => {
-  const [loading, setloading] = useState(true);
   const [userItems, setUserItems] = useState([]);
   const [inventorySwap, setSwap] = useState({});
   const [ids, setIds] = useState([]);
   const userInfo = supabase.auth.user();
-  let { user, swap, setTraderItem, inOrOut, items } = props;
+  let { user, swap, setTraderItem, setUserItem, inOrOut, items } = props;
 
+ 
   useEffect(() => {
     const getInventory = async () => {
       try {
         let isMounted = true;
-        setloading(true);
+      
         let fetchIds = [];
 
         if (isMounted) {
@@ -34,9 +34,7 @@ const HaggleInventory = (props) => {
         }
       } catch (error) {
         console.error(error);
-      } finally {
-        setloading(false);
-      }
+      } 
     };
     getInventory();
   }, [user, items]);
@@ -45,16 +43,17 @@ const HaggleInventory = (props) => {
     const fetchSwap = async () => {
       try {
         setSwap(swap);
+        
       } catch (error) {
         console.error(error);
-      }
+      } 
     };
     fetchSwap();
-  }, [swap]);
+  }, [swap, inOrOut, setTraderItem]);
 
   const handleSwitch = async (item) => {
     try {
-      setloading(true);
+      
       if (inOrOut === 'outbound') {
         await supabase
           .from('swaps')
@@ -63,14 +62,14 @@ const HaggleInventory = (props) => {
           })
           .eq('id', inventorySwap.id);
 
-        supabase
-          .from('swaps')
-          .on('UPDATE', (update) => {
-            setSwap(update.new);
-
-            setTraderItem(update.new.inbound_items);
-          })
-          .subscribe();
+       supabase
+         .from('swaps')
+         .on('UPDATE', (update) => {
+           setTraderItem(update.new.inbound_items);
+       
+         })
+         .subscribe();
+        
       }
       if (inOrOut === 'inbound') {
         await supabase
@@ -81,19 +80,17 @@ const HaggleInventory = (props) => {
           .eq('id', inventorySwap.id);
 
         supabase
-          .from('swaps')
-          .on('UPDATE', (update) => {
-            setSwap(update.new);
-
-            setTraderItem(update.new.outbound_items);
-          })
-          .subscribe();
+         .from('swaps')
+         .on('UPDATE', (update) => {
+           setTraderItem(update.new.outbound_items);
+      
+         })
+         .subscribe();
+         
       }
     } catch (error) {
       console.error(error);
-    } finally {
-      setloading(false)
-    }
+    } 
   };
 
   return (

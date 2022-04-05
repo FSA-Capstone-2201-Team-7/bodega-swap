@@ -6,84 +6,73 @@ import LoadingPage from "./LoadingPage";
 const Chat = (props) => {
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
-  const [conversationId, setConversation] = useState([]);
+  const [conversation, setConversation] = useState({});
   const [input, setInput] = useState("");
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
   const { TheirAvatarUrl, MyAvatarUrl, MyUserName, TheirUserName } = props;
 
   useEffect(() => {
-    const getConversation = async () => {
-      try {
-        setLoading(true);
+    init()
+  }, []);
 
-        const { data } = await supabase
-          .from("conversations")
-          .select(`id`)
-          .eq("swap_Id", props.swap.id);
+  const init = async () => {
+    const conversation = await getConversation();
+    await getMessages(conversation);
+    const subscription = createMessagesSubscription();
+    setLoading(false)
+    return () => {
+      supabase.removeSubscription(subscription)
+    }
+  }
 
-          if(data) {
-            setConversation(...data);
-          }
-        
-        if (!data[0]) {
-          const { data: reversed } = await supabase
-            .from("conversations")
-            .select(`id`)
-            .eq("swap_Id", props.swap.id);
+  const getConversation = async () => {
+    try {
 
-          setConversation(...reversed);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getConversation();
-  }, [props.sender, props.receiver, props.swap.id]);
+      const { data } = await supabase
+        .from('conversations')
+        .select()
+        .eq('swap_Id', props.swap.id);
 
+      setConversation(data[0]);
+      return data[0]
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
+  const getMessages = async (conversationData) => {
+    const { data } = await supabase
+      .from('messages')
+      .select()
+      .eq('conversations_Id', conversationData.id);
+    setMessages(data);
+  }
 
-  //here we implement realtime by applying any change made with messages
-  //to the database to be seen in realtime with .on() .subscribe()
-  useEffect(() => {
-    const getUserMessages = async () => {
-      try {
-        if (conversationId) {
-          const { data } = await supabase
-            .from("messages")
-            .select()
-            .eq("conversations_Id", conversationId.id);
-          setMessages(data);
-
-          supabase
-            .from("messages")
-            .on("INSERT", (message) => {
-              setNewMessage(message.new);
-              setMessages([...messages, message.new]);
-            })
-            .subscribe();
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getUserMessages();
-  }, [conversationId, messages]);
+  const createMessagesSubscription = () => {
+    return supabase
+      .from('messages')
+      .on('INSERT', (message) => {
+        setNewMessage(message.new);
+        setMessages((currMessages) => {
+          return [...currMessages, message.new]
+        });
+      })
+      .subscribe();
+  }
 
 
-  
+
+
   useEffect(() => {
     const scrollToBottom = () => {
-      if (newMessage) {
-        messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      if (newMessage && conversation) {
+        messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
       }
-      setNewMessage("");
+      setNewMessage('');
     };
     scrollToBottom();
-  }, [newMessage]);
+  }, [newMessage, conversation]);
 
   const createMessage = async (e) => {
     e.preventDefault();
@@ -93,7 +82,7 @@ const Chat = (props) => {
           {
             content: input,
             sender_Id: props.sender,
-            conversations_Id: conversationId.id,
+            conversations_Id: conversation.id,
           },
         ]);
 
