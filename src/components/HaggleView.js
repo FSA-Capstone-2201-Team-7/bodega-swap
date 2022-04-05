@@ -9,6 +9,7 @@ import { XIcon } from '@heroicons/react/outline';
 
 const HaggleView = ({ state }) => {
   const [loading, setLoading] = useState(true);
+
   const [userObj, setUserObj] = useState({});
   const [userItem, setUserItem] = useState([]);
   const [userAccept, setUserAccept] = useState({});
@@ -17,6 +18,7 @@ const HaggleView = ({ state }) => {
   const [traderItem, setTraderItem] = useState([]);
   const [traderAccept, setTraderAccept] = useState({});
   const [swapHaggle, setSwap] = useState({});
+
   const [open, setOpen] = useState(true);
   const user = supabase.auth.user();
   const navigate = useNavigate();
@@ -27,11 +29,33 @@ const HaggleView = ({ state }) => {
     initHaggleData();
   }, []);
 
+  // useEffect(() => {
+  //   const setAgreement = async () => {
+  //     try {
+  //       if (swapHaggle.inbound_accept && swapHaggle.outbound_accept) {
+  //         await supabase
+  //           .from('swaps')
+  //           .update({
+  //             status: 'agreed',
+  //           })
+  //           .eq('id', swapHaggle.id);
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   setAgreement();
+  // }, [swapHaggle.id, swapHaggle.outbound_accept, swapHaggle.inbound_accept]);
+
   const initHaggleData = async () => {
     const swapData = await getSwap();
     const traderId = await getUserInfo(swapData);
     await getTraderInfo(traderId);
+    const subscription = swapsSubscription();
     setLoading(false);
+    return () => {
+      supabase.removeSubscription(subscription);
+    };
   };
 
   const getSwap = async () => {
@@ -50,7 +74,6 @@ const HaggleView = ({ state }) => {
   };
 
   const getUserInfo = async (swapData) => {
-    
     const { data } = await supabase
       .from('users')
       .select(
@@ -112,23 +135,6 @@ const HaggleView = ({ state }) => {
     }
   };
 
-  useEffect(() => {
-    const setAgreement = async () => {
-      try {
-        if (swapHaggle.inbound_accept && swapHaggle.outbound_accept) {
-          await supabase
-            .from('swaps')
-            .update({
-              status: 'agreed',
-            })
-            .eq('id', swapHaggle.id);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    setAgreement();
-  }, [swapHaggle.id, swapHaggle.outbound_accept, swapHaggle.inbound_accept]);
 
   const handleAcceptance = async (check) => {
     try {
@@ -139,6 +145,19 @@ const HaggleView = ({ state }) => {
             inbound_accept: true,
           })
           .eq('id', swapHaggle.id);
+        supabase
+          .from('swaps')
+          .on('UPDATE', (updated) => {
+            setUserAccept({
+              userAccept: updated.new.inbound_accept,
+              inOrOut: 'inbound',
+            });
+            setTraderAccept({
+              userAccept: updated.new.outbound_accept,
+              inOrOut: 'outbound',
+            });
+          })
+          .subscribe();
       }
 
       if (check.inOrOut === 'outbound') {
@@ -148,13 +167,24 @@ const HaggleView = ({ state }) => {
             outbound_accept: true,
           })
           .eq('id', swapHaggle.id);
+        supabase
+          .from('swaps')
+          .on('UPDATE', (updated) => {
+            setUserAccept({
+              userAccept: updated.new.outbound_accept,
+              inOrOut: 'outbound',
+            });
+            setTraderAccept({
+              userAccept: updated.new.inbound_accept,
+              inOrOut: 'inbound',
+            });
+          })
+          .subscribe();
       }
     } catch (error) {
       console.error(error);
     }
-    
   };
-  
 
   const handleConfimation = async (check) => {
     try {
@@ -184,45 +214,47 @@ const HaggleView = ({ state }) => {
       const filtered = allItems.filter((keep) => {
         return keep.id !== item.id;
       });
-
       if (inOrOut === 'outbound') {
-        const { data } = await supabase
+        await supabase
           .from('swaps')
           .update({
             inbound_items: filtered,
           })
           .eq('id', swapHaggle.id);
-        if (data) {
-          supabase
-            .from('swaps')
-            .on('UPDATE', (updated) => {
-              setTraderItem(updated.new.inbound_items);
-            })
-            .subscribe();
-        }
       }
       if (inOrOut === 'inbound') {
-        const { data } = await supabase
+        await supabase
           .from('swaps')
           .update({
             outbound_items: filtered,
           })
           .eq('id', swapHaggle.id);
-        if (data) {
-          supabase
-            .from('swaps')
-            .on('UPDATE', (updated) => {
-              setTraderItem(updated.new.outbound_items);
-            })
-            .subscribe();
-        }
       }
+   
     } catch (error) {
       console.error(error);
     }
   };
 
-console.log(traderObj)
+  const swapsSubscription = () => {
+    if (userAccept.inOrOut === 'inbound') {
+      return supabase
+        .from('swaps')
+        .on('UPDATE', (updated) => {
+          setTraderItem(updated.new.outbound_items);
+        })
+        .subscribe();
+    }
+    if (userAccept.inOrOut === 'outbound') {
+      return supabase
+        .from('swaps')
+        .on('UPDATE', (updated) => {
+          setTraderItem(updated.new.inbound_items);
+        })
+        .subscribe();
+    }
+  };
+
   return loading ? (
     <LoadingPage />
   ) : (
@@ -479,6 +511,7 @@ console.log(traderObj)
                         swap={swap}
                         inOrOut={userAccept.inOrOut}
                         items={traderItem}
+                        
                       />
                     </div>
                   </div>
@@ -602,6 +635,8 @@ console.log(traderObj)
                 swap={swap}
                 inOrOut={userAccept.inOrOut}
                 items={traderItem}
+              
+
               />
             </ul>
           </div>

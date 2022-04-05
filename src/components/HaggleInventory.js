@@ -6,6 +6,7 @@ const HaggleInventory = (props) => {
   const [userItems, setUserItems] = useState([]);
   const [inventorySwap, setSwap] = useState({});
   const [ids, setIds] = useState([]);
+    const [disable, setDisable] = useState(false);
   const userInfo = supabase.auth.user();
   let { user, swap, setTraderItem, setUserItem, inOrOut, items } = props;
 
@@ -60,6 +61,7 @@ const HaggleInventory = (props) => {
             inbound_items: [...items, item],
           })
           .eq('id', inventorySwap.id);
+         
       }
       if (inOrOut === 'inbound') {
         await supabase
@@ -68,6 +70,7 @@ const HaggleInventory = (props) => {
             outbound_items: [...items, item],
           })
           .eq('id', inventorySwap.id);
+           
       }
     } catch (error) {
       console.error(error);
@@ -76,20 +79,22 @@ const HaggleInventory = (props) => {
 
   const addItemsSubscription = () => {
     if (inOrOut === 'inbound') { 
-      supabase
+      return supabase
         .from('swaps')
         .on('UPDATE', (update) => {
-          setTraderItem(update.new.outbound_items);
+         setTraderItem(update.new.outbound_items);
          setUserItem(update.new.inbound_items)
+        
+        
         })
         .subscribe();
     } 
      if (inOrOut === 'outbound') { 
-       supabase
+       return supabase
          .from('swaps')
          .on('UPDATE', (update) => {
            setTraderItem(update.new.inbound_items);
-           setUserItem(update.new.outbound_items)
+           setUserItem(update.new.outbound_items)     
          })
          .subscribe();
      }
@@ -106,10 +111,12 @@ const HaggleInventory = (props) => {
               <button
                 type="button"
                 className="btn btn-wide w-full"
+                disabled={disable}
                 onClick={() => handleSwitch(item)}
               >
                 Add Item
               </button>
+              
             ) : (
               <button type="button" className="btn btn-wide w-full" disabled>
                 Already Up For Trade
