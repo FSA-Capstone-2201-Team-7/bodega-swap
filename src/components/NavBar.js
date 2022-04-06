@@ -24,7 +24,7 @@ const NavBar = ({ session }) => {
         </Link>
 
         <Link
-          className=" font-normal text-gray-500 md:pl-5 hover:text-indigo-500  hover:scale-105 duration-200 ease-out"
+          className="hidden md:flex font-normal text-gray-500 md:pl-5 hover:text-indigo-500  hover:scale-105 duration-200 ease-out"
           to="/items"
         >
           Explore
@@ -67,11 +67,23 @@ const NavBar = ({ session }) => {
             </label>
           </nav>
           {navMenuOpen ? (
-            <div className="md:hidden w-100% top-20 shadow-md bg-white right-6 absolute border-2 border-b-indigo-500">
+            <div className="md:hidden z-50 w-100% top-20 shadow-md bg-white right-6 absolute border-2 border-b-indigo-500">
               <ul className="relative">
                 <li className="relative">
                   <Link
-                    className="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-200 ease-in-out"
+
+                    class="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-200 ease-in-out"
+                    to="/items"
+                    data-mdb-ripple="true"
+                    data-mdb-ripple-color="dark"
+                  >
+                    Explore
+                  </Link>
+                </li>
+                <li className="relative">
+                  <Link
+                    class="flex items-center text-base py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-200 ease-in-out"
+
                     to="/myAccount"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="dark"

@@ -1,51 +1,34 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { supabase } from '../supabaseClient';
-import { useLocation, useNavigate } from 'react-router-dom';
-import LoadingPage from './LoadingPage';
-import Chat from './Chat';
-import HaggleInventory from './HaggleInventory';
-import { Dialog, Transition } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/outline';
+import React, { useState, useEffect, Fragment } from "react";
+import { supabase } from "../supabaseClient";
+import { useLocation, useNavigate } from "react-router-dom";
+import LoadingPage from "./LoadingPage";
+import Chat from "./Chat";
+import HaggleInventory from "./HaggleInventory";
+import { Dialog, Transition } from "@headlessui/react";
+import { XIcon } from "@heroicons/react/outline";
 
 const HaggleView = ({ state }) => {
   const [loading, setLoading] = useState(true);
-
   const [userObj, setUserObj] = useState({});
   const [userItem, setUserItem] = useState([]);
   const [userAccept, setUserAccept] = useState({});
-  const [notUserId, setNotUserId] = useState('');
+  const [notUserId, setNotUserId] = useState("");
   const [traderObj, setTraderObj] = useState({});
   const [traderItem, setTraderItem] = useState([]);
   const [traderAccept, setTraderAccept] = useState({});
   const [swapHaggle, setSwap] = useState({});
-
   const [open, setOpen] = useState(true);
   const user = supabase.auth.user();
   const navigate = useNavigate();
   const location = useLocation(null);
-  const { swap = '' } = location.state || {};
+  const { swap = "" } = location.state || {};
 
-  useEffect(() => {
+
+ useEffect(() => {
+    
     initHaggleData();
   }, []);
 
-  // useEffect(() => {
-  //   const setAgreement = async () => {
-  //     try {
-  //       if (swapHaggle.inbound_accept && swapHaggle.outbound_accept) {
-  //         await supabase
-  //           .from('swaps')
-  //           .update({
-  //             status: 'agreed',
-  //           })
-  //           .eq('id', swapHaggle.id);
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   setAgreement();
-  // }, [swapHaggle.id, swapHaggle.outbound_accept, swapHaggle.inbound_accept]);
 
   const initHaggleData = async () => {
     const swapData = await getSwap();
@@ -136,14 +119,34 @@ const HaggleView = ({ state }) => {
   };
 
 
+  useEffect(() => {
+    const setAgreement = async () => {
+      try {
+        if (swapHaggle.inbound_accept && swapHaggle.outbound_accept) {
+          await supabase
+            .from("swaps")
+            .update({
+              status: "agreed",
+            })
+            .eq("id", swapHaggle.id);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    setAgreement();
+  }, [swapHaggle.id, swapHaggle.outbound_accept, swapHaggle.inbound_accept]);
+
+
   const handleAcceptance = async (check) => {
     try {
-      if (check.inOrOut === 'inbound') {
+      if (check.inOrOut === "inbound") {
         await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             inbound_accept: true,
           })
+
           .eq('id', swapHaggle.id);
         supabase
           .from('swaps')
@@ -158,14 +161,16 @@ const HaggleView = ({ state }) => {
             });
           })
           .subscribe();
+
       }
 
-      if (check.inOrOut === 'outbound') {
+      if (check.inOrOut === "outbound") {
         await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             outbound_accept: true,
           })
+
           .eq('id', swapHaggle.id);
         supabase
           .from('swaps')
@@ -180,33 +185,35 @@ const HaggleView = ({ state }) => {
             });
           })
           .subscribe();
+
       }
     } catch (error) {
       console.error(error);
     }
   };
 
+
   const handleConfimation = async (check) => {
     try {
-      if (check === 'inbound') {
+      if (check === "inbound") {
         await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             inbound_confirm: true,
           })
-          .eq('id', swapHaggle.id);
+          .eq("id", swapHaggle.id);
       } else {
         await supabase
-          .from('swaps')
+          .from("swaps")
           .update({
             outbound_confirm: true,
           })
-          .eq('id', swapHaggle.id);
+          .eq("id", swapHaggle.id);
       }
     } catch (error) {
       console.error(error);
     }
-    navigate('/messages', { state: { swap } });
+    navigate("/messages", { state: { swap } });
   };
 
   const handleRemove = async (item, allItems, inOrOut) => {
@@ -214,6 +221,7 @@ const HaggleView = ({ state }) => {
       const filtered = allItems.filter((keep) => {
         return keep.id !== item.id;
       });
+
       if (inOrOut === 'outbound') {
         await supabase
           .from('swaps')
@@ -229,12 +237,14 @@ const HaggleView = ({ state }) => {
             outbound_items: filtered,
           })
           .eq('id', swapHaggle.id);
+
       }
    
     } catch (error) {
       console.error(error);
     }
   };
+
 
   const swapsSubscription = () => {
     if (userAccept.inOrOut === 'inbound') {
@@ -258,7 +268,7 @@ const HaggleView = ({ state }) => {
   return loading ? (
     <LoadingPage />
   ) : (
-    <div className="grid grid-cols-3 px-10 justify-items-center gap-10 mt-12">
+    <div className="grid grid-cols-3 md:px-10 justify-items-center gap-10 mt-12">
       <div className="relative hidden lg:flex lg:flex-col  justify-center">
         <div>
           <input type="checkbox" id="my-modal-5" className="modal-toggle" />
@@ -325,6 +335,7 @@ const HaggleView = ({ state }) => {
                 );
               })}
             </div>
+
           </div>
           <div className="drawer-side">
             <label htmlFor="my-drawer" className="drawer-overlay"></label>
@@ -351,7 +362,8 @@ const HaggleView = ({ state }) => {
         sender={userObj.id}
         swap={swap}
       />
-      <div className="lg:hidden">
+      <div className="lg:hidden flex w-full">
+
         <button
           type="button"
           className="btn btn-primary drawer-button pr-5 pl-5 w-24"
@@ -390,7 +402,7 @@ const HaggleView = ({ state }) => {
       <Transition.Root show={open} as={Fragment} className="lg:hidden">
         <Dialog
           as="div"
-          className="fixed inset-0 overflow-hidden"
+          className="fixed lg:hidden inset-0 overflow-hidden"
           onClose={setOpen}
         >
           <div className="absolute inset-0 overflow-hidden ">

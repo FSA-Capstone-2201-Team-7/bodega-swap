@@ -137,14 +137,14 @@ const Chat = (props) => {
         )}
       </div>
 
-      <div className="pb-5 pt-5 justify-center items-center flex bg-base-100 w-full">
-        <form onSubmit={createMessage}>
+      <div className="pb-5 gap-2 justify-center items-center flex bg-base-100 w-full">
+        <form onSubmit={createMessage} className="w-full">
           <input
             type="text"
             value={input}
             placeholder="Type here..."
             onChange={handleChange}
-            className="input input-ghost input-lg w-full max-w-xs"
+            className="input input-ghost ml-2 w-[95%] "
           />
         </form>
         <button type="submit" className="btn btn-active btn-ghost btn-md">
