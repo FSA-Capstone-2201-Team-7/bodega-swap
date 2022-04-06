@@ -19,6 +19,8 @@ const TradesAndMessages = ({state}) => {
   const user = supabase.auth.user();
   const navigate = useNavigate();
 
+  
+
   useEffect(() => {
     const getOutboundSwaps = async () => {
       try {
@@ -233,9 +235,9 @@ const TradesAndMessages = ({state}) => {
                       ) : (
                         <button
                           className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                          onClick={() =>
+                          onClick={() =>  {
                             navigate('/haggle', { state: { swap } })
-                          }
+                          }}
                         >
                           Haggle!
                         </button>
