@@ -12,4 +12,12 @@ Items are listed based on category, and you will be able to search for items bas
 
 After a swap has been proposed, the receiver of the proposal has the option to accept the deal, reject the deal, or to initiate a haggle. If a haggle is initiated, you and your swapmate will be taken to a screen that allows you both to haggle over the swap. You will both be able to see all of each other's listed items, and can propose alternate items than were included in the original swap. This screen will also allow you to communicate with your swapmate in real time.
 
-Once a swap has been agreed upon, users will be responsible for arranging a meetup to complete the swap, or to arrange another method of exchange. After a swap has been completed, both parties will be able to rate each other according to how the transaction went. This rating system allows Bodega Swap to discourage dishonest parties from taking advantage of honest users.
+Once a swap has been agreed upon, users will be responsible for arranging a meetup to complete the swap, or to arrange another method of exchange. After a swap has been completed, both parties will be able to rate each other according to how the transaction went. This 'repuation' system is important, as it allows users to be vetted based on their trustworthiness and reliability.
+
+Bodega Swap was built using React, Tailwind CSS, and Supabase as the backend.
+
+Team Members:
+
+Brennan Skinner: https://github.com/bgskinner3
+Colin Forbes: https://github.com/cjforbz
+Kaitlyn Zou: https://github.com/kaitlyn601
