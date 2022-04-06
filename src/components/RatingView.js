@@ -15,6 +15,7 @@ const RatingView = () => {
   const location = useLocation();
   const { swap = "" } = location.state || {};
 
+  
   useEffect(() => {
     //determine whether the current user is the sender or receiver of the original proposal,
     //and whether or not they have already voted
