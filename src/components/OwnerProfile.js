@@ -1,14 +1,20 @@
-import { useState, useEffect } from "react";
-import { supabase } from "../supabaseClient";
-import { Link, useLocation } from "react-router-dom";
-import OwnerListings from "./OwnerListings";
-import { ThumbDownIcon, ThumbUpIcon } from "@heroicons/react/outline";
-import LoadingPage from "./LoadingPage";
+import { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
+import { Link, useLocation } from 'react-router-dom';
+import OwnerListings from './OwnerListings';
+import { ThumbDownIcon, ThumbUpIcon } from '@heroicons/react/outline';
+import LoadingPage from './LoadingPage';
 const OwnerProfile = ({ state }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const location = useLocation();
-  const { item = "" } = location.state || {};
+  const { item = '' } = location.state || {};
+  const dvPct = user
+    ? Math.ceil(100 * (user.downvotes / (user.upvotes + user.downvotes)))
+    : null;
+  const uvPct = user
+    ? Math.ceil(100 * (user.upvotes / (user.upvotes + user.downvotes)))
+    : null;
 
   useEffect(() => {
     const getUser = async () => {
@@ -47,7 +53,7 @@ const OwnerProfile = ({ state }) => {
               src={
                 user.avatarUrl
                   ? user.avatarUrl
-                  : "https://www.sibberhuuske.nl/wp-content/uploads/2016/10/default-avatar.png"
+                  : 'https://www.sibberhuuske.nl/wp-content/uploads/2016/10/default-avatar.png'
               }
               alt=""
             />
@@ -57,24 +63,14 @@ const OwnerProfile = ({ state }) => {
             <h3 className="font-semibold text-3xl mb-2">{user.username}</h3>
             <div className="flex space-x-4">
               <div>
-                {" "}
+                {' '}
                 <ThumbDownIcon className="h-8 fill-yellow-400 stroke-yellow-500" />
-                <p>
-                  {Math.ceil(
-                    100 * (user.downvotes / (user.upvotes + user.downvotes))
-                  )}
-                  %
-                </p>
+                <p>{dvPct + uvPct > 100 ? dvPct - 1 : dvPct}%</p>
               </div>
               <div>
-                {" "}
+                {' '}
                 <ThumbUpIcon className="h-8 fill-yellow-400 stroke-yellow-500" />
-                <p>
-                  {Math.ceil(
-                    100 * (user.upvotes / (user.upvotes + user.downvotes))
-                  )}
-                  %
-                </p>
+                <p>{uvPct}%</p>
               </div>
             </div>
           </div>
